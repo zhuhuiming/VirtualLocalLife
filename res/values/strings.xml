@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">为生活</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <color name="grey21">#363636</color>
+
+    <string name="setting_text">设置</string>
+    <string name="return_text">返回</string>
+    <string name="make_public">发布</string>
+    <string name="task_make_public">任务发布</string>
+    <string name="task_title">任务标题</string>
+    <string name="register_name">快速注册</string>
+    <string name="land_name">登录</string>
+    <string name="regedit_name">新用户注册</string>
+    <string name="collection_name">收藏</string>
+    <string name="regedit_text">手机号/QQ</string>
+    <string name="login_customer_text">用户名</string>
+    <string name="update">版本更新</string>
+    <string name="mine">我的</string>
+    <string name="advice">吐槽</string>
+    <string name="aboutus">关于我们</string>
+    <string name="set">设置</string>
+    <string name="advice_hint">谢谢您的反馈</string>
+    <string name="no_linkservice">无法连接到服务器，请检查网络</string>
+    <string name="confirm">确定</string>
+    <string name="finish">完成</string>
+    <string name="cancle">取消</string>
+    <string name="version">V1.0.0.8</string>
+    <string name="fail">无效</string>
+    <string name="send">发送</string>
+    <string name="detail_content">详细内容：</string>
+    <string name="my_receive">我的接收</string>
+    <string name="my_public">我的发布</string>
+    <string name="my_info">个人信息</string>
+    <string name="more">更多</string>
+    <string name="loading">正在加载</string>
+    <string name="noMoreRecord">没有更多的记录了</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="sex">性别</string>
+    <string name="name">昵称</string>
+    <string name="text_edit">文本编辑</string>
+    <string name="save">保存</string>
+    <string name="make_areaname_hint">这个地盘目前还是无人区，赶紧给你的地盘取个名字吧！</string>
+
+    <!-- 注册界面 -->
+    <string name="telno_input_hint">更换移动设备时，用于找回您的账号</string>
+    <string name="name_input_hint">赶紧取个够炫的名字吧！</string>
+    <string name="login">快速登录</string>
+    <string name="head_photo">头像</string>
+    <string name="finish_text">完成</string>
+
+    <!-- 时间限制界面 -->
+    <string name="day_text">天</string>
+    <string name="hour_text">小时</string>
+    <string name="minute_text">分</string>
+    <string name="second_text">秒</string>
+    <string name="sure_text">确定</string>
+    <string name="pull_to_refresh_pull_label">使劲・・・</string>
+    <string name="pull_to_refresh_release_label">松开后刷新</string>
+    <string name="pull_to_refresh_refreshing_label">刷新\u2026</string>
+    <string name="pull_to_refresh_footer_release_label">松开后加载</string>
+    <string name="pull_to_refresh_footer_pull_label">使劲・・・</string>
+    <string name="pull_to_refresh_footer_refreshing_label">加载中\u2026</string>
+    <string name="text">http://miloisbadboy.com/</string>
+    <string name="no_content">没有内容</string>
+    <string name="errcode_success">发送成功</string>
+    <string name="errcode_cancel">发送取消</string>
+    <string name="errcode_deny">发送被拒绝</string>
+    <string name="errcode_unknown">发送返回</string>
+    <string name="share_type">分享方式</string>
+    <string name="sms_share">短信分享</string>
+    <string name="qq_share">分享给QQ好友</string>
+    <string name="weixin_share">分享到微信好友</string>
+    <string name="weixinfriend_share">分享到微信朋友圈</string>
+
+</resources>

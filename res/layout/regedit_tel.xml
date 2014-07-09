@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#e3e3e3"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/customer_login_textview1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/login"
+                android:textSize="18sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#1e90ff"
+        android:orientation="horizontal" >
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="#f5c023"
+        android:padding="20dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="5dp"
+            android:text="@string/sex"
+            android:textColor="#ffffff"
+            android:textSize="18dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/regeditname_maleradiobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="35dp"
+                android:text="@string/male"
+                android:textColor="#ffffff" />
+
+            <RadioButton
+                android:id="@+id/regeditname_femaleradiobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:text="@string/female"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp" >
+
+            <EditText
+                android:id="@+id/regedittel_username"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:drawablePadding="10dp"
+                android:hint="10个字以内" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:drawablePadding="10dp"
+        android:text="@string/name_input_hint" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp" >
+
+        <Button
+            android:id="@+id/regedittel_nextbutton"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="#63c348"
+            android:drawablePadding="10dp"
+            android:text="下一步"
+            android:textColor="#ffffff" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#F5F5F5"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:visibility="gone" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/customer_login_image1"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/left" />
+
+            <TextView
+                android:id="@+id/customer_login_textview1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="地盘命名"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/customer_login_textview2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="6dp"
+                android:textColor="@color/blue"
+                android:textSize="18sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#1e90ff"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/main_bmapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#c3c3c3"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/location1" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="8dp"
+                android:paddingRight="5dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="adress"
+                    android:textColor="#ffffff"
+                    android:textSize="12dp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="25dp"
+                        android:drawablePadding="10dp"
+                        android:text="@string/make_areaname_hint" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp" >
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:background="#63c348"
+                            android:drawablePadding="10dp"
+                            android:text="占地盘"
+                            android:textColor="#ffffff" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#04a0df"
+                        android:orientation="horizontal"
+                        android:padding="10dp" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:lines="1"
+                            android:text="菠萝的爱岛"
+                            android:textColor="#ffffff" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="15dp"
+                        android:drawablePadding="10dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:lines="1"
+                        android:text="2013年4月20日  由***首次登陆" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                                                    android:background="#cc4f39"
+                            
+                            android:singleLine="true"
+                            android:padding="10dp"
+                            android:text="居民 13"
+                            android:textColor="#ffffff" />
+                          <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="15dp"
+                            
+                            android:ellipsize="end"
+                            android:gravity="center"
+                                                    android:background="#7cdd96"
+                            
+                            android:singleLine="true"
+                            android:padding="10dp"
+                            android:text="到访 13"
+                            android:textColor="#ffffff" />
+                          
+                          <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="15dp"
+                            
+                            android:ellipsize="end"
+                            android:gravity="center"
+                                                    android:background="#f8c00f"
+                            
+                            android:singleLine="true"
+                            android:padding="10dp"
+                            android:text="当下 13"
+                            android:textColor="#ffffff" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal" >
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/look" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:drawablePadding="10dp"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:lines="1"
+                            android:text="居民1125人" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:drawablePadding="10dp"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:text="lisa、秋容、黑皮、foxnet、tina" />
+                    </LinearLayout>
+                    
+ <LinearLayout                        
+     android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="20dp"
+                        android:background="#cc4f39"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:drawablePadding="10dp"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:lines="1"
+                            android:padding="10dp"
+                            android:text="好玩地"
+                            android:textColor="#ffffff" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal" >
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/look" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:drawablePadding="10dp"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:lines="1"
+                            android:text="居民1125人" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:drawablePadding="10dp"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:text="lisa、秋容、黑皮、foxnet、tina" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

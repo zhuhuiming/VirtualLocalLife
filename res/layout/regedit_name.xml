@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#e3e3e3"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
+
+        <RelativeLayout
+            android:id="@+id/regeditname_returnrelativelayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/left" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/login"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#1e90ff"
+        android:orientation="horizontal" >
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="#04a0df"
+        android:padding="20dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="5dp"
+            android:text="@string/head_photo"
+            android:textColor="#ffffff"
+            android:textSize="18dp" />
+
+        <ImageView
+            android:id="@+id/regeditname_personpicture"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/noperson" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/regeditname_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:drawablePadding="10dp"
+            android:hint="手机号码"
+            android:numeric="integer" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
+            android:drawablePadding="10dp"
+            android:text="@string/telno_input_hint" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp" >
+
+        <Button
+            android:id="@+id/regeditname_finishbutton"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="30dp"
+            android:background="#63c348"
+            android:text="@string/finish"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#e3e3e3"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/customer_login_image1"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/left" />
+
+            <TextView
+                android:id="@+id/customer_login_textview1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="占地盘"
+                android:textSize="18sp" />
+
+            
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#1e90ff"
+        android:orientation="horizontal" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp" >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:drawablePadding="10dp"
+                android:hint="10个字以内" />
+        </RelativeLayout>
+    </LinearLayout>
+<TextView 
+     android:layout_marginTop="20dp"
+     android:layout_width="match_parent"
+     
+                android:layout_height="40dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:drawablePadding="10dp"
+                android:text="这个地盘目前还是无人区，赶紧给你的地盘取个名字把"  />
+ 
+
+     <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp" >
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:drawablePadding="10dp"
+                    android:text="下一步" 
+                    android:textColor="#ffffff"
+                    android:background="#63c348"/>
+            </RelativeLayout>
+</LinearLayout>
