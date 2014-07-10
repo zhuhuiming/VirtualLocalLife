@@ -44,7 +44,8 @@
     <string name="name">昵称</string>
     <string name="text_edit">文本编辑</string>
     <string name="save">保存</string>
-    <string name="make_areaname_hint">这个地盘目前还是无人区，赶紧给你的地盘取个名字吧！</string>
+    <string name="make_areaname_hint">这个地盘目前还是无人区，赶紧过来占地盘吧！</string>
+    <string name="cur_useraddress">用户当前地址</string>
 
     <!-- 注册界面 -->
     <string name="telno_input_hint">更换移动设备时，用于找回您的账号</string>

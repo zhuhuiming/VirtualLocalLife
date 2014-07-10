@@ -2,6 +2,7 @@ package com.mike.virtuallocallife;
 
 import java.util.List;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.mike.Utils.CommonUtils;
 
 import cn.bmob.push.BmobPush;
@@ -23,6 +24,8 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
+		SDKInitializer.initialize(getApplicationContext());
 		// 初始化 Bmob SDK
 		Bmob.initialize(this, "0556064ba5deea19b15e6c2075d45286");
 		// 启动推送服务
@@ -54,13 +57,15 @@ public class MainActivity extends Activity {
 						CommonUtils.ShowToastCenter(MainActivity.this,
 								"找到了注册用户，名称为:" + object.get(0).getUsername(),
 								Toast.LENGTH_LONG);
-						//进入主界面
-						Intent it = new Intent(MainActivity.this,AreaInfoActivity.class);
+						// 进入主界面
+						Intent it = new Intent(MainActivity.this,
+								AreaInfoActivity.class);
 						startActivity(it);
 						finish();
 					} else {
-                        //此时说明该用户没有注册,那么就进入注册页面
-						Intent it = new Intent(MainActivity.this,RegeditActivity.class);
+						// 此时说明该用户没有注册,那么就进入注册页面
+						Intent it = new Intent(MainActivity.this,
+								RegeditActivity.class);
 						startActivity(it);
 						finish();
 					}
@@ -68,14 +73,13 @@ public class MainActivity extends Activity {
 
 				@Override
 				public void onError(int code, String Errormsg) {
-					CommonUtils.ShowToastCenter(MainActivity.this,
-							"出现错误,code:" + code + " " + Errormsg,
-							Toast.LENGTH_LONG);
+					CommonUtils.ShowToastCenter(MainActivity.this, "出现错误,code:"
+							+ code + " " + Errormsg, Toast.LENGTH_LONG);
 				}
 			});
 		} else {// 如果找到了登录信息,那么就直接进入到主界面
-			//进入主界面
-			Intent it = new Intent(MainActivity.this,AreaInfoActivity.class);
+			// 进入主界面
+			Intent it = new Intent(MainActivity.this, AreaInfoActivity.class);
 			startActivity(it);
 			finish();
 		}

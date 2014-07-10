@@ -3,6 +3,9 @@ package com.mike.virtuallocallife;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
+
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -15,6 +18,7 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
@@ -24,6 +28,7 @@ import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.map.BaiduMap.OnMapClickListener;
 import com.baidu.mapapi.map.BaiduMap.OnMapStatusChangeListener;
+import com.baidu.mapapi.map.BaiduMap.OnMarkerClickListener;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
@@ -32,21 +37,31 @@ import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.mike.Utils.CommonUtils;
+import com.mike.bombobject.AreaInfo;
 import com.mike.commondata.DegreeDatas;
 import com.mike.commondata.NinePolygonData;
 import com.mike.commondata.commondata;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
 public class AreaInfoActivity extends Activity implements
-OnGetGeoCoderResultListener {
+		OnGetGeoCoderResultListener {
+
+	SharedPreferences msettings = null;
 	// 定位相关
 	LocationClient mLocClient;
 	public MyLocationListenner myListener = new MyLocationListenner();
@@ -59,8 +74,29 @@ OnGetGeoCoderResultListener {
 
 	GeoCoder mSearch = null; // 搜索模块，也可去掉地图模块独立使用
 
-	int nCurPosxIndex = 0;// 用户当前所在位置的x坐标区域索引号
-	int nCurPosyIndex = 0;// 用户当前所在位置的y坐标区域索引号
+	int nCurPosxIndex = -1;// 用户当前所在位置的x坐标区域索引号
+	int nCurPosyIndex = -1;// 用户当前所在位置的y坐标区域索引号
+	double dCurLongitude = 0;// 用户当前所在位置的经度
+	double dCurLatitude = 0;// 用户当前所在位置的纬度
+	private Marker mMarkerA;// 九宫格中间方格图标标志
+
+	// 占地盘控件
+	LinearLayout linearlayout1;
+	// 占地盘按钮控件
+	Button capturebutton;
+	// 显示区域信息控件
+	LinearLayout linearlayout2;
+	// 显示地址的控件
+	TextView addresstextview;
+	// 显示当前位置的控件
+	LinearLayout locatelinearlayout;
+	// 区域名称控件
+	TextView areanametextview;
+	// 提示控件
+	TextView prompttextview;
+	RelativeLayout relativelayout;
+	// 显示用户点击图片处地址的控件
+	TextView curuseraddresstextview;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +104,9 @@ OnGetGeoCoderResultListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.activity_main);
+
+		msettings = getSharedPreferences(commondata.PreferencesName, 0);
+		InitActivity();
 		// 地图初始化
 		mMapView = (MapView) findViewById(R.id.main_bmapView);
 		mBaiduMap = mMapView.getMap();
@@ -93,9 +132,57 @@ OnGetGeoCoderResultListener {
 		option.setOpenGps(true);// 打开gps
 		option.setCoorType("bd09ll"); // 设置坐标类型
 		option.setScanSpan(99999999);
+		option.setAddrType("all");
 		mLocClient.setLocOption(option);
 		mLocClient.start();
 		initListener();
+		// 处理点击地图上图片消息
+		DealClickImage();
+	}
+
+	private void InitActivity() {
+		linearlayout1 = (LinearLayout) findViewById(R.id.activitymain_linearlayout1);
+		linearlayout2 = (LinearLayout) findViewById(R.id.activitymain_linearlayout2);
+		capturebutton = (Button) findViewById(R.id.activitymain_capturebutton);
+		addresstextview = (TextView) findViewById(R.id.activitymain_addresstextview);
+		locatelinearlayout = (LinearLayout) findViewById(R.id.activitymain_locatelinearlayout);
+		areanametextview = (TextView) findViewById(R.id.activitymain_areanametextview);
+		prompttextview = (TextView) findViewById(R.id.activitymain_prompttextview);
+		relativelayout = (RelativeLayout) findViewById(R.id.activitymain_relativlayout);
+		curuseraddresstextview = (TextView) findViewById(R.id.activitymain_addresstextview1);
+
+		capturebutton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// if(nCurPosxIndex > 0 && nCurPosyIndex > 0){
+				// 保存经纬度索引号
+				SharedPreferences.Editor editor = msettings.edit();
+				editor.putString(commondata.XIndex, nCurPosxIndex + "");
+				editor.putString(commondata.YIndex, nCurPosyIndex + "");
+				editor.commit();
+				Intent it = new Intent(AreaInfoActivity.this,
+						CaptureAreaActivity.class);
+				startActivityForResult(it, 2);
+				// }else{
+				// CommonUtils.ShowToastCenter(AreaInfoActivity.this, "无效区域",
+				// Toast.LENGTH_LONG);
+				// }
+			}
+
+		});
+
+		locatelinearlayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// 重新定位
+				LatLng ll = new LatLng(dCurLatitude, dCurLongitude);
+				MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+				mBaiduMap.animateMapStatus(u);
+			}
+
+		});
 	}
 
 	/**
@@ -108,6 +195,7 @@ OnGetGeoCoderResultListener {
 			// map view 销毁后不在处理新接收的位置
 			if (location == null || mMapView == null)
 				return;
+
 			MyLocationData locData = new MyLocationData.Builder()
 					.accuracy(location.getRadius())
 					// 此处设置开发者获取到的方向信息，顺时针0-360
@@ -118,6 +206,10 @@ OnGetGeoCoderResultListener {
 				isFirstLoc = false;
 				LatLng ll = new LatLng(location.getLatitude(),
 						location.getLongitude());
+				// 保存当前经纬度
+				dCurLongitude = location.getLongitude();
+				dCurLatitude = location.getLatitude();
+
 				MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
 				mBaiduMap.animateMapStatus(u);
 				// 根据经纬度计算区域索引号
@@ -127,6 +219,10 @@ OnGetGeoCoderResultListener {
 				// 根据dy获取y轴方向的索引
 				nCurPosyIndex = commondata
 						.GetNorthToSouthIndexByLat(ll.latitude);
+				// 显示当前位置
+				addresstextview.setText(location.getAddrStr());
+				// 根据当前所在的经纬度方向索引号获取当前所在区域的相关信息
+				DealCurAreaInfo();
 			}
 		}
 
@@ -219,12 +315,14 @@ OnGetGeoCoderResultListener {
 			@Override
 			public void onMapStatusChange(MapStatus arg0) {
 				if (mBaiduMap != null) {
+					// 将上一次在地图上画的图层清除
 					mBaiduMap.clear();
 				}
 			}
 
 			@Override
 			public void onMapStatusChangeFinish(MapStatus arg0) {
+
 				// 根据dx获取x轴方向的索引
 				int nIndexX = commondata
 						.GetWestToEastIndexByLon(arg0.target.longitude);
@@ -241,7 +339,8 @@ OnGetGeoCoderResultListener {
 				LatLng ln1 = new LatLng(DegreeDatas.righttopposlat,
 						DegreeDatas.righttopposlon);
 				// 将上面点的经纬度转换成屏幕像素坐标
-				LatLng ln2 = new LatLng(DegreeDatas.upposlat, DegreeDatas.upposlon);
+				LatLng ln2 = new LatLng(DegreeDatas.upposlat,
+						DegreeDatas.upposlon);
 
 				Point pt = mBaiduMap.getProjection().toScreenLocation(ln);
 				Point pt1 = mBaiduMap.getProjection().toScreenLocation(ln1);
@@ -363,40 +462,24 @@ OnGetGeoCoderResultListener {
 						BitmapDescriptorFactory
 								.fromResource(R.drawable.ic_launcher))
 						.position(Fifthlatpt1);
-				mBaiduMap.addOverlay(oo);
+				mMarkerA = (Marker) (mBaiduMap.addOverlay(oo));
 			}
 
 			@Override
 			public void onMapStatusChangeStart(MapStatus arg0) {
 				if (mBaiduMap != null) {
+					// 将上一次在地图上画的图层清除
 					mBaiduMap.clear();
 				}
 			}
 
 		});
 
+		// 针对地图上的点击事件进行响应
 		mBaiduMap.setOnMapClickListener(new OnMapClickListener() {
 			public void onMapClick(LatLng point) {
-
-				// 根据dx获取x轴方向的索引
-				int nIndexX = commondata
-						.GetWestToEastIndexByLon(point.longitude);
-				// 根据dy获取y轴方向的索引
-				int nIndexY = commondata
-						.GetNorthToSouthIndexByLat(point.latitude);
-				// 将经纬度转换成像素坐标
-				// Point pt = mBaiduMap.getProjection().toScreenLocation(point);
-				// 判断索引是否与用户当前位置相同
-				if (nCurPosxIndex == nIndexX && nCurPosyIndex == nIndexY) {
-					CommonUtils.ShowToastCenter(AreaInfoActivity.this,
-							"你可以对该地区进行命名", Toast.LENGTH_LONG);
-				} else {
-					CommonUtils.ShowToastCenter(AreaInfoActivity.this,
-							"你不可以对该地区进行命名", Toast.LENGTH_LONG);
-				}
-				// 反Geo搜索
-				mSearch.reverseGeoCode(new ReverseGeoCodeOption()
-						.location(point));
+                //处理点击地图事件
+				DealClickAndShowInfo(point);
 			}
 
 			@Override
@@ -406,39 +489,138 @@ OnGetGeoCoderResultListener {
 		});
 	}
 
+	// 根据地址获取经纬度的回调函数
 	@Override
 	public void onGetGeoCodeResult(GeoCodeResult result) {
 		if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-			Toast.makeText(AreaInfoActivity.this, "抱歉，未能找到结果", Toast.LENGTH_LONG)
-					.show();
+			CommonUtils.ShowToastCenter(AreaInfoActivity.this, "抱歉，未能找到结果",
+					Toast.LENGTH_LONG);
 		}
-		/*
-		 * mBaiduMap.clear(); mBaiduMap.addOverlay(new
-		 * MarkerOptions().position(result.getLocation())
-		 * .icon(BitmapDescriptorFactory .fromResource(R.drawable.icon_marka)));
-		 * mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(result
-		 * .getLocation())); String strInfo = String.format("纬度：%f 经度：%f",
-		 * result.getLocation().latitude, result.getLocation().longitude);
-		 * Toast.makeText(AreaInfoActivity.this, strInfo, Toast.LENGTH_LONG).show();
-		 */
 	}
 
+	// 根据经纬度获取地址的回调函数
 	@Override
 	public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
 		if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-			Toast.makeText(AreaInfoActivity.this, "抱歉，未能找到结果", Toast.LENGTH_LONG)
-					.show();
+			CommonUtils.ShowToastCenter(AreaInfoActivity.this, "抱歉，未能找到结果",
+					Toast.LENGTH_LONG);
 		}
-		/*
-		 * mBaiduMap.clear(); mBaiduMap.addOverlay(new
-		 * MarkerOptions().position(result.getLocation())
-		 * .icon(BitmapDescriptorFactory .fromResource(R.drawable.icon_marka)));
-		 * mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(result
-		 * .getLocation())); Toast.makeText(AreaInfoActivity.this,
-		 * result.getAddress(), Toast.LENGTH_LONG).show();
-		 */
-		CommonUtils.ShowToastCenter(AreaInfoActivity.this, result.getAddress(),
-				Toast.LENGTH_LONG);
+		curuseraddresstextview.setText(result.getAddress());
+
+	}
+
+	// 根据经纬度方向索引号获取所处当前区域ID号
+	private void DealCurAreaInfo() {
+		// 根据mac地址获取用户信息
+		BmobQuery<AreaInfo> query = new BmobQuery<AreaInfo>();
+		query.addQueryKeys("AreaName");
+		query.addWhereEqualTo("XIndex", nCurPosxIndex);
+		query.addWhereEqualTo("YIndex", nCurPosyIndex);
+		query.findObjects(AreaInfoActivity.this, new FindListener<AreaInfo>() {
+			@Override
+			public void onSuccess(List<AreaInfo> object) {
+				if (object.size() > 0) {
+					// 如果找到了
+					linearlayout1.setVisibility(View.GONE);
+					linearlayout2.setVisibility(View.VISIBLE);
+					areanametextview.setText(object.get(0).getAreaName());
+				} else {
+					// 此时说明这个区域还没有人命名,用户可以对这个区域进行命名
+					linearlayout1.setVisibility(View.VISIBLE);
+					relativelayout.setVisibility(View.GONE);
+					prompttextview.setVisibility(View.VISIBLE);
+					linearlayout2.setVisibility(View.GONE);
+				}
+			}
+
+			@Override
+			public void onError(int code, String Errormsg) {
+				CommonUtils.ShowToastCenter(AreaInfoActivity.this, "出现错误,code:"
+						+ code + " " + Errormsg, Toast.LENGTH_LONG);
+			}
+		});
+	}
+
+	private void DealClickImage() {
+		mBaiduMap.setOnMarkerClickListener(new OnMarkerClickListener() {
+			public boolean onMarkerClick(final Marker marker) {
+
+				final LatLng ll = marker.getPosition();
+
+				if (marker == mMarkerA) {
+					DealClickAndShowInfo(ll);
+				}
+				return true;
+			}
+		});
+	}
+
+	// 处理点击地图事件,显示相应的信息
+	private void DealClickAndShowInfo(final LatLng ll) {
+		// 根据dx获取x轴方向的索引
+		final int nIndexX = commondata
+				.GetWestToEastIndexByLon(ll.longitude);
+		// 根据dy获取y轴方向的索引
+		final int nIndexY = commondata
+				.GetNorthToSouthIndexByLat(ll.latitude);
+		// 根据索引获取这个区域的信息
+		BmobQuery<AreaInfo> query = new BmobQuery<AreaInfo>();
+		query.addQueryKeys("AreaName");
+		query.addWhereEqualTo("XIndex", nIndexX);
+		query.addWhereEqualTo("YIndex", nIndexY);
+		query.findObjects(AreaInfoActivity.this, new FindListener<AreaInfo>() {
+			@Override
+			public void onSuccess(List<AreaInfo> object) {
+				// 判断索引是否与用户当前位置相同
+				if (nCurPosxIndex == nIndexX && nCurPosyIndex == nIndexY) {
+					if (object.size() > 0) {
+						// 如果找到了
+						linearlayout1.setVisibility(View.GONE);
+						linearlayout2.setVisibility(View.VISIBLE);
+						curuseraddresstextview.setVisibility(View.GONE);
+						areanametextview.setText(object.get(0).getAreaName());
+					} else {
+						// 此时说明这个区域还没有人命名,用户可以对这个区域进行命名
+						linearlayout1.setVisibility(View.VISIBLE);
+						relativelayout.setVisibility(View.GONE);
+						prompttextview.setVisibility(View.VISIBLE);
+						linearlayout2.setVisibility(View.GONE);
+						curuseraddresstextview.setVisibility(View.VISIBLE);
+						// 反Geo搜索
+						mSearch.reverseGeoCode(new ReverseGeoCodeOption()
+						.location(ll));
+					}
+				} else {// 如果用户不是在该区域内部
+					if (object.size() > 0) {
+						// 如果找到了
+						linearlayout1.setVisibility(View.GONE);
+						linearlayout2.setVisibility(View.VISIBLE);
+						curuseraddresstextview.setVisibility(View.GONE);
+						areanametextview.setText(object.get(0).getAreaName());
+					} else {
+						// 此时说明这个区域还没有人命名,用户可以对这个区域进行命名
+						linearlayout1.setVisibility(View.VISIBLE);
+						relativelayout.setVisibility(View.GONE);
+						prompttextview.setVisibility(View.VISIBLE);
+						linearlayout2.setVisibility(View.GONE);
+						curuseraddresstextview.setVisibility(View.VISIBLE);
+						// 反Geo搜索
+						mSearch.reverseGeoCode(new ReverseGeoCodeOption()
+						.location(ll));
+					}
+				}
+			}
+
+			@Override
+			public void onError(int code, String Errormsg) {
+				CommonUtils.ShowToastCenter(AreaInfoActivity.this, "出现错误,code:"
+						+ code + " " + Errormsg, Toast.LENGTH_LONG);
+			}
+		});
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 	}
 

@@ -8,6 +8,10 @@ public class commondata {
 	public static final String UserGender = "gender";
 	//用户昵称
 	public static final String UserNickName = "usernickname";
+	//用户当前所在位置X索引
+	public static final String XIndex = "xindex";
+	//用户当前所在位置Y索引
+	public static final String YIndex = "yindex";
 	
 	// 中国地图左上角经纬度
 	public static final double lefttopposx = 73.55;
@@ -38,6 +42,8 @@ public class commondata {
 	public final static double SOUTHTONORTH = 5532.5787;
 	// pi的值
 	public final static double PI = 3.1415926;
+	//用来生成区域id数据位数
+	public final static int DIGITNUM = 6;
 
 	public static double getDistance(double lng1, double lat1, double lng2,
 			double lat2) {
@@ -150,15 +156,4 @@ public class commondata {
 		DegreeDatas.upposlat = (ny) * UNIT_DEGREELAT + leftbottomposy;
 		return data;
 	}
-	// 根据区域块索引号左下角与右上角的经纬度(其中nx表示x轴索引号,ny表示y轴索引号)
-	/*
-	 * public static DegreeDatas GetDegrees(double nx, double ny) { DegreeDatas
-	 * data = new DegreeDatas(0, 0, 0, 0); DegreeDatas.letfbottomposlon = 180 *
-	 * nx * UNIT_LENGHT / (PI * EARTH_RADIUS_KM) + leftbottomposx;
-	 * DegreeDatas.letfbottomposlat = 180 * ny * UNIT_LENGHT / (PI *
-	 * EARTH_RADIUS_KM) + leftbottomposy; DegreeDatas.righttopposlon = 180 * (nx
-	 * + 1) * UNIT_LENGHT / (PI * EARTH_RADIUS_KM) + leftbottomposx;
-	 * DegreeDatas.righttopposlat = 180 * ny * UNIT_LENGHT / (PI *
-	 * EARTH_RADIUS_KM) + leftbottomposy; return data; }
-	 */
 }

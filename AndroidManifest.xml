@@ -9,7 +9,7 @@
         android:targetSdkVersion="19" />
 
     <application
-        android:name="com.mike.virtuallocallife.MyApplication"
+        android:name="cn.bmob.push.BmobPushApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -36,6 +36,31 @@
             android:name="com.mike.virtuallocallife.RegeditActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.mike.virtuallocallife.CaptureAreaActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <service
+            android:name="cn.bmob.push.PushService"
+            android:exported="true"
+            android:label="PushService"
+            android:permission="cn.bmob.permission.push"
+            android:process="cn.bmob.push" >
+            <intent-filter>
+                <action android:name="cn.bmob.push.PushService" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="cn.bmob.push.PushReceiver"
+            android:process="cn.bmob.push" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
 
         <service
             android:name="com.baidu.location.f"
@@ -48,6 +73,9 @@
             android:value="4IgW0hKP5VD2NBastEcE86xb" />
     </application>
 
+    <!-- Push SDK权限 -->
+    <permission android:protectionLevel="normal" android:name="cn.bmob.permission.push"></permission>
+    <uses-permission android:name="cn.bmob.permission.push"/><!-- 添加自定义的权限-->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -69,7 +97,6 @@
     </uses-permission>
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" >
     </uses-permission>
-    <!-- <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"></uses-permission> -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" >
     </uses-permission>
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
