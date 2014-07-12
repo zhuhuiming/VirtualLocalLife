@@ -98,10 +98,6 @@ public class RegeditActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		//Æô¶¯MainActivity
-		Intent it = new Intent(RegeditActivity.this,
-				MainActivity.class);
-		startActivity(it);
 		finish();
 	}
 }

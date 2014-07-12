@@ -1,18 +1,28 @@
 package com.mike.commondata;
 
 public class commondata {
-	
-	//保存在本地的Preferences名称
+
+	// 保存在本地的Preferences名称
 	public static final String PreferencesName = "VirtualLocalLifePreferences";
-	//用户性别信息
+	// 用户性别信息
 	public static final String UserGender = "gender";
-	//用户昵称
+	// 用户昵称
 	public static final String UserNickName = "usernickname";
-	//用户当前所在位置X索引
+	// 用户当前所在位置X索引
 	public static final String XIndex = "xindex";
-	//用户当前所在位置Y索引
+	// 用户当前所在位置Y索引
 	public static final String YIndex = "yindex";
-	
+	// 存放所选用户头像图片文件名称
+	public static final String strUserImageName = "Image.jpg";
+	// 存储头像图片文件上一级文件名称
+	public static final String strParentFileName = "VirtualLocalLifePhoto";
+	// 发布图片内容时第一张图片的名称
+	public static final String strPublishFirstImageName = "PublishImage1.jpg";
+	// 发布图片内容时第一张图片的名称
+	public static final String strPublishSecondImageName = "PublishImage2.jpg";
+	// 发布图片内容时第一张图片的名称
+	public static final String strPublishThirdImageName = "PublishImage3.jpg";
+
 	// 中国地图左上角经纬度
 	public static final double lefttopposx = 73.55;
 	public static final double lefttopposy = 53.55;
@@ -42,7 +52,7 @@ public class commondata {
 	public final static double SOUTHTONORTH = 5532.5787;
 	// pi的值
 	public final static double PI = 3.1415926;
-	//用来生成区域id数据位数
+	// 用来生成区域id数据位数
 	public final static int DIGITNUM = 6;
 
 	public static double getDistance(double lng1, double lat1, double lng2,

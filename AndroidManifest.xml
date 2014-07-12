@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="12"
         android:targetSdkVersion="19" />
 
     <application
@@ -38,6 +38,14 @@
         </activity>
         <activity
             android:name="com.mike.virtuallocallife.CaptureAreaActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.mike.virtuallocallife.AreaMessageList"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.mike.virtuallocallife.PublishActivity"
             android:screenOrientation="portrait" >
         </activity>
 
@@ -74,8 +82,12 @@
     </application>
 
     <!-- Push SDK权限 -->
-    <permission android:protectionLevel="normal" android:name="cn.bmob.permission.push"></permission>
-    <uses-permission android:name="cn.bmob.permission.push"/><!-- 添加自定义的权限-->
+    <permission
+        android:name="cn.bmob.permission.push"
+        android:protectionLevel="normal" >
+    </permission>
+
+    <uses-permission android:name="cn.bmob.permission.push" /> <!-- 添加自定义的权限 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.VIBRATE" />

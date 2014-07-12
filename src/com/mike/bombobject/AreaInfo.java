@@ -2,6 +2,7 @@ package com.mike.bombobject;
 
 import cn.bmob.v3.BmobObject;
 
+//区域信息表
 public class AreaInfo extends BmobObject {
 
 	Integer XIndex;// x轴方向的索引号

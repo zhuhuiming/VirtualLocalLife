@@ -3,7 +3,6 @@ package com.mike.virtuallocallife;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
@@ -48,10 +47,6 @@ public class FinishRegeditActivity extends Activity {
 	public static final String[] addPhoto = new String[] { "默认头像", "从相册选择",
 			"现在拍摄", "取消" };
 	CommonUtils mUtils = null;
-	// 存放所选用户头像图片文件名称
-	static final String strUserImageName = "Image.jpg";
-	// 存储头像图片文件上一级文件名称
-	static final String strParentFileName = "VirtualLocalLifePhoto";
 	SharedPreferences msettings = null;
 
 	@Override
@@ -105,18 +100,19 @@ public class FinishRegeditActivity extends Activity {
 												.getString(
 														commondata.UserNickName,
 														"");
+										//获取mac地址
+										String strMac = mUtils.strGetPhoneMac();
 										String strGender = msettings.getString(
 												commondata.UserGender, "");
 										String strPhoneNumber = phoneedittext
 												.getText().toString();
-										String strMac = mUtils.strGetPhoneMac();
 
 										UserInfo bu = new UserInfo();
-										bu.setUsername(strUserName);
-										bu.setPassword(strMac);
 										bu.setTelPhone(strPhoneNumber);
 										bu.setGender(strGender);
 										bu.setUserIcon(bmobFile);
+										bu.setUsername(strUserName);
+										bu.setPassword(strMac);
 										bu.signUp(FinishRegeditActivity.this,
 												new SaveListener() {
 													@Override
@@ -164,17 +160,18 @@ public class FinishRegeditActivity extends Activity {
 						// 如果没有图片,那么就上传其他数据
 						String strUserName = msettings.getString(
 								commondata.UserGender, "");
+						//获取mac地址
+						String strMac = mUtils.strGetPhoneMac();
 						String strGender = msettings.getString(
 								commondata.UserNickName, "");
 						String strPhoneNumber = phoneedittext.getText()
 								.toString();
-						String strMac = mUtils.strGetPhoneMac();
 
 						UserInfo bu = new UserInfo();
-						bu.setUsername(strUserName);
-						bu.setPassword(strMac);
 						bu.setTelPhone(strPhoneNumber);
 						bu.setGender(strGender);
+						bu.setUsername(strUserName);
+						bu.setPassword(strMac);
 						bu.signUp(FinishRegeditActivity.this,
 								new SaveListener() {
 									@Override
@@ -208,7 +205,7 @@ public class FinishRegeditActivity extends Activity {
 		{
 			if (requestCode == 0) {
 				String strImagePath = Environment.getExternalStorageDirectory()
-						+ "/" + strParentFileName + "/" + strUserImageName;
+						+ "/" + commondata.strParentFileName + "/" + commondata.strUserImageName;
 				// 先判断该文件是否存在
 				File pImageFile = new File(strImagePath);
 				if (pImageFile.exists()) {
@@ -288,7 +285,7 @@ public class FinishRegeditActivity extends Activity {
 					File dir = new File(Environment
 							.getExternalStorageDirectory()
 							+ "/"
-							+ strParentFileName);
+							+ commondata.strParentFileName);
 					if (!dir.exists()) {
 						dir.mkdirs();
 					} else {// 如果已经存在了该文件夹
@@ -296,7 +293,7 @@ public class FinishRegeditActivity extends Activity {
 						strPhotoPath = Environment
 								.getExternalStorageDirectory()
 								+ "/"
-								+ strParentFileName + "/" + strUserImageName;
+								+ commondata.strParentFileName + "/" + commondata.strUserImageName;
 						File pPhotoFile = new File(strPhotoPath);
 						if (pPhotoFile.exists()) {
 							pPhotoFile.delete();
@@ -336,7 +333,7 @@ public class FinishRegeditActivity extends Activity {
 					} else if (which == 2) {
 						Intent intent = new Intent(
 								android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-						File imgFile = new File(dir, strUserImageName);
+						File imgFile = new File(dir, commondata.strUserImageName);
 						Uri u = Uri.fromFile(imgFile);
 						intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
 						intent.putExtra(MediaStore.EXTRA_OUTPUT, u);

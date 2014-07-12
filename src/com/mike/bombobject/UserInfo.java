@@ -5,28 +5,26 @@ import cn.bmob.v3.datatype.BmobFile;
 
 public class UserInfo extends BmobUser {
 	// 电话号码
-    String TelPhone;
-    //性别
-    String Gender;
-    //年龄
-    Integer Age;
-    //头像
-    BmobFile UserIcon;
-    //用户命名的区域id字符集
-    String AreaId;
-    //用户居住地址
-    String UserLiveAddress;
-    //用户所属区域Id号
-    String UserLiveID;
-    
-    public String getTelPhone() {
+	String TelPhone;
+	// 性别
+	String Gender;
+	// 年龄
+	Integer Age;
+	// 头像
+	BmobFile UserIcon;
+	// 用户居住地址
+	String UserLiveAddress;
+	// 用户所属区域Id号(居民)
+	String UserLiveID;
+
+	public String getTelPhone() {
 		return TelPhone;
 	}
 
 	public void setTelPhone(String strTel) {
 		this.TelPhone = strTel;
 	}
-	
+
 	public String getGender() {
 		return Gender;
 	}
@@ -34,7 +32,7 @@ public class UserInfo extends BmobUser {
 	public void setGender(String strTel) {
 		this.Gender = strTel;
 	}
-	
+
 	public Integer getAge() {
 		return Age;
 	}
@@ -42,7 +40,7 @@ public class UserInfo extends BmobUser {
 	public void setAge(Integer value) {
 		this.Age = value;
 	}
-	
+
 	public BmobFile getUserIcon() {
 		return UserIcon;
 	}
@@ -50,15 +48,7 @@ public class UserInfo extends BmobUser {
 	public void setUserIcon(BmobFile file) {
 		this.UserIcon = file;
 	}
-	
-	public String getAreaId() {
-		return TelPhone;
-	}
 
-	public void setAreaId(String strTel) {
-		this.TelPhone = strTel;
-	}
-	
 	public String getUserLiveAddress() {
 		return UserLiveAddress;
 	}
@@ -66,7 +56,7 @@ public class UserInfo extends BmobUser {
 	public void setUserLiveAddress(String strTel) {
 		this.UserLiveAddress = strTel;
 	}
-	
+
 	public String getUserLiveID() {
 		return UserLiveID;
 	}

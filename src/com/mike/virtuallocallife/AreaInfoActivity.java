@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BaiduMap.OnMapDoubleClickListener;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapPoi;
@@ -38,11 +41,15 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.mike.Utils.CommonUtils;
 import com.mike.bombobject.AreaInfo;
+import com.mike.bombobject.UserInfo;
 import com.mike.commondata.DegreeDatas;
 import com.mike.commondata.NinePolygonData;
 import com.mike.commondata.commondata;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
@@ -66,6 +73,8 @@ public class AreaInfoActivity extends Activity implements
 	LocationClient mLocClient;
 	public MyLocationListenner myListener = new MyLocationListenner();
 	BitmapDescriptor mCurrentMarker;
+	//用户当前所在的位置
+	public static String strUserCurPosition = "";
 
 	MapView mMapView;
 	BaiduMap mBaiduMap;
@@ -79,7 +88,13 @@ public class AreaInfoActivity extends Activity implements
 	double dCurLongitude = 0;// 用户当前所在位置的经度
 	double dCurLatitude = 0;// 用户当前所在位置的纬度
 	private Marker mMarkerA;// 九宫格中间方格图标标志
+	// 用户当前点击的区域x与y方向区域索引号
+	int nClickPosxIndex = -1;
+	int nClickPosyIndex = -1;
+	// 当前选择区域的id号
+	String strCurSelectAreaId = "";
 
+	/***********************控件变量**************************/
 	// 占地盘控件
 	LinearLayout linearlayout1;
 	// 占地盘按钮控件
@@ -97,6 +112,8 @@ public class AreaInfoActivity extends Activity implements
 	RelativeLayout relativelayout;
 	// 显示用户点击图片处地址的控件
 	TextView curuseraddresstextview;
+	// 成为当地居民的控件
+	TextView makepersontextview;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -150,6 +167,7 @@ public class AreaInfoActivity extends Activity implements
 		prompttextview = (TextView) findViewById(R.id.activitymain_prompttextview);
 		relativelayout = (RelativeLayout) findViewById(R.id.activitymain_relativlayout);
 		curuseraddresstextview = (TextView) findViewById(R.id.activitymain_addresstextview1);
+		makepersontextview = (TextView) findViewById(R.id.activitymain_makepersontextview);
 
 		capturebutton.setOnClickListener(new OnClickListener() {
 
@@ -180,6 +198,113 @@ public class AreaInfoActivity extends Activity implements
 				LatLng ll = new LatLng(dCurLatitude, dCurLongitude);
 				MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
 				mBaiduMap.animateMapStatus(u);
+			}
+
+		});
+
+		// 成为指定区域居民的操作
+		makepersontextview.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				AlertDialog.Builder builder = new Builder(AreaInfoActivity.this);
+				builder.setMessage("确定要成为该地的居民吗?");
+				builder.setTitle("提示");
+				builder.setPositiveButton("确认",
+						new android.content.DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+								CommonUtils util = new CommonUtils(
+										AreaInfoActivity.this);
+								// 根据用户的mac地址获取用户信息表中的objectId号 和所属区域号
+								String strMac = util.strGetPhoneMac();
+								BmobQuery<UserInfo> UserInfo = new BmobQuery<UserInfo>();
+								UserInfo.addQueryKeys("objectId,UserLiveID");
+								UserInfo.addWhereEqualTo("password", strMac);
+								UserInfo.findObjects(AreaInfoActivity.this,
+										new FindListener<UserInfo>() {
+
+											@Override
+											public void onError(int code,
+													String Errormsg) {
+												CommonUtils.ShowToastCenter(
+														AreaInfoActivity.this,
+														"实在抱歉,出现错误,code:"
+																+ code + " "
+																+ Errormsg,
+														Toast.LENGTH_LONG);
+											}
+
+											@Override
+											public void onSuccess(
+													List<UserInfo> arg0) {
+												// 判断是否查询到了id号
+												if (arg0.size() > 0) {
+													// 先判断用户是否已经是该区域的居民
+													if (strCurSelectAreaId
+															.equals(arg0
+																	.get(0)
+																	.getUserLiveID())) {
+														CommonUtils
+																.ShowToastCenter(
+																		AreaInfoActivity.this,
+																		"您已经是该区域的居民了",
+																		Toast.LENGTH_LONG);
+													} else {
+														// 成功之后将获取到的区域id号写入到用户信息表中
+														UserInfo UserInfo = BmobUser.getCurrentUser(AreaInfoActivity.this, UserInfo.class);
+														UserInfo.setUserLiveID(strCurSelectAreaId);
+														UserInfo.update(
+																AreaInfoActivity.this,
+																arg0.get(0)
+																		.getObjectId(),
+																new UpdateListener() {
+
+																	@Override
+																	public void onSuccess() {
+																		CommonUtils
+																				.ShowToastCenter(
+																						AreaInfoActivity.this,
+																						"欢迎您成为该地区的居民",
+																						Toast.LENGTH_LONG);
+																	}
+
+																	@Override
+																	public void onFailure(
+																			int code,
+																			String msg) {
+																		CommonUtils
+																				.ShowToastCenter(
+																						AreaInfoActivity.this,
+																						"实在抱歉,操作失败,code:"
+																								+ code
+																								+ " "
+																								+ msg,
+																						Toast.LENGTH_LONG);
+																	}
+																});
+													}
+												} else {
+													CommonUtils
+															.ShowToastCenter(
+																	AreaInfoActivity.this,
+																	"没有找到该区域",
+																	Toast.LENGTH_LONG);
+												}
+											}
+
+										});
+							}
+						});
+				builder.setNegativeButton("取消",
+						new android.content.DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						});
+				builder.create().show();
 			}
 
 		});
@@ -221,6 +346,7 @@ public class AreaInfoActivity extends Activity implements
 						.GetNorthToSouthIndexByLat(ll.latitude);
 				// 显示当前位置
 				addresstextview.setText(location.getAddrStr());
+				strUserCurPosition = location.getAddrStr();
 				// 根据当前所在的经纬度方向索引号获取当前所在区域的相关信息
 				DealCurAreaInfo();
 			}
@@ -310,6 +436,7 @@ public class AreaInfoActivity extends Activity implements
 
 	private void initListener() {
 
+		//地图状态改变了
 		mBaiduMap.setOnMapStatusChangeListener(new OnMapStatusChangeListener() {
 
 			@Override
@@ -478,7 +605,7 @@ public class AreaInfoActivity extends Activity implements
 		// 针对地图上的点击事件进行响应
 		mBaiduMap.setOnMapClickListener(new OnMapClickListener() {
 			public void onMapClick(LatLng point) {
-                //处理点击地图事件
+				// 处理点击地图事件
 				DealClickAndShowInfo(point);
 			}
 
@@ -486,6 +613,18 @@ public class AreaInfoActivity extends Activity implements
 			public boolean onMapPoiClick(MapPoi arg0) {
 				return false;
 			}
+		});
+		
+		//双击地图
+		mBaiduMap.setOnMapDoubleClickListener(new OnMapDoubleClickListener(){
+
+			@Override
+			public void onMapDoubleClick(LatLng arg0) {
+				//进入指定的区域中
+				Intent it = new Intent(AreaInfoActivity.this,AreaMessageList.class);
+				startActivity(it);
+			}
+			
 		});
 	}
 
@@ -513,7 +652,7 @@ public class AreaInfoActivity extends Activity implements
 	private void DealCurAreaInfo() {
 		// 根据mac地址获取用户信息
 		BmobQuery<AreaInfo> query = new BmobQuery<AreaInfo>();
-		query.addQueryKeys("AreaName");
+		query.addQueryKeys("AreaName,objectId");
 		query.addWhereEqualTo("XIndex", nCurPosxIndex);
 		query.addWhereEqualTo("YIndex", nCurPosyIndex);
 		query.findObjects(AreaInfoActivity.this, new FindListener<AreaInfo>() {
@@ -524,6 +663,7 @@ public class AreaInfoActivity extends Activity implements
 					linearlayout1.setVisibility(View.GONE);
 					linearlayout2.setVisibility(View.VISIBLE);
 					areanametextview.setText(object.get(0).getAreaName());
+					strCurSelectAreaId = object.get(0).getObjectId();
 				} else {
 					// 此时说明这个区域还没有人命名,用户可以对这个区域进行命名
 					linearlayout1.setVisibility(View.VISIBLE);
@@ -558,27 +698,27 @@ public class AreaInfoActivity extends Activity implements
 	// 处理点击地图事件,显示相应的信息
 	private void DealClickAndShowInfo(final LatLng ll) {
 		// 根据dx获取x轴方向的索引
-		final int nIndexX = commondata
-				.GetWestToEastIndexByLon(ll.longitude);
+		nClickPosxIndex = commondata.GetWestToEastIndexByLon(ll.longitude);
 		// 根据dy获取y轴方向的索引
-		final int nIndexY = commondata
-				.GetNorthToSouthIndexByLat(ll.latitude);
+		nClickPosyIndex = commondata.GetNorthToSouthIndexByLat(ll.latitude);
 		// 根据索引获取这个区域的信息
 		BmobQuery<AreaInfo> query = new BmobQuery<AreaInfo>();
 		query.addQueryKeys("AreaName");
-		query.addWhereEqualTo("XIndex", nIndexX);
-		query.addWhereEqualTo("YIndex", nIndexY);
+		query.addWhereEqualTo("XIndex", nClickPosxIndex);
+		query.addWhereEqualTo("YIndex", nClickPosyIndex);
 		query.findObjects(AreaInfoActivity.this, new FindListener<AreaInfo>() {
 			@Override
 			public void onSuccess(List<AreaInfo> object) {
 				// 判断索引是否与用户当前位置相同
-				if (nCurPosxIndex == nIndexX && nCurPosyIndex == nIndexY) {
+				if (nCurPosxIndex == nClickPosxIndex
+						&& nCurPosyIndex == nClickPosyIndex) {
 					if (object.size() > 0) {
 						// 如果找到了
 						linearlayout1.setVisibility(View.GONE);
 						linearlayout2.setVisibility(View.VISIBLE);
 						curuseraddresstextview.setVisibility(View.GONE);
 						areanametextview.setText(object.get(0).getAreaName());
+						strCurSelectAreaId = object.get(0).getObjectId();
 					} else {
 						// 此时说明这个区域还没有人命名,用户可以对这个区域进行命名
 						linearlayout1.setVisibility(View.VISIBLE);
@@ -588,7 +728,7 @@ public class AreaInfoActivity extends Activity implements
 						curuseraddresstextview.setVisibility(View.VISIBLE);
 						// 反Geo搜索
 						mSearch.reverseGeoCode(new ReverseGeoCodeOption()
-						.location(ll));
+								.location(ll));
 					}
 				} else {// 如果用户不是在该区域内部
 					if (object.size() > 0) {
@@ -597,6 +737,7 @@ public class AreaInfoActivity extends Activity implements
 						linearlayout2.setVisibility(View.VISIBLE);
 						curuseraddresstextview.setVisibility(View.GONE);
 						areanametextview.setText(object.get(0).getAreaName());
+						strCurSelectAreaId = object.get(0).getObjectId();
 					} else {
 						// 此时说明这个区域还没有人命名,用户可以对这个区域进行命名
 						linearlayout1.setVisibility(View.VISIBLE);
@@ -606,7 +747,7 @@ public class AreaInfoActivity extends Activity implements
 						curuseraddresstextview.setVisibility(View.VISIBLE);
 						// 反Geo搜索
 						mSearch.reverseGeoCode(new ReverseGeoCodeOption()
-						.location(ll));
+								.location(ll));
 					}
 				}
 			}

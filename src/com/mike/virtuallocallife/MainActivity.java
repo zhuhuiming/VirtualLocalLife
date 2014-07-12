@@ -10,6 +10,7 @@ import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,7 +43,7 @@ public class MainActivity extends Activity {
 		// 如果没有找到登录信息,那么就到数据库中寻找
 		if (null == bmobUser) {
 			// 先获取手机mac地址
-			String strMac = mUtils.strGetPhoneMac();
+			final String strMac = mUtils.strGetPhoneMac();
 			// 根据mac地址获取用户信息
 			BmobQuery<BmobUser> query = new BmobQuery<BmobUser>();
 			query.addQueryKeys("username");
@@ -54,14 +55,26 @@ public class MainActivity extends Activity {
 				public void onSuccess(List<BmobUser> object) {
 					if (object.size() > 0) {
 						// 如果找到了
-						CommonUtils.ShowToastCenter(MainActivity.this,
-								"找到了注册用户，名称为:" + object.get(0).getUsername(),
-								Toast.LENGTH_LONG);
-						// 进入主界面
-						Intent it = new Intent(MainActivity.this,
-								AreaInfoActivity.class);
-						startActivity(it);
-						finish();
+						BmobUser bu2 = new BmobUser();
+						bu2.setUsername(object.get(0).getUsername());
+						bu2.setPassword(strMac);
+						bu2.login(MainActivity.this, new SaveListener() {
+						    @Override
+						    public void onSuccess() {
+						    	// 进入主界面
+								Intent it = new Intent(MainActivity.this,
+										AreaInfoActivity.class);
+								startActivity(it);
+								finish();
+						    }
+						    @Override
+						    public void onFailure(int code, String msg) {
+						    	CommonUtils.ShowToastCenter(
+						    			MainActivity.this,
+										"登录失败,code:" + code + msg,
+										Toast.LENGTH_LONG);
+						    }
+						});
 					} else {
 						// 此时说明该用户没有注册,那么就进入注册页面
 						Intent it = new Intent(MainActivity.this,
