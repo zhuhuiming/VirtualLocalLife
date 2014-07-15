@@ -3,9 +3,9 @@ package com.mike.bombobject;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 
-//存储电影的表
+//瀛樺偍鐢靛奖鐨勮〃
 public class MovieObject extends BmobObject {
-	BmobFile MovieContent;// 电影内容
+	BmobFile MovieContent;// 鐢靛奖鍐呭
 
 	public BmobFile getMovieContent() {
 		return MovieContent;

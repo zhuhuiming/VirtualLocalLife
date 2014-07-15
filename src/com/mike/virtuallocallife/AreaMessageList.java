@@ -1,12 +1,13 @@
 package com.mike.virtuallocallife;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobQuery.CachePolicy;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.FindListener;
 
@@ -17,38 +18,51 @@ import com.mike.pulltorefresh.PullToRefreshView;
 import com.mike.pulltorefresh.PullToRefreshView.OnFooterRefreshListener;
 import com.mike.pulltorefresh.PullToRefreshView.OnHeaderRefreshListener;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class AreaMessageList extends ListActivity implements
+public class AreaMessageList extends Activity implements
 		OnHeaderRefreshListener, OnFooterRefreshListener {
 
 	PullToRefreshView mPullToRefreshView1;
 
-	private TaskInfoListAdpater madapter2 = null;
-	// ´æ´¢Êı¾İµÄÈİÆ÷
+	private TaskInfoListAdpater madapter1 = null;
+	// å­˜å‚¨æ•°æ®çš„å®¹å™¨
 	private List<HashMap<String, Object>> mListData1 = null;
-	// Ò»´ÎĞÔ¼ÓÔØÊı¾İµÄÌõÊı
+	// ä¸€æ¬¡æ€§åŠ è½½æ•°æ®çš„æ¡æ•°
 	private static final int MAXLOADDATANUM = 10;
-	// ·¢²¼Í¼Æ¬µÄ¿í
-	private static final int publishimagewidth = 300;
-	// ·¢²¼Í¼Æ¬µÄ¸ß
-	private static final int publishimageheight = 300;
+	// å‘å¸ƒå›¾ç‰‡çš„å®½
+	//private static final int publishimagewidth = 300;
+	// å‘å¸ƒå›¾ç‰‡çš„é«˜
+	//private static final int publishimageheight = 300;
+	// å­˜å‚¨å‘å¸ƒä¿¡æ¯
+	public static List<AreaPublishContent> publishcontent = null;
+	// å‘å¸ƒä¿¡æ¯çš„æœ€å¤§æ¡æ•°
+	private static final int nMaxPublishDataNum = 60;
+	// æœ€æ—§çš„ä¿¡æ¯å‘å¸ƒæ—¶é—´
+	String strOldestTime = "";
 
-	/********************** ¿Ø¼ş¶ÔÏó *********************/
-	// ·¢²¼¿Ø¼ş
+	/********************** æ§ä»¶å¯¹è±¡ *********************/
+	// å‘å¸ƒæ§ä»¶
 	ImageView publishimageview;
+	// ListViewæ§ä»¶
+	ListView listview;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,32 +76,45 @@ public class AreaMessageList extends ListActivity implements
 		mPullToRefreshView1.setOnFooterRefreshListener(this);
 		// mPullToRefreshView1.setVisibility(View.GONE);
 		InitActivity();
-		// ¿ªÊ¼¼ÓÔØÊı¾İ
+		// å¼€å§‹åŠ è½½æ•°æ®
 		LoadData();
 	}
 
 	public void InitActivity() {
 		publishimageview = (ImageView) findViewById(R.id.messagelist_publishimageview);
+		listview = (ListView) findViewById(R.id.messagelist_listview);
 
 		publishimageview.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// ÇĞ»»µ½·¢²¼ÄÚÈİ½çÃæ
+				// åˆ‡æ¢åˆ°å‘å¸ƒå†…å®¹ç•Œé¢
 				Intent it = new Intent(AreaMessageList.this,
 						PublishActivity.class);
 				startActivity(it);
 			}
 
 		});
+		
+		//listviewçš„ç‚¹å‡»äº‹ä»¶
+		listview.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent it = new Intent(AreaMessageList.this,AreaShareMessageActivity.class);
+				startActivity(it);
+			}
+			
+		});
 	}
 
 	private void LoadData() {
 		BmobQuery<AreaPublishContent> query = new BmobQuery<AreaPublishContent>();
-		// Ò»´ÎĞÔ²éÑ¯µÄÊı¾İÌõÊı
+		// ä¸€æ¬¡æ€§æŸ¥è¯¢çš„æ•°æ®æ¡æ•°
 		query.setLimit(MAXLOADDATANUM);
 		query.order("-createdAt");
-		//query.setCachePolicy(CachePolicy.CACHE_ELSE_NETWORK);
+		// query.setCachePolicy(CachePolicy.CACHE_ELSE_NETWORK);
 		query.addWhereEqualTo("AreaID", AreaInfoActivity.strCurSelectAreaId);
 		query.findObjects(AreaMessageList.this,
 				new FindListener<AreaPublishContent>() {
@@ -95,13 +122,22 @@ public class AreaMessageList extends ListActivity implements
 					@Override
 					public void onError(int arg0, String arg1) {
 						CommonUtils.ShowToastCenter(AreaMessageList.this,
-								"¼ÓÔØÊı¾İÊ§°Ü,code:" + arg0 + "error:" + arg1,
+								"åŠ è½½æ•°æ®å¤±è´¥,code:" + arg0 + "error:" + arg1,
 								Toast.LENGTH_LONG);
 					}
 
 					@Override
 					public void onSuccess(List<AreaPublishContent> areainfo) {
-						// ½«²éÑ¯µ½µÄÊı¾İÏÔÊ¾µ½ÁĞ±íÖĞ
+
+						// ä¿å­˜è·å–åˆ°çš„ä¿¡æ¯æ•°æ®
+						publishcontent = areainfo;
+						int nSize = areainfo.size();
+						if (nSize > 0) {
+							// ä¿å­˜æœ€æ—§çš„æ—¶é—´
+							strOldestTime = areainfo.get(nSize - 1)
+									.getCreatedAt();
+						}
+						// å°†æŸ¥è¯¢åˆ°çš„æ•°æ®æ˜¾ç¤ºåˆ°åˆ—è¡¨ä¸­
 						mListData1 = getListData(areainfo);
 						SetShareAdapter(false);
 					}
@@ -109,21 +145,21 @@ public class AreaMessageList extends ListActivity implements
 				});
 	}
 
-	// ¸ù¾İmac»ñÈ¡ÓÃ»§Ãû³ÆºÍÍ·ÏñÍ¬Ê±ÏÔÊ¾
+	// æ ¹æ®macè·å–ç”¨æˆ·åç§°å’Œå¤´åƒåŒæ—¶æ˜¾ç¤º
 	private void ShowPersonInfoByMac(final ImageView personimageview,
 			final TextView usernametextview, String strMac) {
-		// ¸ù¾İmacµØÖ·»ñÈ¡ÓÃ»§ĞÅÏ¢
+		// æ ¹æ®macåœ°å€è·å–ç”¨æˆ·ä¿¡æ¯
 		BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
 		query.addQueryKeys("UserIcon,username");
 		query.addWhereEqualTo("password", strMac);
-		// ÏÈ´Ó»º´æ»ñÈ¡Êı¾İ£¬Èç¹ûÃ»ÓĞ£¬ÔÙ´ÓÍøÂç»ñÈ¡
-		query.setCachePolicy(CachePolicy.CACHE_ELSE_NETWORK);
+		// å…ˆä»ç¼“å­˜è·å–æ•°æ®ï¼Œå¦‚æœæ²¡æœ‰ï¼Œå†ä»ç½‘ç»œè·å–
+		// query.setCachePolicy(CachePolicy.CACHE_ELSE_NETWORK);
 		query.findObjects(AreaMessageList.this, new FindListener<UserInfo>() {
 
 			@Override
 			public void onError(int arg0, String arg1) {
-				CommonUtils.ShowToastCenter(AreaMessageList.this, "»ñÈ¡ÓÃ»§ĞÅÏ¢Ê§°Ü",
-						Toast.LENGTH_LONG);
+				// CommonUtils.ShowToastCenter(AreaMessageList.this, "è·å–ç”¨æˆ·ä¿¡æ¯å¤±è´¥",
+				// Toast.LENGTH_LONG);
 			}
 
 			@Override
@@ -131,11 +167,11 @@ public class AreaMessageList extends ListActivity implements
 				if (arg0.size() > 0) {
 					usernametextview.setText(arg0.get(0).getUsername());
 					BmobFile file = arg0.get(0).getUserIcon();
-					file.loadImage(AreaMessageList.this, personimageview,
-							publishimagewidth, publishimageheight);
+					new DownloadImageTask().execute(file.getFileUrl(),
+							file.getFilename(), personimageview);
 				} else {
 					CommonUtils.ShowToastCenter(AreaMessageList.this,
-							"Ã»ÓĞÕÒµ½ÏàÓ¦µÄÓÃ»§ĞÅÏ¢", Toast.LENGTH_LONG);
+							"æ²¡æœ‰æ‰¾åˆ°ç›¸åº”çš„ç”¨æˆ·ä¿¡æ¯", Toast.LENGTH_LONG);
 				}
 			}
 		});
@@ -146,21 +182,21 @@ public class AreaMessageList extends ListActivity implements
 		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		HashMap<String, Object> map = null;
 
-		String TextContent;// ÎÄ×ÖÄÚÈİ
-		BmobFile FirstImage;// µÚÒ»ÕÅÍ¼Æ¬
-		BmobFile SecondImage;// µÚÒ»ÕÅÍ¼Æ¬
-		BmobFile ThirdImage;// µÚÒ»ÕÅÍ¼Æ¬
-		String PublishPersonName;// ·¢²¼ÈËÃû(MAC)
-		String PublishAddress;// ·¢²¼µØµã
-		Integer ScanTimes;// ä¯ÀÀ´ÎÊı
-		Integer CommentTimes;// ÆÀÂÛ´ÎÊı
-		Integer CreditValue;// ÔŞÖµ
-		String PublishTime;// ·¢²¼Ê±¼ä
+		String TextContent;// æ–‡å­—å†…å®¹
+		BmobFile FirstImage;// ç¬¬ä¸€å¼ å›¾ç‰‡
+		BmobFile SecondImage;// ç¬¬äºŒå¼ å›¾ç‰‡
+		BmobFile ThirdImage;// ç¬¬ä¸‰å¼ å›¾ç‰‡
+		String PublishPersonName;// å‘å¸ƒäººå(MAC)
+		String PublishAddress;// å‘å¸ƒåœ°ç‚¹
+		Integer ScanTimes;// æµè§ˆæ¬¡æ•°
+		Integer CommentTimes;// è¯„è®ºæ¬¡æ•°
+		Integer CreditValue;// èµå€¼
+		String PublishTime;// å‘å¸ƒæ—¶é—´
 
 		if (areainfo != null) {
 			int nCount = areainfo.size();
 			for (int i = 0; i < nCount; i++) {
-				// ½«»ñÈ¡µ½µÄÊı¾İ´æ´¢µ½ÈİÆ÷ÖĞ
+				// å°†è·å–åˆ°çš„æ•°æ®å­˜å‚¨åˆ°å®¹å™¨ä¸­
 				map = new HashMap<String, Object>();
 				TextContent = areainfo.get(i).getTextContent();
 				FirstImage = areainfo.get(i).getFirstImage();
@@ -231,65 +267,73 @@ public class AreaMessageList extends ListActivity implements
 			if (null == convertView) {
 				convertView = mInflater.inflate(R.layout.messageitem, null);
 			}
-			// ·¢²¼ÈËÍ·Ïñ
+			// å‘å¸ƒäººå¤´åƒ
 			ImageView personimageview = (ImageView) convertView
 					.findViewById(R.id.messageitem_personimageview);
-			// ·¢²¼ÈËÃû³Æ
+			// å‘å¸ƒäººåç§°
 			TextView personname = (TextView) convertView
 					.findViewById(R.id.messageitem_textview3);
-			// ·¢²¼Ê±¼ä
+			// å‘å¸ƒæ—¶é—´
 			TextView publishtime = (TextView) convertView
 					.findViewById(R.id.messageitem_timetextview);
-			// ·¢²¼ĞÅÏ¢±êÌâ
+			// å‘å¸ƒä¿¡æ¯æ ‡é¢˜
 			TextView publishtitle = (TextView) convertView
 					.findViewById(R.id.messageitem_titletextview);
-			// ·¢²¼µÄµÚÒ»ÕÅÍ¼Æ¬
+			// å‘å¸ƒçš„ç¬¬ä¸€å¼ å›¾ç‰‡
 			ImageView firstimageview = (ImageView) convertView
 					.findViewById(R.id.messageitem_icon1);
-			// ·¢²¼µÄµÚÒ»ÕÅÍ¼Æ¬
+			// å‘å¸ƒçš„ç¬¬äºŒå¼ å›¾ç‰‡
 			ImageView secondimageview = (ImageView) convertView
 					.findViewById(R.id.messageitem_icon2);
-			// ·¢²¼µÄµÚÒ»ÕÅÍ¼Æ¬
+			// å‘å¸ƒçš„ç¬¬ä¸‰å¼ å›¾ç‰‡
 			ImageView thirdimageview = (ImageView) convertView
 					.findViewById(R.id.messageitem_icon3);
-			// ÔŞÖµ¸öÊı
+			// èµå€¼ä¸ªæ•°
 			TextView zantextview = (TextView) convertView
 					.findViewById(R.id.messageitem_zantextview);
-			// ÆÀÂÛ¸öÊı
+			// è¯„è®ºä¸ªæ•°
 			TextView commenttextview = (TextView) convertView
 					.findViewById(R.id.messageitem_commenttextview);
-			// ä¯ÀÀ´ÎÊı
+			// æµè§ˆæ¬¡æ•°
 			TextView scantextview = (TextView) convertView
 					.findViewById(R.id.messageitem_looktextview);
 
 			publishtime.setText(map.get("PublishTime").toString());
 			publishtitle.setText(map.get("TextContent").toString());
-			BmobFile file = (BmobFile) map.get("FirstImage");
-			if (file != null) {
-				file.loadImage(AreaMessageList.this, firstimageview,
-						publishimagewidth, publishimageheight);
-			}else{
+			BmobFile file1 = (BmobFile) map.get("FirstImage");
+			BmobFile file2 = (BmobFile) map.get("SecondImage");
+			BmobFile file3 = (BmobFile) map.get("ThirdImage");
+			if (file1 != null) {
+				// file1.loadImage(AreaMessageList.this, firstimageview,
+				// publishimagewidth, publishimageheight);
+				new DownloadImageTask().execute(file1.getFileUrl(),
+						file1.getFilename(), firstimageview);
+			} else {
 				firstimageview.setImageBitmap(null);
 			}
-			file = (BmobFile) map.get("SecondImage");
-			if (file != null) {
-				file.loadImage(AreaMessageList.this, secondimageview,
-						publishimagewidth, publishimageheight);
-			}else{
+			file2 = (BmobFile) map.get("SecondImage");
+			if (file2 != null) {
+				//file2.loadImage(AreaMessageList.this, secondimageview,
+				//		publishimagewidth, publishimageheight);
+				new DownloadImageTask().execute(file2.getFileUrl(),
+						file2.getFilename(), secondimageview);
+			} else {
 				secondimageview.setImageBitmap(null);
 			}
-			file = (BmobFile) map.get("ThirdImage");
-			if (file != null) {
-				file.loadImage(AreaMessageList.this, thirdimageview,
-						publishimagewidth, publishimageheight);
-			}else{
+			file3 = (BmobFile) map.get("ThirdImage");
+			if (file3 != null) {
+				//file3.loadImage(AreaMessageList.this, thirdimageview,
+				//		publishimagewidth, publishimageheight);
+				new DownloadImageTask().execute(file3.getFileUrl(),
+						file3.getFilename(), thirdimageview);
+			} else {
 				thirdimageview.setImageBitmap(null);
 			}
 			zantextview.setText(map.get("CreditValue").toString());
 			commenttextview.setText(map.get("CommentTimes").toString());
 			scantextview.setText(map.get("ScanTimes").toString());
 
-			// ¿ªÊ¼¼ÓÔØÍ·ÏñºÍÓÃ»§Ãû³Æ
+			// å¼€å§‹åŠ è½½å¤´åƒå’Œç”¨æˆ·åç§°
 			ShowPersonInfoByMac(personimageview, personname,
 					map.get("PublishPersonName").toString());
 			return convertView;
@@ -297,27 +341,188 @@ public class AreaMessageList extends ListActivity implements
 
 	}
 
+	private Drawable loadImageFromNetwork(String imageUrl, String strName) {
+		Drawable drawable = null;
+		try {
+			// å¯ä»¥åœ¨è¿™é‡Œé€šè¿‡æ–‡ä»¶åæ¥åˆ¤æ–­ï¼Œæ˜¯å¦æœ¬åœ°æœ‰æ­¤å›¾ç‰‡
+			drawable = Drawable.createFromStream(
+					new URL(imageUrl).openStream(), strName);
+		} catch (IOException e) {
+		}
+		if (drawable == null) {
+
+		} else {
+
+		}
+
+		return drawable;
+	}
+
+	private class DownloadImageTask extends AsyncTask<Object, Void, Drawable> {
+		private ImageView imageView = null;
+		protected Drawable doInBackground(Object... urls) {
+			String strUrl = (String)urls[0];
+			String strName = (String)urls[1];
+			imageView = (ImageView)urls[2];
+			return loadImageFromNetwork(strUrl, strName);
+		}
+
+		protected void onPostExecute(Drawable result) {
+			imageView.setImageDrawable(result);
+		}
+	}
+
 	public void SetShareAdapter(boolean bIsReset) {
-		if (null == madapter2) {
+		if (null == madapter1) {
 			if (mListData1 != null) {
-				madapter2 = new TaskInfoListAdpater(AreaMessageList.this,
+				madapter1 = new TaskInfoListAdpater(AreaMessageList.this,
 						mListData1, R.layout.messageitem, null, null);
-				setListAdapter(madapter2);
+				listview.setAdapter(madapter1);
 			}
 
 		} else {
-			madapter2.mItemList = mListData1;
-			madapter2.notifyDataSetChanged();
+			madapter1.mItemList = mListData1;
+			madapter1.notifyDataSetChanged();
 		}
+		//å¦‚æœåˆ—è¡¨ä¸­æ²¡æœ‰æ•°æ®,é‚£ä¹ˆå°±éšè—listview
+		if(mListData1.size() <= 0){
+			listview.setVisibility(View.GONE);
+		}else{
+			listview.setVisibility(View.VISIBLE);
+		}
+	}
+
+	// å°†è·å–åˆ°çš„æ–°æ•°æ®åˆå¹¶åˆ°åŸæœ‰æ•°æ®ä¸­
+	private void DealLoadNearShareTaskData(List<AreaPublishContent> data) {
+
+		int nCount = data.size();
+		int nSize = publishcontent.size();
+		int nRemainCount = nCount + nSize - nMaxPublishDataNum;
+		// å¦‚æœæ•°æ®æ¡æ•°è¶…è¿‡äº†å®¹å™¨æœ€å¤§å®¹é‡,é‚£ä¹ˆå°±è¦å»æ‰å‡ æ¡æœ€æ–°æ•°æ®
+		if (nRemainCount > 0) {
+			// å»æ‰nRemainCountæ¡æ•°æ®
+			for (int i = 0; i < nRemainCount; i++) {
+				publishcontent.remove(0);
+			}
+			// å°†åŠ è½½æ•°æ®æ·»åŠ åˆ°å®¹å™¨ä¸­
+			publishcontent.addAll(nSize - nRemainCount, data);
+		} else {// å¦‚æœæ•°æ®æ²¡æœ‰è¶…è¿‡æœ€å¤§å€¼
+			// å°†åŠ è½½æ•°æ®æ·»åŠ åˆ°å®¹å™¨ä¸­
+			publishcontent.addAll(nSize, data);
+		}
+	}
+
+	// å¯¹æ•°æ®è¿›è¡Œå»é‡å¤„ç†
+	private List<AreaPublishContent> DeleteSameData(
+			List<AreaPublishContent> data) {
+		if (data != null) {
+			int nSize = data.size();
+			for (int i = 0; i < nSize; i++) {
+				if (publishcontent != null) {
+					int nSize1 = publishcontent.size();
+					for (int j = 0; j < nSize1; j++) {
+						// å¦‚æœæœ‰ç›¸åŒçš„æ•°æ®
+						if (data.get(i).getObjectId()
+								.equals(publishcontent.get(j).getObjectId())) {
+							// å°†ç›¸åŒçš„æ•°æ®åˆ é™¤
+							data.remove(i);
+							i--;
+							nSize = data.size();
+							break;
+						}
+					}
+				}
+
+			}
+		}
+		return data;
 	}
 
 	@Override
 	public void onFooterRefresh(PullToRefreshView view) {
+		BmobQuery<AreaPublishContent> query = new BmobQuery<AreaPublishContent>();
+		// ä¸€æ¬¡æ€§æŸ¥è¯¢çš„æ•°æ®æ¡æ•°
+		query.setLimit(MAXLOADDATANUM);
+		query.order("-createdAt");
+		// æŸ¥è¯¢æ—¶é—´å°äºç­‰äºä¸Šä¸€æ¬¡æŸ¥è¯¢çš„æœ€æ—§æ—¶é—´
+		query.addWhereLessThanOrEqualTo("createdAt", strOldestTime);
+		// query.setCachePolicy(CachePolicy.CACHE_ELSE_NETWORK);
+		query.addWhereEqualTo("AreaID", AreaInfoActivity.strCurSelectAreaId);
+		query.findObjects(AreaMessageList.this,
+				new FindListener<AreaPublishContent>() {
 
+					@Override
+					public void onError(int arg0, String arg1) {
+						// å…³æ‰è¿›åº¦æ§ä»¶
+						mPullToRefreshView1.onFooterRefreshComplete();
+						CommonUtils.ShowToastCenter(AreaMessageList.this,
+								"åŠ è½½æ•°æ®å¤±è´¥,code:" + arg0 + "error:" + arg1,
+								Toast.LENGTH_LONG);
+					}
+
+					@Override
+					public void onSuccess(List<AreaPublishContent> areainfo) {
+
+						// ä¿å­˜è·å–åˆ°çš„ä¿¡æ¯æ•°æ®
+						publishcontent = areainfo;
+						int nSize = areainfo.size();
+						if (nSize > 0) {
+							// ä¿å­˜æœ€æ—§çš„æ—¶é—´
+							strOldestTime = areainfo.get(nSize - 1)
+									.getCreatedAt();
+							// å¯¹æ•°æ®è¿›è¡Œå»é‡å¤„ç†
+							areainfo = DeleteSameData(areainfo);
+							// åˆå¹¶æ•°æ®
+							DealLoadNearShareTaskData(areainfo);
+							// å°†æŸ¥è¯¢åˆ°çš„æ•°æ®æ˜¾ç¤ºåˆ°åˆ—è¡¨ä¸­
+							mListData1 = getListData(areainfo);
+							SetShareAdapter(false);
+						}
+						// å…³æ‰è¿›åº¦æ§ä»¶
+						mPullToRefreshView1.onFooterRefreshComplete();
+					}
+
+				});
 	}
 
 	@Override
 	public void onHeaderRefresh(PullToRefreshView view) {
+		BmobQuery<AreaPublishContent> query = new BmobQuery<AreaPublishContent>();
+		// ä¸€æ¬¡æ€§æŸ¥è¯¢çš„æ•°æ®æ¡æ•°
+		query.setLimit(MAXLOADDATANUM);
+		query.order("-createdAt");
+		// query.setCachePolicy(CachePolicy.CACHE_ELSE_NETWORK);
+		query.addWhereEqualTo("AreaID", AreaInfoActivity.strCurSelectAreaId);
+		query.findObjects(AreaMessageList.this,
+				new FindListener<AreaPublishContent>() {
 
+					@Override
+					public void onError(int arg0, String arg1) {
+						// å…³æ‰è¿›åº¦æ§ä»¶
+						mPullToRefreshView1.onHeaderRefreshComplete();
+						CommonUtils.ShowToastCenter(AreaMessageList.this,
+								"åŠ è½½æ•°æ®å¤±è´¥,code:" + arg0 + "error:" + arg1,
+								Toast.LENGTH_LONG);
+					}
+
+					@Override
+					public void onSuccess(List<AreaPublishContent> areainfo) {
+
+						// ä¿å­˜è·å–åˆ°çš„ä¿¡æ¯æ•°æ®
+						publishcontent = areainfo;
+						int nSize = areainfo.size();
+						if (nSize > 0) {
+							// ä¿å­˜æœ€æ—§çš„æ—¶é—´
+							strOldestTime = areainfo.get(nSize - 1)
+									.getCreatedAt();
+							// å°†æŸ¥è¯¢åˆ°çš„æ•°æ®æ˜¾ç¤ºåˆ°åˆ—è¡¨ä¸­
+							mListData1 = getListData(areainfo);
+							SetShareAdapter(false);
+						}
+						// å…³æ‰è¿›åº¦æ§ä»¶
+						mPullToRefreshView1.onHeaderRefreshComplete();
+					}
+
+				});
 	}
 }

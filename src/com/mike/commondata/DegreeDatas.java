@@ -11,15 +11,15 @@ public class DegreeDatas {
 		upposlat = y3;
 	}
 
-	// ×óÏÂ½Ç¾­Î³¶È
-	public static double letfbottomposlon = 0;// ¾­¶È
-	public static double letfbottomposlat = 0;// Î³¶È
+	// å·¦ä¸‹è§’ç»çº¬åº¦
+	public static double letfbottomposlon = 0;// ç»åº¦
+	public static double letfbottomposlat = 0;// çº¬åº¦
 
-	// ×óÏÂ½ÇÓÒ±ßµã¾­Î³¶È
-	public static double righttopposlon = 0;// ¾­¶È
-	public static double righttopposlat = 0;// Î³¶È
+	// å·¦ä¸‹è§’å³è¾¹ç‚¹ç»çº¬åº¦
+	public static double righttopposlon = 0;// ç»åº¦
+	public static double righttopposlat = 0;// çº¬åº¦
 
-	// ×óÏÂ½ÇÕıÉÏ·½µã¾­Î³¶È
-	public static double upposlon = 0;// ¾­¶È
-	public static double upposlat = 0;// Î³¶È
+	// å·¦ä¸‹è§’æ­£ä¸Šæ–¹ç‚¹ç»çº¬åº¦
+	public static double upposlon = 0;// ç»åº¦
+	public static double upposlat = 0;// çº¬åº¦
 }

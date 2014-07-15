@@ -35,17 +35,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class FinishRegeditActivity extends Activity {
-	// ÓÃ»§Í·Ïñ¿Ø¼ş
+	// ç”¨æˆ·å¤´åƒæ§ä»¶
 	ImageView personimageview;
-	// µç»°ºÅÂë¿Ø¼ş
+	// ç”µè¯å·ç æ§ä»¶
 	EditText phoneedittext;
-	// °´Å¥¿Ø¼ş
+	// æŒ‰é’®æ§ä»¶
 	Button button;
 
-	// ±£´æËùÑ¡Í¼Æ¬µÄÂ·¾¶
+	// ä¿å­˜æ‰€é€‰å›¾ç‰‡çš„è·¯å¾„
 	private String mImgPaths = "";
-	public static final String[] addPhoto = new String[] { "Ä¬ÈÏÍ·Ïñ", "´ÓÏà²áÑ¡Ôñ",
-			"ÏÖÔÚÅÄÉã", "È¡Ïû" };
+	public static final String[] addPhoto = new String[] { "é»˜è®¤å¤´åƒ", "ä»ç›¸å†Œé€‰æ‹©",
+			"ç°åœ¨æ‹æ‘„", "å–æ¶ˆ" };
 	CommonUtils mUtils = null;
 	SharedPreferences msettings = null;
 
@@ -80,14 +80,14 @@ public class FinishRegeditActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				// ÅĞ¶Ïµç»°ºÅÂë¿Ø¼şÖĞÊÇ·ñÓĞÖµ
+				// åˆ¤æ–­ç”µè¯å·ç æ§ä»¶ä¸­æ˜¯å¦æœ‰å€¼
 				if (phoneedittext.getText().toString().equals("")) {
 					CommonUtils.ShowToastCenter(FinishRegeditActivity.this,
-							"ÇëÊäÈëµç»°ºÅÂë", Toast.LENGTH_LONG);
+							"è¯·è¾“å…¥ç”µè¯å·ç ", Toast.LENGTH_LONG);
 				} else {
 
 					if (!mImgPaths.equals("")) {
-						// Ê×ÏÈÉÏ´«ÓÃ»§Í·Ïñ
+						// é¦–å…ˆä¸Šä¼ ç”¨æˆ·å¤´åƒ
 						final BmobFile bmobFile = new BmobFile(new File(
 								mImgPaths));
 						bmobFile.uploadblock(FinishRegeditActivity.this,
@@ -95,12 +95,12 @@ public class FinishRegeditActivity extends Activity {
 
 									@Override
 									public void onSuccess() {
-										// Í¼Æ¬ÉÏ´«³É¹¦ºó,¿ªÊ¼ÉÏ´«ÆäËûÊı¾İ
+										// å›¾ç‰‡ä¸Šä¼ æˆåŠŸå,å¼€å§‹ä¸Šä¼ å…¶ä»–æ•°æ®
 										String strUserName = msettings
 												.getString(
 														commondata.UserNickName,
 														"");
-										//»ñÈ¡macµØÖ·
+										//è·å–macåœ°å€
 										String strMac = mUtils.strGetPhoneMac();
 										String strGender = msettings.getString(
 												commondata.UserGender, "");
@@ -120,10 +120,10 @@ public class FinishRegeditActivity extends Activity {
 														CommonUtils
 																.ShowToastCenter(
 																		FinishRegeditActivity.this,
-																		"×¢²á³É¹¦",
+																		"æ³¨å†ŒæˆåŠŸ",
 																		Toast.LENGTH_LONG);
-														// ÇĞ»»µ½Ö÷½çÃæ
-														// ÇĞ»»µ½ÏÂÒ»¸ö½çÃæ
+														// åˆ‡æ¢åˆ°ä¸»ç•Œé¢
+														// åˆ‡æ¢åˆ°ä¸‹ä¸€ä¸ªç•Œé¢
 														Intent it = new Intent(
 																FinishRegeditActivity.this,
 																AreaInfoActivity.class);
@@ -138,7 +138,7 @@ public class FinishRegeditActivity extends Activity {
 														CommonUtils
 																.ShowToastCenter(
 																		FinishRegeditActivity.this,
-																		"×¢²áÊ§°Ü",
+																		"æ³¨å†Œå¤±è´¥",
 																		Toast.LENGTH_LONG);
 													}
 												});
@@ -153,14 +153,14 @@ public class FinishRegeditActivity extends Activity {
 									public void onFailure(int code, String msg) {
 										CommonUtils.ShowToastCenter(
 												FinishRegeditActivity.this,
-												"Í·ÏñÉÏ´«Ê§°Ü", Toast.LENGTH_LONG);
+												"å¤´åƒä¸Šä¼ å¤±è´¥", Toast.LENGTH_LONG);
 									}
 								});
 					} else {
-						// Èç¹ûÃ»ÓĞÍ¼Æ¬,ÄÇÃ´¾ÍÉÏ´«ÆäËûÊı¾İ
+						// å¦‚æœæ²¡æœ‰å›¾ç‰‡,é‚£ä¹ˆå°±ä¸Šä¼ å…¶ä»–æ•°æ®
 						String strUserName = msettings.getString(
 								commondata.UserGender, "");
-						//»ñÈ¡macµØÖ·
+						//è·å–macåœ°å€
 						String strMac = mUtils.strGetPhoneMac();
 						String strGender = msettings.getString(
 								commondata.UserNickName, "");
@@ -178,7 +178,7 @@ public class FinishRegeditActivity extends Activity {
 									public void onSuccess() {
 										CommonUtils.ShowToastCenter(
 												FinishRegeditActivity.this,
-												"×¢²á³É¹¦", Toast.LENGTH_LONG);
+												"æ³¨å†ŒæˆåŠŸ", Toast.LENGTH_LONG);
 										FinishRegeditActivity.this.finish();
 									}
 
@@ -186,7 +186,7 @@ public class FinishRegeditActivity extends Activity {
 									public void onFailure(int code, String msg) {
 										CommonUtils.ShowToastCenter(
 												FinishRegeditActivity.this,
-												"×¢²áÊ§°Ü", Toast.LENGTH_LONG);
+												"æ³¨å†Œå¤±è´¥", Toast.LENGTH_LONG);
 									}
 								});
 					}
@@ -206,10 +206,10 @@ public class FinishRegeditActivity extends Activity {
 			if (requestCode == 0) {
 				String strImagePath = Environment.getExternalStorageDirectory()
 						+ "/" + commondata.strParentFileName + "/" + commondata.strUserImageName;
-				// ÏÈÅĞ¶Ï¸ÃÎÄ¼şÊÇ·ñ´æÔÚ
+				// å…ˆåˆ¤æ–­è¯¥æ–‡ä»¶æ˜¯å¦å­˜åœ¨
 				File pImageFile = new File(strImagePath);
 				if (pImageFile.exists()) {
-					// ¶ÔÍ¼Æ¬½øĞĞĞı×ª´¦Àí
+					// å¯¹å›¾ç‰‡è¿›è¡Œæ—‹è½¬å¤„ç†
 					mUtils.rotatePhoto(strImagePath);
 
 					File imgFile = new File(strImagePath);
@@ -257,7 +257,7 @@ public class FinishRegeditActivity extends Activity {
 				cursor.moveToFirst();
 				String path = cursor.getString(column_index);
 				mImgPaths = path;
-				// ¶ÔÍ¼Æ¬½øĞĞĞı×ª´¦Àí
+				// å¯¹å›¾ç‰‡è¿›è¡Œæ—‹è½¬å¤„ç†
 				bitmap = mUtils.PhotoRotation(uri);
 				personimageview.setImageBitmap(bitmap);
 			}
@@ -270,16 +270,16 @@ public class FinishRegeditActivity extends Activity {
 		switch (id) {
 		case 0:
 			builder = new AlertDialog.Builder(this);
-			builder.setTitle("Ìí¼ÓÓÃ»§Í¼Æ¬");
+			builder.setTitle("æ·»åŠ ç”¨æˆ·å›¾ç‰‡");
 			builder.setItems(addPhoto, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// ±£´æÍ¼Æ¬µÄÂ·¾¶
+					// ä¿å­˜å›¾ç‰‡çš„è·¯å¾„
 					String strPhotoPath = "";
 					String haveSD = Environment.getExternalStorageState();
 					if (!haveSD.equals(Environment.MEDIA_MOUNTED)) {
 						CommonUtils.ShowToastCenter(FinishRegeditActivity.this,
-								"´æ´¢¿¨²»¿ÉÓÃ", Toast.LENGTH_LONG);
+								"å­˜å‚¨å¡ä¸å¯ç”¨", Toast.LENGTH_LONG);
 						return;
 					}
 					File dir = new File(Environment
@@ -288,8 +288,8 @@ public class FinishRegeditActivity extends Activity {
 							+ commondata.strParentFileName);
 					if (!dir.exists()) {
 						dir.mkdirs();
-					} else {// Èç¹ûÒÑ¾­´æÔÚÁË¸ÃÎÄ¼ş¼Ğ
-							// ÅĞ¶Ï¸ÃÎÄ¼ş¼ĞÖĞÊÇ·ñ´æÔÚCar.jpgÎÄ¼ş,Èç¹û´æÔÚÔòÉ¾³ı
+					} else {// å¦‚æœå·²ç»å­˜åœ¨äº†è¯¥æ–‡ä»¶å¤¹
+							// åˆ¤æ–­è¯¥æ–‡ä»¶å¤¹ä¸­æ˜¯å¦å­˜åœ¨Car.jpgæ–‡ä»¶,å¦‚æœå­˜åœ¨åˆ™åˆ é™¤
 						strPhotoPath = Environment
 								.getExternalStorageDirectory()
 								+ "/"
@@ -304,10 +304,10 @@ public class FinishRegeditActivity extends Activity {
 
 						String strUserName = msettings.getString(
 								commondata.UserGender, "");
-						// Èç¹ûÊ¹ÓÃÄ¬ÈÏÍ·Ïñ,ÄÇÃ´¾Í½«Ä¬ÈÏÍ¼Æ¬±£´æµ½Ö¸¶¨Â·¾¶ÏÂ
+						// å¦‚æœä½¿ç”¨é»˜è®¤å¤´åƒ,é‚£ä¹ˆå°±å°†é»˜è®¤å›¾ç‰‡ä¿å­˜åˆ°æŒ‡å®šè·¯å¾„ä¸‹
 						Resources res = getResources();
 						Bitmap bmp = null;
-						if (strUserName.equals("ÄĞ")) {
+						if (strUserName.equals("ç”·")) {
 							bmp = BitmapFactory.decodeResource(res,
 									R.drawable.boy);
 						} else {
@@ -352,7 +352,7 @@ public class FinishRegeditActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		// Æô¶¯RegeditActivity
+		// å¯åŠ¨RegeditActivity
 		Intent it = new Intent(FinishRegeditActivity.this,
 				RegeditActivity.class);
 		startActivity(it);

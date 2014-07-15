@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -83,7 +83,7 @@
             <!-- 这里放置listview,gridview或者scrollview的布局 ,PullToRefreshView要设置android:orientation="vertical"属性 否则,显示不正确 -->
 
             <ListView
-                android:id="@android:id/list"
+                android:id="@+id/messagelist_listview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

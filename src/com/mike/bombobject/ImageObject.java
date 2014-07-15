@@ -3,9 +3,9 @@ package com.mike.bombobject;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 
-//�洢ͼƬ�ı�
+//存储图片的表
 public class ImageObject extends BmobObject {
-	BmobFile ImageContent;// ͼƬ����
+	BmobFile ImageContent;// 图片内容
 
 	public BmobFile getImageContent() {
 		return ImageContent;

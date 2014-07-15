@@ -2,16 +2,16 @@ package com.mike.bombobject;
 
 import cn.bmob.v3.BmobObject;
 
-//ÇøÓòĞÅÏ¢±í
+//åŒºåŸŸä¿¡æ¯è¡¨
 public class AreaInfo extends BmobObject {
 
-	Integer XIndex;// xÖá·½ÏòµÄË÷ÒıºÅ
-	Integer YIndex;// yÖá·½ÏòµÄË÷ÒıºÅ
-	String ID;// ÇøÓòidºÅ
-	String FindPersonName;// ·¢ÏÖÈËµÄmacÃû³Æ
-	String AreaName;// ÇøÓòÃû³Æ
-	String DeScribe;// ÇøÓòÃèÊöĞÅÏ¢
-	String LanderOwnerName;// µØÖ÷Ãû³Æ
+	Integer XIndex;// xè½´æ–¹å‘çš„ç´¢å¼•å·
+	Integer YIndex;// yè½´æ–¹å‘çš„ç´¢å¼•å·
+	String ID;// åŒºåŸŸidå·
+	String FindPersonName;// å‘ç°äººçš„macåç§°
+	String AreaName;// åŒºåŸŸåç§°
+	String DeScribe;// åŒºåŸŸæè¿°ä¿¡æ¯
+	String LanderOwnerName;// åœ°ä¸»åç§°
 
 	public Integer getXIndex() {
 		return XIndex;

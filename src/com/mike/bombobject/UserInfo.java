@@ -4,17 +4,17 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 
 public class UserInfo extends BmobUser {
-	// µç»°ºÅÂë
+	// ç”µè¯å·ç 
 	String TelPhone;
-	// ĞÔ±ğ
+	// æ€§åˆ«
 	String Gender;
-	// ÄêÁä
+	// å¹´é¾„
 	Integer Age;
-	// Í·Ïñ
+	// å¤´åƒ
 	BmobFile UserIcon;
-	// ÓÃ»§¾Ó×¡µØÖ·
+	// ç”¨æˆ·å±…ä½åœ°å€
 	String UserLiveAddress;
-	// ÓÃ»§ËùÊôÇøÓòIdºÅ(¾ÓÃñ)
+	// ç”¨æˆ·æ‰€å±åŒºåŸŸIdå·(å±…æ°‘)
 	String UserLiveID;
 
 	public String getTelPhone() {

@@ -25,43 +25,43 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// ÔÚÊ¹ÓÃ SDK ¸÷×é¼äÖ®Ç°³õÊ¼»¯ context ĞÅÏ¢£¬´«Èë ApplicationContext
+		// åœ¨ä½¿ç”¨ SDK å„ç»„é—´ä¹‹å‰åˆå§‹åŒ– context ä¿¡æ¯ï¼Œä¼ å…¥ ApplicationContext
 		SDKInitializer.initialize(getApplicationContext());
-		// ³õÊ¼»¯ Bmob SDK
+		// åˆå§‹åŒ– Bmob SDK
 		Bmob.initialize(this, "0556064ba5deea19b15e6c2075d45286");
-		// Æô¶¯ÍÆËÍ·şÎñ
+		// å¯åŠ¨æ¨é€æœåŠ¡
 		BmobPush.startWork(this, "0556064ba5deea19b15e6c2075d45286");
 
 		mUtils = new CommonUtils(this);
-		// ÅĞ¶ÏÓÃ»§Ö®Ç°ÊÇ·ñ×¢²á¹ı,Èç¹û×¢²á¹ı¾ÍÖ±½ÓÇĞ»»µ½Ö÷½çÃæ,·ñÔò½øÈëµ½×¢²á½çÃæ
+		// åˆ¤æ–­ç”¨æˆ·ä¹‹å‰æ˜¯å¦æ³¨å†Œè¿‡,å¦‚æœæ³¨å†Œè¿‡å°±ç›´æ¥åˆ‡æ¢åˆ°ä¸»ç•Œé¢,å¦åˆ™è¿›å…¥åˆ°æ³¨å†Œç•Œé¢
 		DealUserOpera();
 	}
 
 	private void DealUserOpera() {
-		// Ê×ÏÈÅĞ¶Ï³ÌĞòÊÇ·ñ±£´æÁËÓÃ»§ÉÏ´ÎµÄµÇÂ¼ĞÅÏ¢
+		// é¦–å…ˆåˆ¤æ–­ç¨‹åºæ˜¯å¦ä¿å­˜äº†ç”¨æˆ·ä¸Šæ¬¡çš„ç™»å½•ä¿¡æ¯
 		BmobUser bmobUser = BmobUser.getCurrentUser(MainActivity.this);
-		// Èç¹ûÃ»ÓĞÕÒµ½µÇÂ¼ĞÅÏ¢,ÄÇÃ´¾Íµ½Êı¾İ¿âÖĞÑ°ÕÒ
+		// å¦‚æœæ²¡æœ‰æ‰¾åˆ°ç™»å½•ä¿¡æ¯,é‚£ä¹ˆå°±åˆ°æ•°æ®åº“ä¸­å¯»æ‰¾
 		if (null == bmobUser) {
-			// ÏÈ»ñÈ¡ÊÖ»úmacµØÖ·
+			// å…ˆè·å–æ‰‹æœºmacåœ°å€
 			final String strMac = mUtils.strGetPhoneMac();
-			// ¸ù¾İmacµØÖ·»ñÈ¡ÓÃ»§ĞÅÏ¢
+			// æ ¹æ®macåœ°å€è·å–ç”¨æˆ·ä¿¡æ¯
 			BmobQuery<BmobUser> query = new BmobQuery<BmobUser>();
 			query.addQueryKeys("username");
 			query.addWhereEqualTo("password", strMac);
-			// ÏÈ´Ó»º´æ»ñÈ¡Êı¾İ£¬Èç¹ûÃ»ÓĞ£¬ÔÙ´ÓÍøÂç»ñÈ¡
+			// å…ˆä»ç¼“å­˜è·å–æ•°æ®ï¼Œå¦‚æœæ²¡æœ‰ï¼Œå†ä»ç½‘ç»œè·å–
 			// query.setCachePolicy(CachePolicy.CACHE_ELSE_NETWORK);
 			query.findObjects(MainActivity.this, new FindListener<BmobUser>() {
 				@Override
 				public void onSuccess(List<BmobUser> object) {
 					if (object.size() > 0) {
-						// Èç¹ûÕÒµ½ÁË
+						// å¦‚æœæ‰¾åˆ°äº†
 						BmobUser bu2 = new BmobUser();
 						bu2.setUsername(object.get(0).getUsername());
 						bu2.setPassword(strMac);
 						bu2.login(MainActivity.this, new SaveListener() {
 						    @Override
 						    public void onSuccess() {
-						    	// ½øÈëÖ÷½çÃæ
+						    	// è¿›å…¥ä¸»ç•Œé¢
 								Intent it = new Intent(MainActivity.this,
 										AreaInfoActivity.class);
 								startActivity(it);
@@ -71,12 +71,12 @@ public class MainActivity extends Activity {
 						    public void onFailure(int code, String msg) {
 						    	CommonUtils.ShowToastCenter(
 						    			MainActivity.this,
-										"µÇÂ¼Ê§°Ü,code:" + code + msg,
+										"ç™»å½•å¤±è´¥,code:" + code + msg,
 										Toast.LENGTH_LONG);
 						    }
 						});
 					} else {
-						// ´ËÊ±ËµÃ÷¸ÃÓÃ»§Ã»ÓĞ×¢²á,ÄÇÃ´¾Í½øÈë×¢²áÒ³Ãæ
+						// æ­¤æ—¶è¯´æ˜è¯¥ç”¨æˆ·æ²¡æœ‰æ³¨å†Œ,é‚£ä¹ˆå°±è¿›å…¥æ³¨å†Œé¡µé¢
 						Intent it = new Intent(MainActivity.this,
 								RegeditActivity.class);
 						startActivity(it);
@@ -86,12 +86,12 @@ public class MainActivity extends Activity {
 
 				@Override
 				public void onError(int code, String Errormsg) {
-					CommonUtils.ShowToastCenter(MainActivity.this, "³öÏÖ´íÎó,code:"
+					CommonUtils.ShowToastCenter(MainActivity.this, "å‡ºç°é”™è¯¯,code:"
 							+ code + " " + Errormsg, Toast.LENGTH_LONG);
 				}
 			});
-		} else {// Èç¹ûÕÒµ½ÁËµÇÂ¼ĞÅÏ¢,ÄÇÃ´¾ÍÖ±½Ó½øÈëµ½Ö÷½çÃæ
-			// ½øÈëÖ÷½çÃæ
+		} else {// å¦‚æœæ‰¾åˆ°äº†ç™»å½•ä¿¡æ¯,é‚£ä¹ˆå°±ç›´æ¥è¿›å…¥åˆ°ä¸»ç•Œé¢
+			// è¿›å…¥ä¸»ç•Œé¢
 			Intent it = new Intent(MainActivity.this, AreaInfoActivity.class);
 			startActivity(it);
 			finish();

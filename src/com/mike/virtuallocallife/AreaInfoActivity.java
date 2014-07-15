@@ -69,50 +69,50 @@ public class AreaInfoActivity extends Activity implements
 		OnGetGeoCoderResultListener {
 
 	SharedPreferences msettings = null;
-	// ¶¨Î»Ïà¹Ø
+	// å®šä½ç›¸å…³
 	LocationClient mLocClient;
 	public MyLocationListenner myListener = new MyLocationListenner();
 	BitmapDescriptor mCurrentMarker;
-	//ÓÃ»§µ±Ç°ËùÔÚµÄÎ»ÖÃ
+	// ç”¨æˆ·å½“å‰æ‰€åœ¨çš„ä½ç½®
 	public static String strUserCurPosition = "";
 
 	MapView mMapView;
 	BaiduMap mBaiduMap;
 	private UiSettings mUiSettings;
-	boolean isFirstLoc = true;// ÊÇ·ñÊ×´Î¶¨Î»
+	boolean isFirstLoc = true;// æ˜¯å¦é¦–æ¬¡å®šä½
 
-	GeoCoder mSearch = null; // ËÑË÷Ä£¿é£¬Ò²¿ÉÈ¥µôµØÍ¼Ä£¿é¶ÀÁ¢Ê¹ÓÃ
+	GeoCoder mSearch = null; // æœç´¢æ¨¡å—ï¼Œä¹Ÿå¯å»æ‰åœ°å›¾æ¨¡å—ç‹¬ç«‹ä½¿ç”¨
 
-	int nCurPosxIndex = -1;// ÓÃ»§µ±Ç°ËùÔÚÎ»ÖÃµÄx×ø±êÇøÓòË÷ÒıºÅ
-	int nCurPosyIndex = -1;// ÓÃ»§µ±Ç°ËùÔÚÎ»ÖÃµÄy×ø±êÇøÓòË÷ÒıºÅ
-	double dCurLongitude = 0;// ÓÃ»§µ±Ç°ËùÔÚÎ»ÖÃµÄ¾­¶È
-	double dCurLatitude = 0;// ÓÃ»§µ±Ç°ËùÔÚÎ»ÖÃµÄÎ³¶È
-	private Marker mMarkerA;// ¾Å¹¬¸ñÖĞ¼ä·½¸ñÍ¼±ê±êÖ¾
-	// ÓÃ»§µ±Ç°µã»÷µÄÇøÓòxÓëy·½ÏòÇøÓòË÷ÒıºÅ
+	int nCurPosxIndex = -1;// ç”¨æˆ·å½“å‰æ‰€åœ¨ä½ç½®çš„xåæ ‡åŒºåŸŸç´¢å¼•å·
+	int nCurPosyIndex = -1;// ç”¨æˆ·å½“å‰æ‰€åœ¨ä½ç½®çš„yåæ ‡åŒºåŸŸç´¢å¼•å·
+	double dCurLongitude = 0;// ç”¨æˆ·å½“å‰æ‰€åœ¨ä½ç½®çš„ç»åº¦
+	double dCurLatitude = 0;// ç”¨æˆ·å½“å‰æ‰€åœ¨ä½ç½®çš„çº¬åº¦
+	private Marker mMarkerA;// ä¹å®«æ ¼ä¸­é—´æ–¹æ ¼å›¾æ ‡æ ‡å¿—
+	// ç”¨æˆ·å½“å‰ç‚¹å‡»çš„åŒºåŸŸxä¸yæ–¹å‘åŒºåŸŸç´¢å¼•å·
 	int nClickPosxIndex = -1;
 	int nClickPosyIndex = -1;
-	// µ±Ç°Ñ¡ÔñÇøÓòµÄidºÅ
+	// å½“å‰é€‰æ‹©åŒºåŸŸçš„idå·
 	public static String strCurSelectAreaId = "";
 
-	/***********************¿Ø¼ş±äÁ¿**************************/
-	// Õ¼µØÅÌ¿Ø¼ş
+	/*********************** æ§ä»¶å˜é‡ **************************/
+	// å åœ°ç›˜æ§ä»¶
 	LinearLayout linearlayout1;
-	// Õ¼µØÅÌ°´Å¥¿Ø¼ş
+	// å åœ°ç›˜æŒ‰é’®æ§ä»¶
 	Button capturebutton;
-	// ÏÔÊ¾ÇøÓòĞÅÏ¢¿Ø¼ş
+	// æ˜¾ç¤ºåŒºåŸŸä¿¡æ¯æ§ä»¶
 	LinearLayout linearlayout2;
-	// ÏÔÊ¾µØÖ·µÄ¿Ø¼ş
+	// æ˜¾ç¤ºåœ°å€çš„æ§ä»¶
 	TextView addresstextview;
-	// ÏÔÊ¾µ±Ç°Î»ÖÃµÄ¿Ø¼ş
+	// æ˜¾ç¤ºå½“å‰ä½ç½®çš„æ§ä»¶
 	LinearLayout locatelinearlayout;
-	// ÇøÓòÃû³Æ¿Ø¼ş
+	// åŒºåŸŸåç§°æ§ä»¶
 	TextView areanametextview;
-	// ÌáÊ¾¿Ø¼ş
+	// æç¤ºæ§ä»¶
 	TextView prompttextview;
 	RelativeLayout relativelayout;
-	// ÏÔÊ¾ÓÃ»§µã»÷Í¼Æ¬´¦µØÖ·µÄ¿Ø¼ş
+	// æ˜¾ç¤ºç”¨æˆ·ç‚¹å‡»å›¾ç‰‡å¤„åœ°å€çš„æ§ä»¶
 	TextView curuseraddresstextview;
-	// ³ÉÎªµ±µØ¾ÓÃñµÄ¿Ø¼ş
+	// æˆä¸ºå½“åœ°å±…æ°‘çš„æ§ä»¶
 	TextView makepersontextview;
 
 	@Override
@@ -124,36 +124,36 @@ public class AreaInfoActivity extends Activity implements
 
 		msettings = getSharedPreferences(commondata.PreferencesName, 0);
 		InitActivity();
-		// µØÍ¼³õÊ¼»¯
+		// åœ°å›¾åˆå§‹åŒ–
 		mMapView = (MapView) findViewById(R.id.main_bmapView);
 		mBaiduMap = mMapView.getMap();
 		mUiSettings = mBaiduMap.getUiSettings();
-		// ½«Ğı×ª¡¢Ëõ·Å¡¢¸©ÊÓ¡¢Ö¸ÄÏÕëµÈ¹¦ÄÜ½ûÖ¹µô
+		// å°†æ—‹è½¬ã€ç¼©æ”¾ã€ä¿¯è§†ã€æŒ‡å—é’ˆç­‰åŠŸèƒ½ç¦æ­¢æ‰
 		SetDisableFunction();
-		// ÉèÖÃËõ·Å¼¶±ğ
+		// è®¾ç½®ç¼©æ”¾çº§åˆ«
 		perfomZoom(13.5f);
-		// ³õÊ¼»¯ËÑË÷Ä£¿é£¬×¢²áÊÂ¼ş¼àÌı
+		// åˆå§‹åŒ–æœç´¢æ¨¡å—ï¼Œæ³¨å†Œäº‹ä»¶ç›‘å¬
 		mSearch = GeoCoder.newInstance();
 		mSearch.setOnGetGeoCodeResultListener(this);
-		// Òş²ØËõ·Å¿Ø¼ş
+		// éšè—ç¼©æ”¾æ§ä»¶
 		HideZoomCotroller();
-		// Òş²Ø°Ù¶Èlogo
+		// éšè—ç™¾åº¦logo
 		HideLogo();
 
-		// ¿ªÆô¶¨Î»Í¼²ã
+		// å¼€å¯å®šä½å›¾å±‚
 		mBaiduMap.setMyLocationEnabled(true);
-		// ¶¨Î»³õÊ¼»¯
+		// å®šä½åˆå§‹åŒ–
 		mLocClient = new LocationClient(this);
 		mLocClient.registerLocationListener(myListener);
 		LocationClientOption option = new LocationClientOption();
-		option.setOpenGps(true);// ´ò¿ªgps
-		option.setCoorType("bd09ll"); // ÉèÖÃ×ø±êÀàĞÍ
+		option.setOpenGps(true);// æ‰“å¼€gps
+		option.setCoorType("bd09ll"); // è®¾ç½®åæ ‡ç±»å‹
 		option.setScanSpan(99999999);
 		option.setAddrType("all");
 		mLocClient.setLocOption(option);
 		mLocClient.start();
 		initListener();
-		// ´¦Àíµã»÷µØÍ¼ÉÏÍ¼Æ¬ÏûÏ¢
+		// å¤„ç†ç‚¹å‡»åœ°å›¾ä¸Šå›¾ç‰‡æ¶ˆæ¯
 		DealClickImage();
 	}
 
@@ -174,7 +174,7 @@ public class AreaInfoActivity extends Activity implements
 			@Override
 			public void onClick(View v) {
 				// if(nCurPosxIndex > 0 && nCurPosyIndex > 0){
-				// ±£´æ¾­Î³¶ÈË÷ÒıºÅ
+				// ä¿å­˜ç»çº¬åº¦ç´¢å¼•å·
 				SharedPreferences.Editor editor = msettings.edit();
 				editor.putString(commondata.XIndex, nCurPosxIndex + "");
 				editor.putString(commondata.YIndex, nCurPosyIndex + "");
@@ -183,7 +183,7 @@ public class AreaInfoActivity extends Activity implements
 						CaptureAreaActivity.class);
 				startActivityForResult(it, 2);
 				// }else{
-				// CommonUtils.ShowToastCenter(AreaInfoActivity.this, "ÎŞĞ§ÇøÓò",
+				// CommonUtils.ShowToastCenter(AreaInfoActivity.this, "æ— æ•ˆåŒºåŸŸ",
 				// Toast.LENGTH_LONG);
 				// }
 			}
@@ -194,7 +194,7 @@ public class AreaInfoActivity extends Activity implements
 
 			@Override
 			public void onClick(View v) {
-				// ÖØĞÂ¶¨Î»
+				// é‡æ–°å®šä½
 				LatLng ll = new LatLng(dCurLatitude, dCurLongitude);
 				MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
 				mBaiduMap.animateMapStatus(u);
@@ -202,21 +202,21 @@ public class AreaInfoActivity extends Activity implements
 
 		});
 
-		// ³ÉÎªÖ¸¶¨ÇøÓò¾ÓÃñµÄ²Ù×÷
+		// æˆä¸ºæŒ‡å®šåŒºåŸŸå±…æ°‘çš„æ“ä½œ
 		makepersontextview.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				AlertDialog.Builder builder = new Builder(AreaInfoActivity.this);
-				builder.setMessage("È·¶¨Òª³ÉÎª¸ÃµØµÄ¾ÓÃñÂğ?");
-				builder.setTitle("ÌáÊ¾");
-				builder.setPositiveButton("È·ÈÏ",
+				builder.setMessage("ç¡®å®šè¦æˆä¸ºè¯¥åœ°çš„å±…æ°‘å—?");
+				builder.setTitle("æç¤º");
+				builder.setPositiveButton("ç¡®è®¤",
 						new android.content.DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								CommonUtils util = new CommonUtils(
 										AreaInfoActivity.this);
-								// ¸ù¾İÓÃ»§µÄmacµØÖ·»ñÈ¡ÓÃ»§ĞÅÏ¢±íÖĞµÄobjectIdºÅ ºÍËùÊôÇøÓòºÅ
+								// æ ¹æ®ç”¨æˆ·çš„macåœ°å€è·å–ç”¨æˆ·ä¿¡æ¯è¡¨ä¸­çš„objectIdå· å’Œæ‰€å±åŒºåŸŸå·
 								String strMac = util.strGetPhoneMac();
 								BmobQuery<UserInfo> UserInfo = new BmobQuery<UserInfo>();
 								UserInfo.addQueryKeys("objectId,UserLiveID");
@@ -229,7 +229,7 @@ public class AreaInfoActivity extends Activity implements
 													String Errormsg) {
 												CommonUtils.ShowToastCenter(
 														AreaInfoActivity.this,
-														"ÊµÔÚ±§Ç¸,³öÏÖ´íÎó,code:"
+														"å®åœ¨æŠ±æ­‰,å‡ºç°é”™è¯¯,code:"
 																+ code + " "
 																+ Errormsg,
 														Toast.LENGTH_LONG);
@@ -238,9 +238,9 @@ public class AreaInfoActivity extends Activity implements
 											@Override
 											public void onSuccess(
 													List<UserInfo> arg0) {
-												// ÅĞ¶ÏÊÇ·ñ²éÑ¯µ½ÁËidºÅ
+												// åˆ¤æ–­æ˜¯å¦æŸ¥è¯¢åˆ°äº†idå·
 												if (arg0.size() > 0) {
-													// ÏÈÅĞ¶ÏÓÃ»§ÊÇ·ñÒÑ¾­ÊÇ¸ÃÇøÓòµÄ¾ÓÃñ
+													// å…ˆåˆ¤æ–­ç”¨æˆ·æ˜¯å¦å·²ç»æ˜¯è¯¥åŒºåŸŸçš„å±…æ°‘
 													if (strCurSelectAreaId
 															.equals(arg0
 																	.get(0)
@@ -248,11 +248,14 @@ public class AreaInfoActivity extends Activity implements
 														CommonUtils
 																.ShowToastCenter(
 																		AreaInfoActivity.this,
-																		"ÄúÒÑ¾­ÊÇ¸ÃÇøÓòµÄ¾ÓÃñÁË",
+																		"æ‚¨å·²ç»æ˜¯è¯¥åŒºåŸŸçš„å±…æ°‘äº†",
 																		Toast.LENGTH_LONG);
 													} else {
-														// ³É¹¦Ö®ºó½«»ñÈ¡µ½µÄÇøÓòidºÅĞ´Èëµ½ÓÃ»§ĞÅÏ¢±íÖĞ
-														UserInfo UserInfo = BmobUser.getCurrentUser(AreaInfoActivity.this, UserInfo.class);
+														// æˆåŠŸä¹‹åå°†è·å–åˆ°çš„åŒºåŸŸidå·å†™å…¥åˆ°ç”¨æˆ·ä¿¡æ¯è¡¨ä¸­
+														UserInfo UserInfo = BmobUser
+																.getCurrentUser(
+																		AreaInfoActivity.this,
+																		UserInfo.class);
 														UserInfo.setUserLiveID(strCurSelectAreaId);
 														UserInfo.update(
 																AreaInfoActivity.this,
@@ -265,7 +268,7 @@ public class AreaInfoActivity extends Activity implements
 																		CommonUtils
 																				.ShowToastCenter(
 																						AreaInfoActivity.this,
-																						"»¶Ó­Äú³ÉÎª¸ÃµØÇøµÄ¾ÓÃñ",
+																						"æ¬¢è¿æ‚¨æˆä¸ºè¯¥åœ°åŒºçš„å±…æ°‘",
 																						Toast.LENGTH_LONG);
 																	}
 
@@ -276,7 +279,7 @@ public class AreaInfoActivity extends Activity implements
 																		CommonUtils
 																				.ShowToastCenter(
 																						AreaInfoActivity.this,
-																						"ÊµÔÚ±§Ç¸,²Ù×÷Ê§°Ü,code:"
+																						"å®åœ¨æŠ±æ­‰,æ“ä½œå¤±è´¥,code:"
 																								+ code
 																								+ " "
 																								+ msg,
@@ -288,7 +291,7 @@ public class AreaInfoActivity extends Activity implements
 													CommonUtils
 															.ShowToastCenter(
 																	AreaInfoActivity.this,
-																	"Ã»ÓĞÕÒµ½¸ÃÇøÓò",
+																	"æ²¡æœ‰æ‰¾åˆ°è¯¥åŒºåŸŸ",
 																	Toast.LENGTH_LONG);
 												}
 											}
@@ -296,7 +299,7 @@ public class AreaInfoActivity extends Activity implements
 										});
 							}
 						});
-				builder.setNegativeButton("È¡Ïû",
+				builder.setNegativeButton("å–æ¶ˆ",
 						new android.content.DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog,
@@ -311,19 +314,19 @@ public class AreaInfoActivity extends Activity implements
 	}
 
 	/**
-	 * ¶¨Î»SDK¼àÌıº¯Êı
+	 * å®šä½SDKç›‘å¬å‡½æ•°
 	 */
 	public class MyLocationListenner implements BDLocationListener {
 
 		@Override
 		public void onReceiveLocation(BDLocation location) {
-			// map view Ïú»Ùºó²»ÔÚ´¦ÀíĞÂ½ÓÊÕµÄÎ»ÖÃ
+			// map view é”€æ¯åä¸åœ¨å¤„ç†æ–°æ¥æ”¶çš„ä½ç½®
 			if (location == null || mMapView == null)
 				return;
 
 			MyLocationData locData = new MyLocationData.Builder()
 					.accuracy(location.getRadius())
-					// ´Ë´¦ÉèÖÃ¿ª·¢Õß»ñÈ¡µ½µÄ·½ÏòĞÅÏ¢£¬Ë³Ê±Õë0-360
+					// æ­¤å¤„è®¾ç½®å¼€å‘è€…è·å–åˆ°çš„æ–¹å‘ä¿¡æ¯ï¼Œé¡ºæ—¶é’ˆ0-360
 					.direction(100).latitude(location.getLatitude())
 					.longitude(location.getLongitude()).build();
 			mBaiduMap.setMyLocationData(locData);
@@ -331,23 +334,23 @@ public class AreaInfoActivity extends Activity implements
 				isFirstLoc = false;
 				LatLng ll = new LatLng(location.getLatitude(),
 						location.getLongitude());
-				// ±£´æµ±Ç°¾­Î³¶È
+				// ä¿å­˜å½“å‰ç»çº¬åº¦
 				dCurLongitude = location.getLongitude();
 				dCurLatitude = location.getLatitude();
 
 				MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
 				mBaiduMap.animateMapStatus(u);
-				// ¸ù¾İ¾­Î³¶È¼ÆËãÇøÓòË÷ÒıºÅ
-				// ¸ù¾İdx»ñÈ¡xÖá·½ÏòµÄË÷Òı
+				// æ ¹æ®ç»çº¬åº¦è®¡ç®—åŒºåŸŸç´¢å¼•å·
+				// æ ¹æ®dxè·å–xè½´æ–¹å‘çš„ç´¢å¼•
 				nCurPosxIndex = commondata
 						.GetWestToEastIndexByLon(ll.longitude);
-				// ¸ù¾İdy»ñÈ¡yÖá·½ÏòµÄË÷Òı
+				// æ ¹æ®dyè·å–yè½´æ–¹å‘çš„ç´¢å¼•
 				nCurPosyIndex = commondata
 						.GetNorthToSouthIndexByLat(ll.latitude);
-				// ÏÔÊ¾µ±Ç°Î»ÖÃ
+				// æ˜¾ç¤ºå½“å‰ä½ç½®
 				addresstextview.setText(location.getAddrStr());
 				strUserCurPosition = location.getAddrStr();
-				// ¸ù¾İµ±Ç°ËùÔÚµÄ¾­Î³¶È·½ÏòË÷ÒıºÅ»ñÈ¡µ±Ç°ËùÔÚÇøÓòµÄÏà¹ØĞÅÏ¢
+				// æ ¹æ®å½“å‰æ‰€åœ¨çš„ç»çº¬åº¦æ–¹å‘ç´¢å¼•å·è·å–å½“å‰æ‰€åœ¨åŒºåŸŸçš„ç›¸å…³ä¿¡æ¯
 				DealCurAreaInfo();
 			}
 		}
@@ -366,17 +369,17 @@ public class AreaInfoActivity extends Activity implements
 	}
 
 	private void SetDisableFunction() {
-		// ½«Ëõ·Å½ûÖ¹µô
+		// å°†ç¼©æ”¾ç¦æ­¢æ‰
 		mUiSettings.setZoomGesturesEnabled(false);
-		// ½«Ğı×ª½ûÖ¹µô
+		// å°†æ—‹è½¬ç¦æ­¢æ‰
 		mUiSettings.setRotateGesturesEnabled(false);
-		// ½«Ö¸ÄÏÕë½ûÖ¹µô
+		// å°†æŒ‡å—é’ˆç¦æ­¢æ‰
 		mUiSettings.setCompassEnabled(false);
-		// ½«¸©ÊÓ½ûÖ¹µô
+		// å°†ä¿¯è§†ç¦æ­¢æ‰
 		mUiSettings.setOverlookingGesturesEnabled(false);
 	}
 
-	// Òş²ØËõ·Å¿Ø¼ş
+	// éšè—ç¼©æ”¾æ§ä»¶
 	private void HideZoomCotroller() {
 		int childCount = mMapView.getChildCount();
 
@@ -399,7 +402,7 @@ public class AreaInfoActivity extends Activity implements
 		zoom.setVisibility(View.GONE);
 	}
 
-	// Òş²Ø°Ù¶Èlogo child instanceof ImageView
+	// éšè—ç™¾åº¦logo child instanceof ImageView
 	private void HideLogo() {
 		int childCount = mMapView.getChildCount();
 
@@ -423,26 +426,26 @@ public class AreaInfoActivity extends Activity implements
 	}
 
 	/**
-	 * ´¦ÀíËõ·Å sdk Ëõ·Å¼¶±ğ·¶Î§£º [3.0,19.0]
+	 * å¤„ç†ç¼©æ”¾ sdk ç¼©æ”¾çº§åˆ«èŒƒå›´ï¼š [3.0,19.0]
 	 */
 	private void perfomZoom(float zoomLevel) {
 		try {
 			MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(zoomLevel);
 			mBaiduMap.setMapStatus(u);
 		} catch (NumberFormatException e) {
-			Toast.makeText(this, "ÇëÊäÈëÕıÈ·µÄËõ·Å¼¶±ğ", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "è¯·è¾“å…¥æ­£ç¡®çš„ç¼©æ”¾çº§åˆ«", Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	private void initListener() {
 
-		//µØÍ¼×´Ì¬¸Ä±äÁË
+		// åœ°å›¾çŠ¶æ€æ”¹å˜äº†
 		mBaiduMap.setOnMapStatusChangeListener(new OnMapStatusChangeListener() {
 
 			@Override
 			public void onMapStatusChange(MapStatus arg0) {
 				if (mBaiduMap != null) {
-					// ½«ÉÏÒ»´ÎÔÚµØÍ¼ÉÏ»­µÄÍ¼²ãÇå³ı
+					// å°†ä¸Šä¸€æ¬¡åœ¨åœ°å›¾ä¸Šç”»çš„å›¾å±‚æ¸…é™¤
 					mBaiduMap.clear();
 				}
 			}
@@ -450,22 +453,22 @@ public class AreaInfoActivity extends Activity implements
 			@Override
 			public void onMapStatusChangeFinish(MapStatus arg0) {
 
-				// ¸ù¾İdx»ñÈ¡xÖá·½ÏòµÄË÷Òı
+				// æ ¹æ®dxè·å–xè½´æ–¹å‘çš„ç´¢å¼•
 				int nIndexX = commondata
 						.GetWestToEastIndexByLon(arg0.target.longitude);
-				// ¸ù¾İdy»ñÈ¡yÖá·½ÏòµÄË÷Òı
+				// æ ¹æ®dyè·å–yè½´æ–¹å‘çš„ç´¢å¼•
 				int nIndexY = commondata
 						.GetNorthToSouthIndexByLat(arg0.target.latitude);
 
-				// ¸ù¾İnIndexXÓënIndexY¼ÆËãÇøÓò×óÏÂ½ÇºÍÓÒ±ß¾­Î³¶È
+				// æ ¹æ®nIndexXä¸nIndexYè®¡ç®—åŒºåŸŸå·¦ä¸‹è§’å’Œå³è¾¹ç»çº¬åº¦
 				commondata.GetDegrees(nIndexX, nIndexY);
-				// ½«×óÏÂ½ÇµÄ¾­Î³¶È×ª»»³ÉÆÁÄ»ÏñËØ×ø±ê
+				// å°†å·¦ä¸‹è§’çš„ç»çº¬åº¦è½¬æ¢æˆå±å¹•åƒç´ åæ ‡
 				LatLng ln = new LatLng(DegreeDatas.letfbottomposlat,
 						DegreeDatas.letfbottomposlon);
-				// ½«ÓÒ±ßµãµÄ¾­Î³¶È×ª»»³ÉÆÁÄ»ÏñËØ×ø±ê
+				// å°†å³è¾¹ç‚¹çš„ç»çº¬åº¦è½¬æ¢æˆå±å¹•åƒç´ åæ ‡
 				LatLng ln1 = new LatLng(DegreeDatas.righttopposlat,
 						DegreeDatas.righttopposlon);
-				// ½«ÉÏÃæµãµÄ¾­Î³¶È×ª»»³ÉÆÁÄ»ÏñËØ×ø±ê
+				// å°†ä¸Šé¢ç‚¹çš„ç»çº¬åº¦è½¬æ¢æˆå±å¹•åƒç´ åæ ‡
 				LatLng ln2 = new LatLng(DegreeDatas.upposlat,
 						DegreeDatas.upposlon);
 
@@ -473,24 +476,24 @@ public class AreaInfoActivity extends Activity implements
 				Point pt1 = mBaiduMap.getProjection().toScreenLocation(ln1);
 				Point pt2 = mBaiduMap.getProjection().toScreenLocation(ln2);
 
-				// ËÄ±ßĞÎµÄËÄ¸öÏñËØ×ø±ê
+				// å››è¾¹å½¢çš„å››ä¸ªåƒç´ åæ ‡
 				Point RectPt1 = new Point();
 				Point RectPt2 = new Point();
 				Point RectPt3 = new Point();
 				Point RectPt4 = new Point();
 
-				// ¼ÆËãx·½Ïòµ¥Î»ÇøÓò±ß¿òµÄÏñËØ´óĞ¡
+				// è®¡ç®—xæ–¹å‘å•ä½åŒºåŸŸè¾¹æ¡†çš„åƒç´ å¤§å°
 				int nPixel = pt1.x - pt.x;
-				// ¼ÆËãy·½Ïòµ¥Î»ÇøÓò±ß¿òÏñËØ´óĞ¡
+				// è®¡ç®—yæ–¹å‘å•ä½åŒºåŸŸè¾¹æ¡†åƒç´ å¤§å°
 				int nPixel1 = pt.y - pt2.y;
 
 				Point pttemp = pt;
-				// »ñÈ¡Òª»­µÄÖ±Ïß×ø±ê(×Ü¹²Òª»­12ÌõÖ±Ïß),´Ó×óÉÏ½Ç¿ªÊ¼
+				// è·å–è¦ç”»çš„ç›´çº¿åæ ‡(æ€»å…±è¦ç”»12æ¡ç›´çº¿),ä»å·¦ä¸Šè§’å¼€å§‹
 				pt.x = pttemp.x - nPixel;
 				pt.y = pttemp.y - 2 * nPixel1;
 				pt1.x = pt1.x + nPixel;
 				pt1.y = pt1.y - 2 * nPixel1;
-				// »­µÚÒ»ÌõÖ±Ïß
+				// ç”»ç¬¬ä¸€æ¡ç›´çº¿
 				DrawLine(mBaiduMap.getProjection().fromScreenLocation(pt),
 						mBaiduMap.getProjection().fromScreenLocation(pt1));
 
@@ -498,10 +501,10 @@ public class AreaInfoActivity extends Activity implements
 				RectPt1.y = pt.y;
 				RectPt2.x = pt1.x;
 				RectPt2.y = pt1.y;
-				// ¸ù¾İpt»ñÈ¡¾Å¸ö¸ñ×ÓµÄµã×ø±ê
+				// æ ¹æ®ptè·å–ä¹ä¸ªæ ¼å­çš„ç‚¹åæ ‡
 				NinePolygonData.StoreNineGridPos(pt, nPixel, nPixel1);
 
-				// ¿ªÊ¼»­µÚ¶şÌõÖ±Ïß
+				// å¼€å§‹ç”»ç¬¬äºŒæ¡ç›´çº¿
 				pt.x = pt.x;
 				pt.y = pt.y + nPixel1;
 				pt1.x = pt1.x;
@@ -509,7 +512,7 @@ public class AreaInfoActivity extends Activity implements
 				DrawLine(mBaiduMap.getProjection().fromScreenLocation(pt),
 						mBaiduMap.getProjection().fromScreenLocation(pt1));
 
-				// ¿ªÊ¼»­µÚÈıÌõÖ±Ïß
+				// å¼€å§‹ç”»ç¬¬ä¸‰æ¡ç›´çº¿
 				pt.x = pt.x;
 				pt.y = pt.y + nPixel1;
 				pt1.x = pt1.x;
@@ -517,7 +520,7 @@ public class AreaInfoActivity extends Activity implements
 				DrawLine(mBaiduMap.getProjection().fromScreenLocation(pt),
 						mBaiduMap.getProjection().fromScreenLocation(pt1));
 
-				// ¿ªÊ¼»­µÚËÄÌõÖ±Ïß
+				// å¼€å§‹ç”»ç¬¬å››æ¡ç›´çº¿
 				pt.x = pt.x;
 				pt.y = pt.y + nPixel1;
 				pt1.x = pt1.x;
@@ -528,7 +531,7 @@ public class AreaInfoActivity extends Activity implements
 				RectPt3.y = pt.y;
 				RectPt4.x = pt1.x;
 				RectPt4.y = pt1.y;
-				// ¿ªÊ¼»­µÚÎåÌõÖ±Ïß
+				// å¼€å§‹ç”»ç¬¬äº”æ¡ç›´çº¿
 				pt.x = pt.x;
 				pt.y = pt.y;
 				pt1.x = pt.x;
@@ -536,7 +539,7 @@ public class AreaInfoActivity extends Activity implements
 				DrawLine(mBaiduMap.getProjection().fromScreenLocation(pt),
 						mBaiduMap.getProjection().fromScreenLocation(pt1));
 
-				// ¿ªÊ¼»­µÚÁùÌõÖ±Ïß
+				// å¼€å§‹ç”»ç¬¬å…­æ¡ç›´çº¿
 				pt.x = pt.x + nPixel;
 				pt.y = pt.y;
 				pt1.x = pt1.x + nPixel;
@@ -544,7 +547,7 @@ public class AreaInfoActivity extends Activity implements
 				DrawLine(mBaiduMap.getProjection().fromScreenLocation(pt),
 						mBaiduMap.getProjection().fromScreenLocation(pt1));
 
-				// ¿ªÊ¼»­µÚÆßÌõÖ±Ïß
+				// å¼€å§‹ç”»ç¬¬ä¸ƒæ¡ç›´çº¿
 				pt.x = pt.x + nPixel;
 				pt.y = pt.y;
 				pt1.x = pt1.x + nPixel;
@@ -552,7 +555,7 @@ public class AreaInfoActivity extends Activity implements
 				DrawLine(mBaiduMap.getProjection().fromScreenLocation(pt),
 						mBaiduMap.getProjection().fromScreenLocation(pt1));
 
-				// ¿ªÊ¼»­µÚ°ËÌõÖ±Ïß
+				// å¼€å§‹ç”»ç¬¬å…«æ¡ç›´çº¿
 				pt.x = pt.x + nPixel;
 				pt.y = pt.y;
 				pt1.x = pt1.x + nPixel;
@@ -560,7 +563,7 @@ public class AreaInfoActivity extends Activity implements
 				DrawLine(mBaiduMap.getProjection().fromScreenLocation(pt),
 						mBaiduMap.getProjection().fromScreenLocation(pt1));
 
-				// Ìí¼Ó¶à±ßĞÎ
+				// æ·»åŠ å¤šè¾¹å½¢
 				LatLng latpt1 = mBaiduMap.getProjection().fromScreenLocation(
 						RectPt1);
 				LatLng latpt2 = mBaiduMap.getProjection().fromScreenLocation(
@@ -595,17 +598,17 @@ public class AreaInfoActivity extends Activity implements
 			@Override
 			public void onMapStatusChangeStart(MapStatus arg0) {
 				if (mBaiduMap != null) {
-					// ½«ÉÏÒ»´ÎÔÚµØÍ¼ÉÏ»­µÄÍ¼²ãÇå³ı
+					// å°†ä¸Šä¸€æ¬¡åœ¨åœ°å›¾ä¸Šç”»çš„å›¾å±‚æ¸…é™¤
 					mBaiduMap.clear();
 				}
 			}
 
 		});
 
-		// Õë¶ÔµØÍ¼ÉÏµÄµã»÷ÊÂ¼ş½øĞĞÏìÓ¦
+		// é’ˆå¯¹åœ°å›¾ä¸Šçš„ç‚¹å‡»äº‹ä»¶è¿›è¡Œå“åº”
 		mBaiduMap.setOnMapClickListener(new OnMapClickListener() {
 			public void onMapClick(LatLng point) {
-				// ´¦Àíµã»÷µØÍ¼ÊÂ¼ş
+				// å¤„ç†ç‚¹å‡»åœ°å›¾äº‹ä»¶
 				DealClickAndShowInfo(point);
 			}
 
@@ -614,43 +617,41 @@ public class AreaInfoActivity extends Activity implements
 				return false;
 			}
 		});
-		
-		//Ë«»÷µØÍ¼
-		mBaiduMap.setOnMapDoubleClickListener(new OnMapDoubleClickListener(){
+
+		// åŒå‡»åœ°å›¾
+		mBaiduMap.setOnMapDoubleClickListener(new OnMapDoubleClickListener() {
 
 			@Override
 			public void onMapDoubleClick(LatLng arg0) {
-				//½øÈëÖ¸¶¨µÄÇøÓòÖĞ
-				Intent it = new Intent(AreaInfoActivity.this,AreaMessageList.class);
-				startActivity(it);
+				DealDoubleClick(arg0);
 			}
-			
+
 		});
 	}
 
-	// ¸ù¾İµØÖ·»ñÈ¡¾­Î³¶ÈµÄ»Øµ÷º¯Êı
+	// æ ¹æ®åœ°å€è·å–ç»çº¬åº¦çš„å›è°ƒå‡½æ•°
 	@Override
 	public void onGetGeoCodeResult(GeoCodeResult result) {
 		if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-			CommonUtils.ShowToastCenter(AreaInfoActivity.this, "±§Ç¸£¬Î´ÄÜÕÒµ½½á¹û",
+			CommonUtils.ShowToastCenter(AreaInfoActivity.this, "æŠ±æ­‰ï¼Œæœªèƒ½æ‰¾åˆ°ç»“æœ",
 					Toast.LENGTH_LONG);
 		}
 	}
 
-	// ¸ù¾İ¾­Î³¶È»ñÈ¡µØÖ·µÄ»Øµ÷º¯Êı
+	// æ ¹æ®ç»çº¬åº¦è·å–åœ°å€çš„å›è°ƒå‡½æ•°
 	@Override
 	public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
 		if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-			CommonUtils.ShowToastCenter(AreaInfoActivity.this, "±§Ç¸£¬Î´ÄÜÕÒµ½½á¹û",
+			CommonUtils.ShowToastCenter(AreaInfoActivity.this, "æŠ±æ­‰ï¼Œæœªèƒ½æ‰¾åˆ°ç»“æœ",
 					Toast.LENGTH_LONG);
 		}
 		curuseraddresstextview.setText(result.getAddress());
 
 	}
 
-	// ¸ù¾İ¾­Î³¶È·½ÏòË÷ÒıºÅ»ñÈ¡Ëù´¦µ±Ç°ÇøÓòIDºÅ
+	// æ ¹æ®ç»çº¬åº¦æ–¹å‘ç´¢å¼•å·è·å–æ‰€å¤„å½“å‰åŒºåŸŸIDå·
 	private void DealCurAreaInfo() {
-		// ¸ù¾İmacµØÖ·»ñÈ¡ÓÃ»§ĞÅÏ¢
+		// æ ¹æ®macåœ°å€è·å–ç”¨æˆ·ä¿¡æ¯
 		BmobQuery<AreaInfo> query = new BmobQuery<AreaInfo>();
 		query.addQueryKeys("AreaName,objectId");
 		query.addWhereEqualTo("XIndex", nCurPosxIndex);
@@ -659,13 +660,13 @@ public class AreaInfoActivity extends Activity implements
 			@Override
 			public void onSuccess(List<AreaInfo> object) {
 				if (object.size() > 0) {
-					// Èç¹ûÕÒµ½ÁË
+					// å¦‚æœæ‰¾åˆ°äº†
 					linearlayout1.setVisibility(View.GONE);
 					linearlayout2.setVisibility(View.VISIBLE);
 					areanametextview.setText(object.get(0).getAreaName());
 					strCurSelectAreaId = object.get(0).getObjectId();
 				} else {
-					// ´ËÊ±ËµÃ÷Õâ¸öÇøÓò»¹Ã»ÓĞÈËÃüÃû,ÓÃ»§¿ÉÒÔ¶ÔÕâ¸öÇøÓò½øĞĞÃüÃû
+					// æ­¤æ—¶è¯´æ˜è¿™ä¸ªåŒºåŸŸè¿˜æ²¡æœ‰äººå‘½å,ç”¨æˆ·å¯ä»¥å¯¹è¿™ä¸ªåŒºåŸŸè¿›è¡Œå‘½å
 					linearlayout1.setVisibility(View.VISIBLE);
 					relativelayout.setVisibility(View.GONE);
 					prompttextview.setVisibility(View.VISIBLE);
@@ -675,7 +676,7 @@ public class AreaInfoActivity extends Activity implements
 
 			@Override
 			public void onError(int code, String Errormsg) {
-				CommonUtils.ShowToastCenter(AreaInfoActivity.this, "³öÏÖ´íÎó,code:"
+				CommonUtils.ShowToastCenter(AreaInfoActivity.this, "å‡ºç°é”™è¯¯,code:"
 						+ code + " " + Errormsg, Toast.LENGTH_LONG);
 			}
 		});
@@ -695,13 +696,13 @@ public class AreaInfoActivity extends Activity implements
 		});
 	}
 
-	// ´¦Àíµã»÷µØÍ¼ÊÂ¼ş,ÏÔÊ¾ÏàÓ¦µÄĞÅÏ¢
+	// å¤„ç†ç‚¹å‡»åœ°å›¾äº‹ä»¶,æ˜¾ç¤ºç›¸åº”çš„ä¿¡æ¯
 	private void DealClickAndShowInfo(final LatLng ll) {
-		// ¸ù¾İdx»ñÈ¡xÖá·½ÏòµÄË÷Òı
+		// æ ¹æ®dxè·å–xè½´æ–¹å‘çš„ç´¢å¼•
 		nClickPosxIndex = commondata.GetWestToEastIndexByLon(ll.longitude);
-		// ¸ù¾İdy»ñÈ¡yÖá·½ÏòµÄË÷Òı
+		// æ ¹æ®dyè·å–yè½´æ–¹å‘çš„ç´¢å¼•
 		nClickPosyIndex = commondata.GetNorthToSouthIndexByLat(ll.latitude);
-		// ¸ù¾İË÷Òı»ñÈ¡Õâ¸öÇøÓòµÄĞÅÏ¢
+		// æ ¹æ®ç´¢å¼•è·å–è¿™ä¸ªåŒºåŸŸçš„ä¿¡æ¯
 		BmobQuery<AreaInfo> query = new BmobQuery<AreaInfo>();
 		query.addQueryKeys("AreaName");
 		query.addWhereEqualTo("XIndex", nClickPosxIndex);
@@ -709,43 +710,43 @@ public class AreaInfoActivity extends Activity implements
 		query.findObjects(AreaInfoActivity.this, new FindListener<AreaInfo>() {
 			@Override
 			public void onSuccess(List<AreaInfo> object) {
-				// ÅĞ¶ÏË÷ÒıÊÇ·ñÓëÓÃ»§µ±Ç°Î»ÖÃÏàÍ¬
+				// åˆ¤æ–­ç´¢å¼•æ˜¯å¦ä¸ç”¨æˆ·å½“å‰ä½ç½®ç›¸åŒ
 				if (nCurPosxIndex == nClickPosxIndex
 						&& nCurPosyIndex == nClickPosyIndex) {
 					if (object.size() > 0) {
-						// Èç¹ûÕÒµ½ÁË
+						// å¦‚æœæ‰¾åˆ°äº†
 						linearlayout1.setVisibility(View.GONE);
 						linearlayout2.setVisibility(View.VISIBLE);
 						curuseraddresstextview.setVisibility(View.GONE);
 						areanametextview.setText(object.get(0).getAreaName());
 						strCurSelectAreaId = object.get(0).getObjectId();
 					} else {
-						// ´ËÊ±ËµÃ÷Õâ¸öÇøÓò»¹Ã»ÓĞÈËÃüÃû,ÓÃ»§¿ÉÒÔ¶ÔÕâ¸öÇøÓò½øĞĞÃüÃû
+						// æ­¤æ—¶è¯´æ˜è¿™ä¸ªåŒºåŸŸè¿˜æ²¡æœ‰äººå‘½å,ç”¨æˆ·å¯ä»¥å¯¹è¿™ä¸ªåŒºåŸŸè¿›è¡Œå‘½å
 						linearlayout1.setVisibility(View.VISIBLE);
 						relativelayout.setVisibility(View.GONE);
 						prompttextview.setVisibility(View.VISIBLE);
 						linearlayout2.setVisibility(View.GONE);
 						curuseraddresstextview.setVisibility(View.VISIBLE);
-						// ·´GeoËÑË÷
+						// åGeoæœç´¢
 						mSearch.reverseGeoCode(new ReverseGeoCodeOption()
 								.location(ll));
 					}
-				} else {// Èç¹ûÓÃ»§²»ÊÇÔÚ¸ÃÇøÓòÄÚ²¿
+				} else {// å¦‚æœç”¨æˆ·ä¸æ˜¯åœ¨è¯¥åŒºåŸŸå†…éƒ¨
 					if (object.size() > 0) {
-						// Èç¹ûÕÒµ½ÁË
+						// å¦‚æœæ‰¾åˆ°äº†
 						linearlayout1.setVisibility(View.GONE);
 						linearlayout2.setVisibility(View.VISIBLE);
 						curuseraddresstextview.setVisibility(View.GONE);
 						areanametextview.setText(object.get(0).getAreaName());
 						strCurSelectAreaId = object.get(0).getObjectId();
 					} else {
-						// ´ËÊ±ËµÃ÷Õâ¸öÇøÓò»¹Ã»ÓĞÈËÃüÃû,ÓÃ»§¿ÉÒÔ¶ÔÕâ¸öÇøÓò½øĞĞÃüÃû
+						// æ­¤æ—¶è¯´æ˜è¿™ä¸ªåŒºåŸŸè¿˜æ²¡æœ‰äººå‘½å,ç”¨æˆ·å¯ä»¥å¯¹è¿™ä¸ªåŒºåŸŸè¿›è¡Œå‘½å
 						linearlayout1.setVisibility(View.VISIBLE);
 						relativelayout.setVisibility(View.GONE);
 						prompttextview.setVisibility(View.VISIBLE);
 						linearlayout2.setVisibility(View.GONE);
 						curuseraddresstextview.setVisibility(View.VISIBLE);
-						// ·´GeoËÑË÷
+						// åGeoæœç´¢
 						mSearch.reverseGeoCode(new ReverseGeoCodeOption()
 								.location(ll));
 					}
@@ -754,7 +755,41 @@ public class AreaInfoActivity extends Activity implements
 
 			@Override
 			public void onError(int code, String Errormsg) {
-				CommonUtils.ShowToastCenter(AreaInfoActivity.this, "³öÏÖ´íÎó,code:"
+				CommonUtils.ShowToastCenter(AreaInfoActivity.this, "å‡ºç°é”™è¯¯,code:"
+						+ code + " " + Errormsg, Toast.LENGTH_LONG);
+			}
+		});
+	}
+
+	// å¤„ç†ç‚¹å‡»åœ°å›¾äº‹ä»¶,æ˜¾ç¤ºç›¸åº”çš„ä¿¡æ¯
+	private void DealDoubleClick(final LatLng ll) {
+		// æ ¹æ®dxè·å–xè½´æ–¹å‘çš„ç´¢å¼•
+		nClickPosxIndex = commondata.GetWestToEastIndexByLon(ll.longitude);
+		// æ ¹æ®dyè·å–yè½´æ–¹å‘çš„ç´¢å¼•
+		nClickPosyIndex = commondata.GetNorthToSouthIndexByLat(ll.latitude);
+		// æ ¹æ®ç´¢å¼•è·å–è¿™ä¸ªåŒºåŸŸçš„ä¿¡æ¯
+		BmobQuery<AreaInfo> query = new BmobQuery<AreaInfo>();
+		query.addQueryKeys("AreaName");
+		query.addWhereEqualTo("XIndex", nClickPosxIndex);
+		query.addWhereEqualTo("YIndex", nClickPosyIndex);
+		query.findObjects(AreaInfoActivity.this, new FindListener<AreaInfo>() {
+			@Override
+			public void onSuccess(List<AreaInfo> object) {
+				//å¦‚æœæ‰¾åˆ°äº†
+				if(object.size() > 0){
+					strCurSelectAreaId = object.get(0).getObjectId();
+					// è¿›å…¥æŒ‡å®šçš„åŒºåŸŸä¸­
+					Intent it = new Intent(AreaInfoActivity.this,
+							AreaMessageList.class);
+					startActivity(it);
+				}else{//å¦‚æœæ²¡æœ‰æ‰¾åˆ°
+					CommonUtils.ShowToastCenter(AreaInfoActivity.this, "è¯¥åŒºåŸŸè¿˜æ²¡æœ‰è¢«åˆ«äººå é¢†", Toast.LENGTH_LONG);
+				}
+			}
+
+			@Override
+			public void onError(int code, String Errormsg) {
+				CommonUtils.ShowToastCenter(AreaInfoActivity.this, "å‡ºç°é”™è¯¯,code:"
 						+ code + " " + Errormsg, Toast.LENGTH_LONG);
 			}
 		});
@@ -779,9 +814,9 @@ public class AreaInfoActivity extends Activity implements
 
 	@Override
 	protected void onDestroy() {
-		// ÍË³öÊ±Ïú»Ù¶¨Î»
+		// é€€å‡ºæ—¶é”€æ¯å®šä½
 		mLocClient.stop();
-		// ¹Ø±Õ¶¨Î»Í¼²ã
+		// å…³é—­å®šä½å›¾å±‚
 		mBaiduMap.setMyLocationEnabled(false);
 		mMapView.onDestroy();
 		mMapView = null;

@@ -3,18 +3,18 @@ package com.mike.bombobject;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 
-//´æ´¢ÇøÓò·¢²¼ÄÚÈİ±í
+//å­˜å‚¨åŒºåŸŸå‘å¸ƒå†…å®¹è¡¨
 public class AreaPublishContent extends BmobObject {
-	String TextContent;// ÎÄ×ÖÄÚÈİ
-	BmobFile FirstImage;// µÚÒ»ÕÅÍ¼Æ¬
-	BmobFile SecondImage;// µÚ¶şÕÅÍ¼Æ¬
-	BmobFile ThirdImage;// µÚÈıÕÅÍ¼Æ¬
-	String PublishPersonName;// ·¢²¼ÈËÃû(MAC)
-	String PublishAddress;// ·¢²¼µØµã
-	Integer ScanTimes;// ä¯ÀÀ´ÎÊı
-	Integer CommentTimes;// ÆÀÂÛ´ÎÊı
-	Integer CreditValue;// ÔŞÖµ
-	String AreaID;// ÇøÓòidºÅ
+	String TextContent;// æ–‡å­—å†…å®¹
+	BmobFile FirstImage;// ç¬¬ä¸€å¼ å›¾ç‰‡
+	BmobFile SecondImage;// ç¬¬äºŒå¼ å›¾ç‰‡
+	BmobFile ThirdImage;// ç¬¬ä¸‰å¼ å›¾ç‰‡
+	String PublishPersonName;// å‘å¸ƒäººå(MAC)
+	String PublishAddress;// å‘å¸ƒåœ°ç‚¹
+	Integer ScanTimes;// æµè§ˆæ¬¡æ•°
+	Integer CommentTimes;// è¯„è®ºæ¬¡æ•°
+	Integer CreditValue;// èµå€¼
+	String AreaID;// åŒºåŸŸidå·
 
 	public String getTextContent() {
 		return TextContent;

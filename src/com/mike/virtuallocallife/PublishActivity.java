@@ -2,10 +2,9 @@ package com.mike.virtuallocallife;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
@@ -39,40 +38,34 @@ import android.widget.Toast;
 
 public class PublishActivity extends Activity {
 
-	// ±£´æÍ¨¹ıÎÄ¼ş·½Ê½ËùÑ¡Í¼Æ¬µÄÂ·¾¶
+	// ä¿å­˜é€šè¿‡æ–‡ä»¶æ–¹å¼æ‰€é€‰å›¾ç‰‡çš„è·¯å¾„
 	// private String mImgPaths = "";
-	public static final String[] addPhoto = new String[] { "´ÓÏà²áÑ¡Ôñ", "ÏÖÔÚÅÄÉã",
-			"È¡Ïû" };
+	public static final String[] addPhoto = new String[] { "ä»ç›¸å†Œé€‰æ‹©", "ç°åœ¨æ‹æ‘„",
+			"å–æ¶ˆ" };
 	CommonUtils mUtils = null;
 	SharedPreferences msettings = null;
-	// µ±Ç°µã»÷µÄImageView¿Ø¼şµÄË÷Òı
+	// å½“å‰ç‚¹å‡»çš„ImageViewæ§ä»¶çš„ç´¢å¼•
 	int nPos = 0;
-	// ½ø¶ÈÌõ¶ÔÏó
+	// è¿›åº¦æ¡å¯¹è±¡
 	public static ProgressDialog m_ProgressDialog = null;
-	// Ò»ÏÂÈı¸ö×Ö·û´®±äÁ¿·Ö±ğÎªÒª·¢²¼µÄÍ¼Æ¬µÄÈı¸öÎÄ¼şÂ·¾¶
+	// ä¸€ä¸‹ä¸‰ä¸ªå­—ç¬¦ä¸²å˜é‡åˆ†åˆ«ä¸ºè¦å‘å¸ƒçš„å›¾ç‰‡çš„ä¸‰ä¸ªæ–‡ä»¶è·¯å¾„
 	String strFirstImagePath = "";
 	String strSecondImagePath = "";
 	String strThirdImagePath = "";
-	// Ò»´ÎĞÔÉÏ´«Í¼Æ¬µÄ¸öÊı
-	public static final int MAXUPLOADIMAGEFILE = 3;
-	// µ±ÉÏ´«µÄÍ¼Æ¬¸öÊı
-	int currentimagefileSize = 0;
-	// ´æ´¢ÒªÉÏ´«Í¼Æ¬µÄBmobFile¶ÔÏó
-	Map<Integer, BmobFile> ImageMaps = new HashMap<Integer, BmobFile>();
-	/********************* ¿Ø¼ş±äÁ¿ ***********************/
-	// ÓÃ»§µ±Ç°Î»ÖÃ¿Ø¼ş
+	/********************* æ§ä»¶å˜é‡ ***********************/
+	// ç”¨æˆ·å½“å‰ä½ç½®æ§ä»¶
 	EditText addressedittext;
-	// ·µ»Ø¿Ø¼ş
+	// è¿”å›æ§ä»¶
 	ImageView returnimageview;
-	// ÊäÈëÄÚÈİ¿Ø¼ş
+	// è¾“å…¥å†…å®¹æ§ä»¶
 	EditText contentedittext;
-	// µÚÒ»¸öÍ¼Æ¬¿Ø¼ş
+	// ç¬¬ä¸€ä¸ªå›¾ç‰‡æ§ä»¶
 	ImageView firstphotoimageview;
-	// µÚ¶ş¸öÍ¼Æ¬¿Ø¼ş
+	// ç¬¬äºŒä¸ªå›¾ç‰‡æ§ä»¶
 	ImageView secondphotoimageview;
-	// µÚÈı¸öÍ¼Æ¬¿Ø¼ş
+	// ç¬¬ä¸‰ä¸ªå›¾ç‰‡æ§ä»¶
 	ImageView thirdphotoimageview;
-	// ·¢²¼ÄÚÈİ°´Å¥
+	// å‘å¸ƒå†…å®¹æŒ‰é’®
 	Button publishbutton;
 
 	@Override
@@ -91,7 +84,7 @@ public class PublishActivity extends Activity {
 
 	private void InitActivity() {
 		addressedittext = (EditText) findViewById(R.id.makepublic_EditText2);
-		// ÉèÖÃÓÃ»§µ±Ç°Î»ÖÃ
+		// è®¾ç½®ç”¨æˆ·å½“å‰ä½ç½®
 		addressedittext.setText(AreaInfoActivity.strUserCurPosition);
 		returnimageview = (ImageView) findViewById(R.id.makepublic_returnimageview);
 		contentedittext = (EditText) findViewById(R.id.makepublic_EditText1);
@@ -125,7 +118,7 @@ public class PublishActivity extends Activity {
 			public void onClick(View v) {
 				if (strFirstImagePath.equals("")) {
 					CommonUtils.ShowToastCenter(PublishActivity.this,
-							"ÇëÏÈÑ¡ÔñµÚÒ»ÕÅÍ¼Æ¬", Toast.LENGTH_LONG);
+							"è¯·å…ˆé€‰æ‹©ç¬¬ä¸€å¼ å›¾ç‰‡", Toast.LENGTH_LONG);
 				} else {
 					nPos = 1;
 					showDialog(0);
@@ -140,7 +133,7 @@ public class PublishActivity extends Activity {
 			public void onClick(View v) {
 				if (strSecondImagePath.equals("")) {
 					CommonUtils.ShowToastCenter(PublishActivity.this,
-							"ÇëÏÈÑ¡ÔñµÚ¶şÕÅÍ¼Æ¬", Toast.LENGTH_LONG);
+							"è¯·å…ˆé€‰æ‹©ç¬¬äºŒå¼ å›¾ç‰‡", Toast.LENGTH_LONG);
 				} else {
 					nPos = 2;
 					showDialog(0);
@@ -154,132 +147,187 @@ public class PublishActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				m_ProgressDialog = ProgressDialog.show(PublishActivity.this,
-						"", "·¢²¼ÖĞ,ÇëµÈ´ı...", true);
+						"", "å‘å¸ƒä¸­ï¼Œè¯·ç­‰å¾…...", true);
 				m_ProgressDialog.setCancelable(true);
 
-				insertBatchDatasWithMany();
+				final List<BmobFile> ImageFiles = new ArrayList<BmobFile>();
+				
+				if (!strFirstImagePath.equals("")) {
+					final BmobFile bmobFile1 = new BmobFile(new File(
+							strFirstImagePath));
+					//ä¸Šä¼ ç¬¬ä¸€å¼ å›¾ç‰‡
+					bmobFile1.uploadblock(PublishActivity.this,
+							new UploadFileListener() {
+
+								@Override
+								public void onFailure(int arg0, String arg1) {
+									
+									if (m_ProgressDialog != null) {
+										m_ProgressDialog.dismiss();
+										m_ProgressDialog = null;
+									}
+									CommonUtils.ShowToastCenter(
+											PublishActivity.this,
+											"å‘å¸ƒå¤±è´¥,code:" + arg0 + "error:"
+													+ arg1, Toast.LENGTH_LONG);
+									return;
+								}
+
+								@Override
+								public void onProgress(Integer arg0) {
+								}
+
+								@Override
+								public void onSuccess() {
+									ImageFiles.add(bmobFile1);
+									
+									if (!strSecondImagePath.equals("")) {
+										final BmobFile bmobFile2 = new BmobFile(
+												new File(strSecondImagePath));
+										//ä¸Šä¼ ç¬¬äºŒå¼ å›¾ç‰‡
+										bmobFile2.uploadblock(
+												PublishActivity.this,
+												new UploadFileListener() {
+
+													@Override
+													public void onFailure(
+															int arg0,
+															String arg1) {
+														
+														if (m_ProgressDialog != null) {
+															m_ProgressDialog
+																	.dismiss();
+															m_ProgressDialog = null;
+														}
+														CommonUtils.ShowToastCenter(
+																PublishActivity.this,
+																"å‘å¸ƒå¤±è´¥,code:" + arg0 + "error:"
+																		+ arg1, Toast.LENGTH_LONG);
+														return;
+													}
+
+													@Override
+													public void onProgress(
+															Integer arg0) {
+
+													}
+
+													@Override
+													public void onSuccess() {
+														ImageFiles
+																.add(bmobFile2);
+														
+														if (!strThirdImagePath
+																.equals("")) {
+															final BmobFile bmobFile3 = new BmobFile(
+																	new File(
+																			strThirdImagePath));
+															// ä¸Šä¼ ç¬¬ä¸‰å¼ å›¾ç‰‡
+															bmobFile3
+																	.uploadblock(
+																			PublishActivity.this,
+																			new UploadFileListener() {
+
+																				@Override
+																				public void onFailure(
+																						int arg0,
+																						String arg1) {
+																					
+																					if (m_ProgressDialog != null) {
+																						m_ProgressDialog
+																								.dismiss();
+																						m_ProgressDialog = null;
+																					}
+																					CommonUtils.ShowToastCenter(
+																							PublishActivity.this,
+																							"å‘å¸ƒå¤±è´¥,code:" + arg0 + "error:"
+																									+ arg1, Toast.LENGTH_LONG);
+																					return;
+																				}
+
+																				@Override
+																				public void onProgress(
+																						Integer arg0) {
+
+																				}
+
+																				@Override
+																				public void onSuccess() {
+																					ImageFiles
+																							.add(bmobFile3);
+																					PublishContent(ImageFiles);
+																				}
+
+																			});
+														} else {
+															PublishContent(ImageFiles);
+														}
+													}
+
+												});
+									} else {
+										PublishContent(ImageFiles);
+									}
+								}
+
+							});
+				} else {
+					PublishContent(ImageFiles);
+				}
+
 			}
 
 		});
 	}
 
-	/**
-	 * ´Ë·½·¨ÓÃÀ´·¢²¼ÄÚÈİ
-	 * 
-	 * @Title: insertBatchDatasWithOne
-	 * @throws
-	 */
-	private void insertBatchDatasWithMany() {
-		File[] fs = {null,null,null};//new File[MAXUPLOADIMAGEFILE];
-		currentimagefileSize = 0;
-		ImageMaps.clear();
-		int nCount = 0;
-		String strName;
-		//¼ÆËã·¢ËÍÍ¼Æ¬µÄ¸öÊı
-		if (!strFirstImagePath.equals("")) {
-			fs[0] = new File(strFirstImagePath);
-			strName = strFirstImagePath;
-			nCount++;
-			if (!strSecondImagePath.equals("")) {
-				fs[1] = new File(strSecondImagePath);
-				strName = strSecondImagePath;
-				nCount++;
-				if (!strThirdImagePath.equals("")) {
-					fs[2] = new File(strThirdImagePath);
-					strName = strThirdImagePath;
-					nCount++;
+	private void PublishContent(List<BmobFile> ImageFiles) {
+		
+		AreaPublishContent areapublish = new AreaPublishContent();
+		areapublish.setTextContent(contentedittext.getText().toString());
+		CommonUtils util = new CommonUtils(PublishActivity.this);
+		String strMac = util.strGetPhoneMac();
+		areapublish.setPublishPersonName(strMac);
+		areapublish.setPublishAddress(AreaInfoActivity.strUserCurPosition);
+		areapublish.setScanTimes(0);
+		areapublish.setCommentTimes(0);
+		areapublish.setCreditValue(0);
+		areapublish.setAreaID(AreaInfoActivity.strCurSelectAreaId);
+	
+		if (ImageFiles != null) {
+			int nSize = ImageFiles.size();
+			for (int i = 0; i < nSize; i++) {
+				if (0 == i) {
+					areapublish.setFirstImage(ImageFiles.get(0));
+				} else if (1 == i) {
+					areapublish.setSecondImage(ImageFiles.get(1));
+				} else if (2 == i) {
+					areapublish.setThirdImage(ImageFiles.get(2));
 				}
 			}
 		}
 
-		for (int i = 0; i < nCount; i++) {
-			uploadSongFile(i, nCount, fs[i]);
-		}
-	}
-
-	private void uploadSongFile(final int i, final int nCount, File file) {
-		final BmobFile bmobFile = new BmobFile(file);
-		bmobFile.uploadblock(this, new UploadFileListener() {
+		areapublish.save(PublishActivity.this, new SaveListener() {
 			@Override
-			public void onSuccess() {
-				currentimagefileSize++;
-				ImageMaps.put(i, bmobFile);
-				if (currentimagefileSize == nCount) {
-					AreaPublishContent areapublish = new AreaPublishContent();
-					areapublish.setTextContent(contentedittext.getText()
-							.toString());
-					CommonUtils util = new CommonUtils(PublishActivity.this);
-					String strMac = util.strGetPhoneMac();
-					areapublish.setAreaID(AreaInfoActivity.strCurSelectAreaId);
-					areapublish.setPublishPersonName(strMac);
-					areapublish
-							.setPublishAddress(AreaInfoActivity.strUserCurPosition);
-					areapublish.setScanTimes(0);
-					areapublish.setCommentTimes(0);
-					areapublish.setCreditValue(0);
-					// ½«Í¼Æ¬²åÈë
-					int nSize = ImageMaps.size();
-					for (int j = 0; j < nSize; j++) {
-						if (0 == j) {
-							areapublish.setFirstImage(ImageMaps.get(0));
-						} else if (1 == j) {
-							areapublish.setSecondImage(ImageMaps.get(1));
-						} else if (2 == j) {
-							areapublish.setThirdImage(ImageMaps.get(2));
-						}
-					}
-					// ²åÈë²Ù×÷
-					insertObject(areapublish);
-				}
-			}
-
-			@Override
-			public void onProgress(Integer arg0) {
-			}
-
-			@Override
-			public void onFailure(int code, String arg0) {
-				// È¡ÏûµÈ´ı¿ò
+			public void onFailure(int arg0, String arg1) {
+				
 				if (m_ProgressDialog != null) {
 					m_ProgressDialog.dismiss();
 					m_ProgressDialog = null;
 				}
-				CommonUtils.ShowToastCenter(PublishActivity.this, "·¢²¼Ê§°Ü",
+				CommonUtils.ShowToastCenter(PublishActivity.this, "å‘å¸ƒå¤±è´¥",
 						Toast.LENGTH_LONG);
 			}
-		});
 
-	}
-
-	/** ´´½¨²Ù×÷
-	  * insertObject
-	  * @return void
-	  * @throws
-	  */
-	private void insertObject(final BmobObject obj){
-		obj.save(PublishActivity.this, new SaveListener() {
-			
 			@Override
 			public void onSuccess() {
-				// È¡ÏûµÈ´ı¿ò
+				
 				if (m_ProgressDialog != null) {
 					m_ProgressDialog.dismiss();
 					m_ProgressDialog = null;
 				}
-				CommonUtils.ShowToastCenter(PublishActivity.this,
-						"·¢²¼³É¹¦", Toast.LENGTH_LONG);
+				CommonUtils.ShowToastCenter(PublishActivity.this, "å‘å¸ƒæˆåŠŸ",
+						Toast.LENGTH_LONG);
 				PublishActivity.this.finish();
-			}
-			
-			@Override
-			public void onFailure(int code, String arg0) {
-				// È¡ÏûµÈ´ı¿ò
-				if (m_ProgressDialog != null) {
-					m_ProgressDialog.dismiss();
-					m_ProgressDialog = null;
-				}
-				CommonUtils.ShowToastCenter(PublishActivity.this,
-						"·¢²¼Ê§°Ü", Toast.LENGTH_LONG);
 			}
 		});
 	}
@@ -297,7 +345,6 @@ public class PublishActivity extends Activity {
 		return imageview;
 	}
 
-	// »ñÈ¡µ±Ç°ÅÄÕÕÍ¼Æ¬µÄÂ·¾¶
 	private void CreateImagePathByCamera(String strPath) {
 		if (0 == nPos) {
 			strFirstImagePath = strPath;
@@ -312,28 +359,28 @@ public class PublishActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		Bitmap bitmap = null;
-		// ImageViewµÄ¶ÔÏó
+		
 		ImageView imageview = null;
-		// »ñÈ¡ÏàÓ¦µÄimagview¶ÔÏó
+		
 		imageview = GetImageViewByIndex();
-		// Èç¹ûimageviewÎªnull,ÄÇÃ´¾ÍÖ±½Ó·µ»Ø(Ò»°ãÇé¿öÏÂ²»»á³öÏÖÕâÖÖÇé¿ö)
+		
 		if (null == imageview) {
 			return;
 		}
 
 		// if (resultCode == RESULT_OK)
 		{
-			if (requestCode == 0) {// Í¨¹ıÅÄÕÕ»ñÈ¡µÄÕÕÆ¬
+			if (requestCode == 0) {
 
-				// »ñÈ¡Í¼Æ¬Ãû³Æ
+				
 				String strImageName = GetImagePath();
 				String strImagePath = Environment.getExternalStorageDirectory()
 						+ "/" + commondata.strParentFileName + "/"
 						+ strImageName;
-				// ÏÈÅĞ¶Ï¸ÃÎÄ¼şÊÇ·ñ´æÔÚ
+				
 				File pImageFile = new File(strImagePath);
 				if (pImageFile.exists()) {
-					// ¶ÔÍ¼Æ¬½øĞĞĞı×ª´¦Àí
+					
 					mUtils.rotatePhoto(strImagePath);
 
 					File imgFile = new File(strImagePath);
@@ -353,7 +400,7 @@ public class PublishActivity extends Activity {
 						String path = cursor.getString(column_index);
 						// mImgPaths = path;
 
-						// ÕÕÆ¬»ñÈ¡³É¹¦ºó½«ÏàÓ¦µÄÂ·¾¶±£´æ
+						
 						CreateImagePathByCamera(path);
 
 						ContentResolver cr = this.getContentResolver();
@@ -364,11 +411,11 @@ public class PublishActivity extends Activity {
 						e.printStackTrace();
 					}
 				} else {
-					CommonUtils.ShowToastCenter(PublishActivity.this,
-							"Í¼Æ¬²»´æÔÚ,ÇëÖØĞÂ»ñÈ¡", Toast.LENGTH_LONG);
+					//CommonUtils.ShowToastCenter(PublishActivity.this,
+					//		"Í¼Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½Â»ï¿½È¡", Toast.LENGTH_LONG);
 				}
 
-			} else if (requestCode == 1) {// ±íÊ¾Í¨¹ıÏÖÓĞµÄÎÄ¼ş»ñÈ¡µÄÕÕÆ¬
+			} else if (requestCode == 1) {
 				if (data == null) {
 					return;
 				}
@@ -383,14 +430,13 @@ public class PublishActivity extends Activity {
 				String path = cursor.getString(column_index);
 				// mImgPaths = path;
 				CreateImagePathByCamera(path);
-				// ¶ÔÍ¼Æ¬½øĞĞĞı×ª´¦Àí
+				
 				bitmap = mUtils.PhotoRotation(uri);
 				imageview.setImageBitmap(bitmap);
 			}
 		}
 	}
 
-	// ¸ù¾İµã»÷µÄImageView¿Ø¼ş»ñÈ¡¸ÃÍ¼Æ¬µÄ´æ´¢Í¼Æ¬ÎÄ¼şÃû³Æ(Ö»ÓĞÔÚÍ¨¹ıÅÄÕÕ»ñÈ¡ÕÕÆ¬µÄÇé¿ö,Í¨¹ıÎÄ¼ş¾ÍÊÇÍ¼Æ¬ÎÄ¼şÔ­À´µÄµØÖ·)
 	private String GetImagePath() {
 		String strImageFileName = "";
 		if (0 == nPos) {
@@ -409,28 +455,28 @@ public class PublishActivity extends Activity {
 		switch (id) {
 		case 0:
 			builder = new AlertDialog.Builder(this);
-			builder.setTitle("Ìí¼ÓÓÃ»§Í¼Æ¬");
+			builder.setTitle("æ·»åŠ ç”¨æˆ·å›¾ç‰‡");
 			builder.setItems(addPhoto, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 
-					if (which == 0) {// Í¨¹ıÎÄ¼ş»ñÈ¡ÕÕÆ¬
+					if (which == 0) {
 						Intent intent = new Intent(
 								"android.intent.action.GET_CONTENT");
 						intent.addCategory("android.intent.category.OPENABLE");
 						intent.setType("image/*");
 						PublishActivity.this.startActivityForResult(intent, 1);
-					} else if (which == 1) {// Í¨¹ıÅÄÕÕ»ñÈ¡ÕÕÆ¬
+					} else if (which == 1) {
 
-						// Ê×ÏÈ»ñÈ¡ÕÕÆ¬´æ´¢µÄÍ¼Æ¬Ãû³Æ
+						
 						String strImageName = GetImagePath();
 
-						// ±£´æÍ¼Æ¬µÄÂ·¾¶
+						
 						String strPhotoPath = "";
 						String haveSD = Environment.getExternalStorageState();
 						if (!haveSD.equals(Environment.MEDIA_MOUNTED)) {
 							CommonUtils.ShowToastCenter(PublishActivity.this,
-									"´æ´¢¿¨²»¿ÉÓÃ", Toast.LENGTH_LONG);
+									"ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", Toast.LENGTH_LONG);
 							return;
 						}
 						File dir = new File(Environment
@@ -439,7 +485,7 @@ public class PublishActivity extends Activity {
 								+ commondata.strParentFileName);
 						if (!dir.exists()) {
 							dir.mkdirs();
-						} else {// Èç¹ûÒÑ¾­´æÔÚÁË¸ÃÎÄ¼ş¼Ğ
+						} else {
 							strPhotoPath = Environment
 									.getExternalStorageDirectory()
 									+ "/"
@@ -473,7 +519,7 @@ public class PublishActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		// È¡ÏûµÈ´ı¿ò
+		
 		if (m_ProgressDialog != null) {
 			m_ProgressDialog.dismiss();
 			m_ProgressDialog = null;

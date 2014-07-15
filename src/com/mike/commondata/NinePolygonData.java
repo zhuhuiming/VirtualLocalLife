@@ -3,191 +3,191 @@ package com.mike.commondata;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-//´æ´¢¾Å¸ö¸ñ×ÓµÄ×óÉÏ½ÇÓëÓÒÏÂ½ÇÏñËØÖµ
+//å­˜å‚¨ä¹ä¸ªæ ¼å­çš„å·¦ä¸Šè§’ä¸å³ä¸‹è§’åƒç´ å€¼
 public class NinePolygonData {
 
-	/************* µÚÒ»¸ö¸ñ×Ó *****************/
-	// ×óÉÏ½ÇÏñËØÖµ(ÒÔ×óÉÏ½ÇÎª²ÎÕÕ)
+	/************* ç¬¬ä¸€ä¸ªæ ¼å­ *****************/
+	// å·¦ä¸Šè§’åƒç´ å€¼(ä»¥å·¦ä¸Šè§’ä¸ºå‚ç…§)
 	public static int dFirstLeftPosX;
 	public static int dFirstLeftPosY;
-	// ÓÒÏÂ½ÇÏñËØÖµ
+	// å³ä¸‹è§’åƒç´ å€¼
 	public static int dFirstRightPosX;
 	public static int dFirstRightPosY;
 
-	/************* µÚ¶ş¸ö¸ñ×Ó *****************/
-	// ×óÉÏ½ÇÏñËØÖµ
+	/************* ç¬¬äºŒä¸ªæ ¼å­ *****************/
+	// å·¦ä¸Šè§’åƒç´ å€¼
 	public static int dSecondLeftPosX;
 	public static int dSecondLeftPosY;
-	// ÓÒÏÂ½ÇÏñËØÖµ
+	// å³ä¸‹è§’åƒç´ å€¼
 	public static int dSecondRightPosX;
 	public static int dSecondRightPosY;
 
-	/************* µÚÈı¸ö¸ñ×Ó *****************/
-	// ×óÉÏ½ÇÏñËØÖµ(ÒÔ×óÉÏ½ÇÎª²ÎÕÕ)
+	/************* ç¬¬ä¸‰ä¸ªæ ¼å­ *****************/
+	// å·¦ä¸Šè§’åƒç´ å€¼(ä»¥å·¦ä¸Šè§’ä¸ºå‚ç…§)
 	public static int dThirdLeftPosX;
 	public static int dThirdLeftPosY;
-	// ÓÒÏÂ½ÇÏñËØÖµ
+	// å³ä¸‹è§’åƒç´ å€¼
 	public static int dThirdRightPosX;
 	public static int dThirdRightPosY;
 
-	/************* µÚËÄ¸ö¸ñ×Ó *****************/
-	// ×óÉÏ½ÇÏñËØÖµ
+	/************* ç¬¬å››ä¸ªæ ¼å­ *****************/
+	// å·¦ä¸Šè§’åƒç´ å€¼
 	public static int dForthLeftPosX;
 	public static int dForthLeftPosY;
-	// ÓÒÏÂ½ÇÏñËØÖµ
+	// å³ä¸‹è§’åƒç´ å€¼
 	public static int dForthRightPosX;
 	public static int dForthRightPosY;
 
-	/************* µÚÎå¸ö¸ñ×Ó *****************/
-	// ×óÉÏ½ÇÏñËØÖµ(ÒÔ×óÉÏ½ÇÎª²ÎÕÕ)
+	/************* ç¬¬äº”ä¸ªæ ¼å­ *****************/
+	// å·¦ä¸Šè§’åƒç´ å€¼(ä»¥å·¦ä¸Šè§’ä¸ºå‚ç…§)
 	public static int dFifthLeftPosX;
 	public static int dFifthLeftPosY;
-	// ÓÒÏÂ½ÇÏñËØÖµ
+	// å³ä¸‹è§’åƒç´ å€¼
 	public static int dFifthRightPosX;
 	public static int dFifthRightPosY;
 
-	/************* µÚÁù¸ö¸ñ×Ó *****************/
-	// ×óÉÏ½ÇÏñËØÖµ
+	/************* ç¬¬å…­ä¸ªæ ¼å­ *****************/
+	// å·¦ä¸Šè§’åƒç´ å€¼
 	public static int dSixthLeftPosX;
 	public static int dSixthLeftPosY;
-	// ÓÒÏÂ½ÇÏñËØÖµ
+	// å³ä¸‹è§’åƒç´ å€¼
 	public static int dSixthRightPosX;
 	public static int dSixthRightPosY;
 
-	/************* µÚÆß¸ö¸ñ×Ó *****************/
-	// ×óÉÏ½ÇÏñËØÖµ(ÒÔ×óÉÏ½ÇÎª²ÎÕÕ)
+	/************* ç¬¬ä¸ƒä¸ªæ ¼å­ *****************/
+	// å·¦ä¸Šè§’åƒç´ å€¼(ä»¥å·¦ä¸Šè§’ä¸ºå‚ç…§)
 	public static int dSeventhLeftPosX;
 	public static int dSeventhLeftPosY;
-	// ÓÒÏÂ½ÇÏñËØÖµ
+	// å³ä¸‹è§’åƒç´ å€¼
 	public static int dSeventhRightPosX;
 	public static int dSeventhRightPosY;
 
-	/************* µÚ°Ë¸ö¸ñ×Ó *****************/
-	// ×óÉÏ½ÇÏñËØÖµ
+	/************* ç¬¬å…«ä¸ªæ ¼å­ *****************/
+	// å·¦ä¸Šè§’åƒç´ å€¼
 	public static int dEighthLeftPosX;
 	public static int dEighthLeftPosY;
-	// ÓÒÏÂ½ÇÏñËØÖµ
+	// å³ä¸‹è§’åƒç´ å€¼
 	public static int dEighthRightPosX;
 	public static int dEighthRightPosY;
 
-	/************* µÚ¾Å¸ö¸ñ×Ó *****************/
-	// ×óÉÏ½ÇÏñËØÖµ(ÒÔ×óÉÏ½ÇÎª²ÎÕÕ)
+	/************* ç¬¬ä¹ä¸ªæ ¼å­ *****************/
+	// å·¦ä¸Šè§’åƒç´ å€¼(ä»¥å·¦ä¸Šè§’ä¸ºå‚ç…§)
 	public static int dNinthLeftPosX;
 	public static int dNinthLeftPosY;
-	// ÓÒÏÂ½ÇÏñËØÖµ
+	// å³ä¸‹è§’åƒç´ å€¼
 	public static int dNinthRightPosX;
 	public static int dNinthRightPosY;
 
-	// ¸ù¾İ×óÉÏ½ÇÏñËØµã´æ´¢¾Å¸ö¸ñ×ÓµÄ×óÉÏ½ÇÓëÓÒÏÂ½Çµã
+	// æ ¹æ®å·¦ä¸Šè§’åƒç´ ç‚¹å­˜å‚¨ä¹ä¸ªæ ¼å­çš„å·¦ä¸Šè§’ä¸å³ä¸‹è§’ç‚¹
 	public static void StoreNineGridPos(Point pt, int nWidthDx, int nHeightDx) {
-		// µÚÒ»¸öµã
+		// ç¬¬ä¸€ä¸ªç‚¹
 		dFirstLeftPosX = pt.x;
 		dFirstLeftPosY = pt.y;
 		dFirstRightPosX = pt.x + nWidthDx;
 		dFirstRightPosY = pt.y + nHeightDx;
 
-		// µÚ¶ş¸öµã
+		// ç¬¬äºŒä¸ªç‚¹
 		dSecondLeftPosX = pt.x + nWidthDx;
 		dSecondLeftPosY = pt.y;
 		dSecondRightPosX = dSecondLeftPosX + nWidthDx;
 		dSecondRightPosY = dSecondLeftPosY + nHeightDx;
 
-		// µÚÈı¸öµã
+		// ç¬¬ä¸‰ä¸ªç‚¹
 		dThirdLeftPosX = pt.x + 2 * nWidthDx;
 		dThirdLeftPosY = pt.y;
 		dThirdRightPosX = dThirdLeftPosX + nWidthDx;
 		dThirdRightPosY = dThirdLeftPosY + nHeightDx;
 
-		// µÚËÄ¸öµã
+		// ç¬¬å››ä¸ªç‚¹
 		dForthLeftPosX = pt.x;
 		dForthLeftPosY = pt.y + nHeightDx;
 		dForthRightPosX = dForthLeftPosX + nWidthDx;
 		dForthRightPosY = dForthLeftPosY + nHeightDx;
 
-		// µÚÎå¸öµã
+		// ç¬¬äº”ä¸ªç‚¹
 		dFifthLeftPosX = pt.x + nWidthDx;
 		dFifthLeftPosY = pt.y + nHeightDx;
 		dFifthRightPosX = dFifthLeftPosX + nWidthDx;
 		dFifthRightPosY = dFifthLeftPosY + nHeightDx;
 
-		// µÚÁù¸öµã
+		// ç¬¬å…­ä¸ªç‚¹
 		dSixthLeftPosX = pt.x + 2 * nWidthDx;
 		dSixthLeftPosY = pt.y + nHeightDx;
 		dSixthRightPosX = dSixthLeftPosX + nWidthDx;
 		dSixthRightPosY = dSixthLeftPosY + nHeightDx;
 
-		// µÚÆß¸öµã
+		// ç¬¬ä¸ƒä¸ªç‚¹
 		dSeventhLeftPosX = pt.x;
 		dSeventhLeftPosY = pt.y + 2 * nHeightDx;
 		dSeventhRightPosX = dSeventhLeftPosX + nWidthDx;
 		dSeventhRightPosY = dSeventhLeftPosY + nHeightDx;
 
-		// µÚ°Ë¸öµã
+		// ç¬¬å…«ä¸ªç‚¹
 		dEighthLeftPosX = pt.x + nWidthDx;
 		dEighthLeftPosY = pt.y + 2 * nHeightDx;
 		dEighthRightPosX = dEighthLeftPosX + nWidthDx;
 		dEighthRightPosY = dEighthLeftPosY + nHeightDx;
 
-		// µÚ¾Å¸öµã
+		// ç¬¬ä¹ä¸ªç‚¹
 		dNinthLeftPosX = pt.x + 2 * nWidthDx;
 		dNinthLeftPosY = pt.y + 2 * nHeightDx;
 		dNinthRightPosX = dNinthLeftPosX + nWidthDx;
 		dNinthRightPosY = dNinthLeftPosY + nHeightDx;
 	}
 
-	// ¸ù¾İÏñËØµã»ñÈ¡¸ñ×ÓË÷ÒıºÅ
+	// æ ¹æ®åƒç´ ç‚¹è·å–æ ¼å­ç´¢å¼•å·
 	public static int GetPolygonIndex(Point pt) {
 		int nIndex = 0;
 		boolean bIsIn = false;
-		// ÅĞ¶ÏÊÇ·ñÔÚµÚÒ»¸ö¸ñ×ÓÖĞ
+		// åˆ¤æ–­æ˜¯å¦åœ¨ç¬¬ä¸€ä¸ªæ ¼å­ä¸­
 		bIsIn = IsInRect(new Rect(dFirstLeftPosX, dFirstLeftPosY,
 				dFirstRightPosX, dFirstRightPosY), pt);
 		if (bIsIn) {
 			return 1;
 		}
-		// ÅĞ¶ÏÊÇ·ñÔÚµÚ¶ş¸ö¸ñ×ÓÖĞ
+		// åˆ¤æ–­æ˜¯å¦åœ¨ç¬¬äºŒä¸ªæ ¼å­ä¸­
 		bIsIn = IsInRect(new Rect(dSecondLeftPosX, dSecondLeftPosY,
 				dSecondRightPosX, dSecondRightPosY), pt);
 		if (bIsIn) {
 			return 2;
 		}
-		// ÅĞ¶ÏÊÇ·ñÔÚµÚÈı¸ö¸ñ×ÓÖĞ
+		// åˆ¤æ–­æ˜¯å¦åœ¨ç¬¬ä¸‰ä¸ªæ ¼å­ä¸­
 		bIsIn = IsInRect(new Rect(dThirdLeftPosX, dThirdLeftPosY,
 				dThirdRightPosX, dThirdRightPosY), pt);
 		if (bIsIn) {
 			return 3;
 		}
-		// ÅĞ¶ÏÊÇ·ñÔÚµÚËÄ¸ö¸ñ×ÓÖĞ
+		// åˆ¤æ–­æ˜¯å¦åœ¨ç¬¬å››ä¸ªæ ¼å­ä¸­
 		bIsIn = IsInRect(new Rect(dForthLeftPosX, dForthLeftPosY,
 				dForthRightPosX, dForthRightPosY), pt);
 		if (bIsIn) {
 			return 4;
 		}
-		// ÅĞ¶ÏÊÇ·ñÔÚµÚÎå¸ö¸ñ×ÓÖĞ
+		// åˆ¤æ–­æ˜¯å¦åœ¨ç¬¬äº”ä¸ªæ ¼å­ä¸­
 		bIsIn = IsInRect(new Rect(dFifthLeftPosX, dFifthLeftPosY,
 				dFifthRightPosX, dFifthRightPosY), pt);
 		if (bIsIn) {
 			return 5;
 		}
-		// ÅĞ¶ÏÊÇ·ñÔÚµÚÁù¸ö¸ñ×ÓÖĞ
+		// åˆ¤æ–­æ˜¯å¦åœ¨ç¬¬å…­ä¸ªæ ¼å­ä¸­
 		bIsIn = IsInRect(new Rect(dSixthLeftPosX, dSixthLeftPosY,
 				dSixthRightPosX, dSixthRightPosY), pt);
 		if (bIsIn) {
 			return 6;
 		}
-		// ÅĞ¶ÏÊÇ·ñÔÚµÚÆß¸ö¸ñ×ÓÖĞ
+		// åˆ¤æ–­æ˜¯å¦åœ¨ç¬¬ä¸ƒä¸ªæ ¼å­ä¸­
 		bIsIn = IsInRect(new Rect(dSeventhLeftPosX, dSeventhLeftPosY,
 				dSeventhRightPosX, dSeventhRightPosY), pt);
 		if (bIsIn) {
 			return 7;
 		}
-		// ÅĞ¶ÏÊÇ·ñÔÚµÚ°Ë¸ö¸ñ×ÓÖĞ
+		// åˆ¤æ–­æ˜¯å¦åœ¨ç¬¬å…«ä¸ªæ ¼å­ä¸­
 		bIsIn = IsInRect(new Rect(dEighthLeftPosX, dEighthLeftPosY,
 				dEighthRightPosX, dEighthRightPosY), pt);
 		if (bIsIn) {
 			return 8;
 		}
-		// ÅĞ¶ÏÊÇ·ñÔÚµÚ¾Å¸ö¸ñ×ÓÖĞ
+		// åˆ¤æ–­æ˜¯å¦åœ¨ç¬¬ä¹ä¸ªæ ¼å­ä¸­
 		bIsIn = IsInRect(new Rect(dNinthLeftPosX, dNinthLeftPosY,
 				dNinthRightPosX, dNinthRightPosY), pt);
 		if (bIsIn) {

@@ -48,6 +48,10 @@
             android:name="com.mike.virtuallocallife.PublishActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.mike.virtuallocallife.AreaShareMessageActivity"
+            android:screenOrientation="portrait" >
+        </activity>
 
         <service
             android:name="cn.bmob.push.PushService"

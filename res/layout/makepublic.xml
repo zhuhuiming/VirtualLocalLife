@@ -84,7 +84,6 @@
                             android:layout_gravity="center"
                             android:gravity="left"
                             android:hint="请输入内容"
-                            android:textColor="#ffffff"
                             android:textSize="15dp" />
                     </LinearLayout>
                 </LinearLayout>

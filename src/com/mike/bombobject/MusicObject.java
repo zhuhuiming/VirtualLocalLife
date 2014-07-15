@@ -3,9 +3,9 @@ package com.mike.bombobject;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 
-//´æ´¢ÒôÀÖµÄ±í
+//å­˜å‚¨éŸ³ä¹çš„è¡¨
 public class MusicObject extends BmobObject {
-	BmobFile MusicContent;// ÒôÀÖÄÚÈİ
+	BmobFile MusicContent;// éŸ³ä¹å†…å®¹
 
 	public BmobFile getMusicContent() {
 		return MusicContent;

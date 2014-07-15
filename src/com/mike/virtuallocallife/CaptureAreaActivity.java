@@ -17,7 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class CaptureAreaActivity extends Activity {
-	// ÏÔÊ¾µØÅÌµÄ¿Ø¼ş
+	// æ˜¾ç¤ºåœ°ç›˜çš„æ§ä»¶
 	EditText areanameedittext;
 	Button finishbutton;
 
@@ -43,12 +43,12 @@ public class CaptureAreaActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// ÅĞ¶ÏµØÅÌÃû³ÆÊÇ·ñÓĞÖµ
+				// åˆ¤æ–­åœ°ç›˜åç§°æ˜¯å¦æœ‰å€¼
 				if (areanameedittext.getText().toString().equals("")) {
 					CommonUtils.ShowToastCenter(CaptureAreaActivity.this,
-							"ÇëÊäÈëµØÅÌÃû³Æ", Toast.LENGTH_LONG);
+							"è¯·è¾“å…¥åœ°ç›˜åç§°", Toast.LENGTH_LONG);
 				} else {
-					// »ñÈ¡µ±Ç°ÓÃ»§µØÖ·µÄ¾­Î³¶È·½ÏòË÷ÒıºÅ
+					// è·å–å½“å‰ç”¨æˆ·åœ°å€çš„ç»çº¬åº¦æ–¹å‘ç´¢å¼•å·
 					String strXIndex = msettings.getString(commondata.XIndex,
 							"");
 					String strYIndex = msettings.getString(commondata.YIndex,
@@ -57,10 +57,10 @@ public class CaptureAreaActivity extends Activity {
 					Integer nYIndex = Integer.parseInt(strYIndex);
 
 					CommonUtils util = new CommonUtils(CaptureAreaActivity.this);
-					// ½«ĞÅÏ¢±£´æµ½ÇøÓòĞÅÏ¢±íÖĞ
-					// macµØÖ·(×÷ÎªÓÃ»§Ãû)
+					// å°†ä¿¡æ¯ä¿å­˜åˆ°åŒºåŸŸä¿¡æ¯è¡¨ä¸­
+					// macåœ°å€(ä½œä¸ºç”¨æˆ·å)
 					String strMac = util.strGetPhoneMac();
-					// ½«¸ÃÃû³ÆĞ´Èëµ½Êı¾İ¿âÖĞ
+					// å°†è¯¥åç§°å†™å…¥åˆ°æ•°æ®åº“ä¸­
 					AreaInfo areainfo = new AreaInfo();
 					areainfo.setXIndex(nXIndex);
 					areainfo.setYIndex(nYIndex);
@@ -75,7 +75,7 @@ public class CaptureAreaActivity extends Activity {
 						public void onSuccess() {
 
 							CommonUtils.ShowToastCenter(
-									CaptureAreaActivity.this, "¸ÃµØÅÌÏÖÔÚÊôÓÚÄãµÄÀ²",
+									CaptureAreaActivity.this, "è¯¥åœ°ç›˜ç°åœ¨å±äºä½ çš„å•¦",
 									Toast.LENGTH_LONG);
 							CaptureAreaActivity.this.finish();
 						}
@@ -83,8 +83,8 @@ public class CaptureAreaActivity extends Activity {
 						@Override
 						public void onFailure(int code, String arg0) {
 							CommonUtils.ShowToastCenter(
-									CaptureAreaActivity.this, "ÇÀµØÅÌÊ§°Ü,code = "
-											+ code + " ´íÎóÔ­Òò:" + arg0,
+									CaptureAreaActivity.this, "æŠ¢åœ°ç›˜å¤±è´¥,code = "
+											+ code + " é”™è¯¯åŸå› :" + arg0,
 									Toast.LENGTH_LONG);
 						}
 					});

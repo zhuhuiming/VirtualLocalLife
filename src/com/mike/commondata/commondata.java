@@ -2,57 +2,57 @@ package com.mike.commondata;
 
 public class commondata {
 
-	// ±£´æÔÚ±¾µØµÄPreferencesÃû³Æ
+	// ä¿å­˜åœ¨æœ¬åœ°çš„Preferencesåç§°
 	public static final String PreferencesName = "VirtualLocalLifePreferences";
-	// ÓÃ»§ĞÔ±ğĞÅÏ¢
+	// ç”¨æˆ·æ€§åˆ«ä¿¡æ¯
 	public static final String UserGender = "gender";
-	// ÓÃ»§êÇ³Æ
+	// ç”¨æˆ·æ˜µç§°
 	public static final String UserNickName = "usernickname";
-	// ÓÃ»§µ±Ç°ËùÔÚÎ»ÖÃXË÷Òı
+	// ç”¨æˆ·å½“å‰æ‰€åœ¨ä½ç½®Xç´¢å¼•
 	public static final String XIndex = "xindex";
-	// ÓÃ»§µ±Ç°ËùÔÚÎ»ÖÃYË÷Òı
+	// ç”¨æˆ·å½“å‰æ‰€åœ¨ä½ç½®Yç´¢å¼•
 	public static final String YIndex = "yindex";
-	// ´æ·ÅËùÑ¡ÓÃ»§Í·ÏñÍ¼Æ¬ÎÄ¼şÃû³Æ
+	// å­˜æ”¾æ‰€é€‰ç”¨æˆ·å¤´åƒå›¾ç‰‡æ–‡ä»¶åç§°
 	public static final String strUserImageName = "Image.jpg";
-	// ´æ´¢Í·ÏñÍ¼Æ¬ÎÄ¼şÉÏÒ»¼¶ÎÄ¼şÃû³Æ
+	// å­˜å‚¨å¤´åƒå›¾ç‰‡æ–‡ä»¶ä¸Šä¸€çº§æ–‡ä»¶åç§°
 	public static final String strParentFileName = "VirtualLocalLifePhoto";
-	// ·¢²¼Í¼Æ¬ÄÚÈİÊ±µÚÒ»ÕÅÍ¼Æ¬µÄÃû³Æ
+	// å‘å¸ƒå›¾ç‰‡å†…å®¹æ—¶ç¬¬ä¸€å¼ å›¾ç‰‡çš„åç§°
 	public static final String strPublishFirstImageName = "PublishImage1.jpg";
-	// ·¢²¼Í¼Æ¬ÄÚÈİÊ±µÚÒ»ÕÅÍ¼Æ¬µÄÃû³Æ
+	// å‘å¸ƒå›¾ç‰‡å†…å®¹æ—¶ç¬¬ä¸€å¼ å›¾ç‰‡çš„åç§°
 	public static final String strPublishSecondImageName = "PublishImage2.jpg";
-	// ·¢²¼Í¼Æ¬ÄÚÈİÊ±µÚÒ»ÕÅÍ¼Æ¬µÄÃû³Æ
+	// å‘å¸ƒå›¾ç‰‡å†…å®¹æ—¶ç¬¬ä¸€å¼ å›¾ç‰‡çš„åç§°
 	public static final String strPublishThirdImageName = "PublishImage3.jpg";
 
-	// ÖĞ¹úµØÍ¼×óÉÏ½Ç¾­Î³¶È
+	// ä¸­å›½åœ°å›¾å·¦ä¸Šè§’ç»çº¬åº¦
 	public static final double lefttopposx = 73.55;
 	public static final double lefttopposy = 53.55;
-	// ÖĞ¹úµØÍ¼ÓÒÉÏ½Ç¾­Î³¶È
+	// ä¸­å›½åœ°å›¾å³ä¸Šè§’ç»çº¬åº¦
 	public static final double righttopposx = 135.083;
 	public static final double righttopposy = 53.55;
-	// ÖĞ¹úµØÍ¼×óÏÂ½Ç¾­Î³¶È
+	// ä¸­å›½åœ°å›¾å·¦ä¸‹è§’ç»çº¬åº¦
 	public static final double leftbottomposx = 73.55;
 	public static final double leftbottomposy = 3.85;
-	// ÖĞ¹úµØÍ¼ÓÒÏÂ½Ç¾­Î³¶È
+	// ä¸­å›½åœ°å›¾å³ä¸‹è§’ç»çº¬åº¦
 	public static final double rightbottomposx = 135.083;
 	public static final double rightbottomposy = 3.85;
 
-	// µØÇò°ë¾¶(Ç§Ã×)
+	// åœ°çƒåŠå¾„(åƒç±³)
 	public final static double EARTH_RADIUS_KM = 6378.137;
 
-	// µ¥Î»³¤¶È(Ç§Ã×)
+	// å•ä½é•¿åº¦(åƒç±³)
 	public final static double UNIT_LENGHT = 3;
-	// Ã¿Ò»¸ö¿ç¶È(¾­¶È)
+	// æ¯ä¸€ä¸ªè·¨åº¦(ç»åº¦)
 	public final static double UNIT_DEGREELON = 0.025;
-	// Ã¿Ò»¸ö¿ç¶È(Î³¶È)
+	// æ¯ä¸€ä¸ªè·¨åº¦(çº¬åº¦)
 	public final static double UNIT_DEGREELAT = 0.02;
 
-	// ÖĞ¹ú¶«Î÷¿í¶È
+	// ä¸­å›½ä¸œè¥¿å®½åº¦
 	public final static double WESTTOEAST = 3939.1562;
-	// ÖĞ¹úÄÏ±±³¤¶È
+	// ä¸­å›½å—åŒ—é•¿åº¦
 	public final static double SOUTHTONORTH = 5532.5787;
-	// piµÄÖµ
+	// piçš„å€¼
 	public final static double PI = 3.1415926;
-	// ÓÃÀ´Éú³ÉÇøÓòidÊı¾İÎ»Êı
+	// ç”¨æ¥ç”ŸæˆåŒºåŸŸidæ•°æ®ä½æ•°
 	public final static int DIGITNUM = 6;
 
 	public static double getDistance(double lng1, double lat1, double lng2,
@@ -89,11 +89,11 @@ public class commondata {
 
 	}
 
-	// ¸ù¾İ¶«Î÷·½ÏòµÄ¾àÀë²î¼ÆËã¸Ã·½ÏòÉÏÇøÓò¿éµÄË÷ÒıÖµ(´Ó1¿ªÊ¼)
+	// æ ¹æ®ä¸œè¥¿æ–¹å‘çš„è·ç¦»å·®è®¡ç®—è¯¥æ–¹å‘ä¸ŠåŒºåŸŸå—çš„ç´¢å¼•å€¼(ä»1å¼€å§‹)
 	public static int GetWestToEastIndex(double dDistance) {
 		int nIndex = 1;
 		int nTemp = (int) ((dDistance * 1000) % (UNIT_LENGHT * 1000));
-		// Èç¹ûÓĞÓàÊı
+		// å¦‚æœæœ‰ä½™æ•°
 		if (nTemp > 0) {
 			nIndex = (int) (dDistance / UNIT_LENGHT + 1);
 		} else {
@@ -102,11 +102,11 @@ public class commondata {
 		return nIndex;
 	}
 
-	// ¸ù¾İÄÏ±±·½ÏòµÄ¾àÀë²î¼ÆËã¸Ã·½ÏòÉÏÇøÓò¿éµÄË÷ÒıÖµ(´Ó1¿ªÊ¼)
+	// æ ¹æ®å—åŒ—æ–¹å‘çš„è·ç¦»å·®è®¡ç®—è¯¥æ–¹å‘ä¸ŠåŒºåŸŸå—çš„ç´¢å¼•å€¼(ä»1å¼€å§‹)
 	public static int GetNorthToSouthIndex(double dDistance) {
 		int nIndex = 1;
 		int nTemp = (int) ((dDistance * 1000) % (UNIT_LENGHT * 1000));
-		// Èç¹ûÓĞÓàÊı
+		// å¦‚æœæœ‰ä½™æ•°
 		if (nTemp > 0) {
 			nIndex = (int) (dDistance / UNIT_LENGHT + 1);
 		} else {
@@ -115,16 +115,16 @@ public class commondata {
 		return nIndex;
 	}
 
-	// ¸ù¾İÄÏ±±·½ÏòµÄÎ³¶È²î¼ÆËã¸Ã·½ÏòÉÏÇøÓò¿éµÄË÷ÒıÖµ(´Ó1¿ªÊ¼)
+	// æ ¹æ®å—åŒ—æ–¹å‘çš„çº¬åº¦å·®è®¡ç®—è¯¥æ–¹å‘ä¸ŠåŒºåŸŸå—çš„ç´¢å¼•å€¼(ä»1å¼€å§‹)
 	public static int GetNorthToSouthIndexByLat(double lat) {
 		int nIndex = 1;
-		// ¼ÆËã¸ÃÎ³¶ÈÓëÖĞ¹ú×îÎ÷ÄÏ¶ËµÄÎ³¶È²îÖµ
+		// è®¡ç®—è¯¥çº¬åº¦ä¸ä¸­å›½æœ€è¥¿å—ç«¯çš„çº¬åº¦å·®å€¼
 		double dislat = lat - leftbottomposy;
 
 		double dTemp = dislat / UNIT_DEGREELAT;
-		// »ñÈ¡dTempµÄÕûÊı
+		// è·å–dTempçš„æ•´æ•°
 		int nTemp = (int) dTemp;
-		// Èç¹ûÕû³ıÁË
+		// å¦‚æœæ•´é™¤äº†
 		if (dTemp == nTemp) {
 			nIndex = nTemp;
 		} else {
@@ -133,16 +133,16 @@ public class commondata {
 		return nIndex;
 	}
 
-	// ¸ù¾İ¶«Î÷·½ÏòµÄ¾­¶È²î¼ÆËã¸Ã·½ÏòÉÏÇøÓò¿éµÄË÷ÒıÖµ(´Ó1¿ªÊ¼)
+	// æ ¹æ®ä¸œè¥¿æ–¹å‘çš„ç»åº¦å·®è®¡ç®—è¯¥æ–¹å‘ä¸ŠåŒºåŸŸå—çš„ç´¢å¼•å€¼(ä»1å¼€å§‹)
 	public static int GetWestToEastIndexByLon(double lon) {
 		int nIndex = 1;
-		// ¼ÆËã¸Ã¾­¶ÈÓëÖĞ¹ú×îÎ÷ÄÏ¶ËµÄ¾­¶È²îÖµ
+		// è®¡ç®—è¯¥ç»åº¦ä¸ä¸­å›½æœ€è¥¿å—ç«¯çš„ç»åº¦å·®å€¼
 		double dislon = lon - leftbottomposx;
 
 		double dTemp = dislon / UNIT_DEGREELON;
-		// »ñÈ¡dTempµÄÕûÊı
+		// è·å–dTempçš„æ•´æ•°
 		int nTemp = (int) dTemp;
-		// Èç¹ûÕû³ıÁË
+		// å¦‚æœæ•´é™¤äº†
 		if (dTemp == nTemp) {
 			nIndex = nTemp;
 		} else {
@@ -151,7 +151,7 @@ public class commondata {
 		return nIndex;
 	}
 
-	// ¸ù¾İÇøÓò¿éË÷ÒıºÅ×óÏÂ½ÇÓëÓÒ±ßµãµÄ¾­Î³¶È(ÆäÖĞnx±íÊ¾xÖáË÷ÒıºÅ,ny±íÊ¾yÖáË÷ÒıºÅ)
+	// æ ¹æ®åŒºåŸŸå—ç´¢å¼•å·å·¦ä¸‹è§’ä¸å³è¾¹ç‚¹çš„ç»çº¬åº¦(å…¶ä¸­nxè¡¨ç¤ºxè½´ç´¢å¼•å·,nyè¡¨ç¤ºyè½´ç´¢å¼•å·)
 	public static DegreeDatas GetDegrees(double nx, double ny) {
 		DegreeDatas data = new DegreeDatas(0, 0, 0, 0, 0, 0);
 		DegreeDatas.letfbottomposlon = (nx - 1) * UNIT_DEGREELON

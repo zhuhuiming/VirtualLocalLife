@@ -17,16 +17,16 @@ import android.widget.Toast;
 
 public class RegeditActivity extends Activity {
 	CommonUtils mUtils = null;
-	// "ÄĞ"µ¥Ñ¡¿Ø¼ş
+	// "ç”·"å•é€‰æ§ä»¶
 	RadioButton ManRadio;
-	// "Å®"µ¥Ñ¡¿Ø¼ş
+	// "å¥³"å•é€‰æ§ä»¶
 	RadioButton WomanRadio;
-	// ÓÃ»§Ãû³Æ¿Ø¼ş
+	// ç”¨æˆ·åç§°æ§ä»¶
 	EditText UserNameEditText;
-	// ÏÂÒ»²½°´Å¥¿Ø¼ş
+	// ä¸‹ä¸€æ­¥æŒ‰é’®æ§ä»¶
 	Button NextButton;
-	// ÓÃ»§ĞÔ±ğĞÅÏ¢
-	String strSex = "ÄĞ";
+	// ç”¨æˆ·æ€§åˆ«ä¿¡æ¯
+	String strSex = "ç”·";
 	SharedPreferences msettings = null;
 
 	@Override
@@ -54,7 +54,7 @@ public class RegeditActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				strSex = "ÄĞ";
+				strSex = "ç”·";
 				WomanRadio.setChecked(false);
 			}
 
@@ -64,7 +64,7 @@ public class RegeditActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				strSex = "Å®";
+				strSex = "å¥³";
 				ManRadio.setChecked(false);
 			}
 
@@ -74,18 +74,18 @@ public class RegeditActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// ÅĞ¶ÏÓÃ»§Ãû³ÆÊÇ·ñÊäÈëÁË
+				// åˆ¤æ–­ç”¨æˆ·åç§°æ˜¯å¦è¾“å…¥äº†
 				if (UserNameEditText.getText().toString().equals("")) {
 					CommonUtils.ShowToastCenter(RegeditActivity.this,
-							"ÓÃ»§Ãû³Æ²»ÄÜÎª¿Õ", Toast.LENGTH_LONG);
+							"ç”¨æˆ·åç§°ä¸èƒ½ä¸ºç©º", Toast.LENGTH_LONG);
 				} else {
-					// ½«ÓÃ»§ĞÔ±ğºÍÃû³ÆĞÅÏ¢±£´æÆğÀ´
+					// å°†ç”¨æˆ·æ€§åˆ«å’Œåç§°ä¿¡æ¯ä¿å­˜èµ·æ¥
 					SharedPreferences.Editor editor = msettings.edit();
 					editor.putString(commondata.UserGender, strSex);
 					editor.putString(commondata.UserNickName, UserNameEditText
 							.getText().toString());
 					editor.commit();
-					// ÇĞ»»µ½ÏÂÒ»¸ö½çÃæ
+					// åˆ‡æ¢åˆ°ä¸‹ä¸€ä¸ªç•Œé¢
 					Intent it = new Intent(RegeditActivity.this,
 							FinishRegeditActivity.class);
 					startActivity(it);
