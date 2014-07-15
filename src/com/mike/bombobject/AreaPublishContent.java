@@ -6,18 +6,15 @@ import cn.bmob.v3.datatype.BmobFile;
 //存储区域发布内容表
 public class AreaPublishContent extends BmobObject {
 	String TextContent;// 文字内容
-	BmobFile FirstImage;//第一张图片
-	BmobFile SecondImage;//第一张图片
-	BmobFile ThirdImage;//第一张图片
+	BmobFile FirstImage;// 第一张图片
+	BmobFile SecondImage;// 第二张图片
+	BmobFile ThirdImage;// 第三张图片
 	String PublishPersonName;// 发布人名(MAC)
 	String PublishAddress;// 发布地点
 	Integer ScanTimes;// 浏览次数
 	Integer CommentTimes;// 评论次数
 	Integer CreditValue;// 赞值
-
-	public AreaPublishContent() {
-		this.setTableName("AreaPublishTab");
-	}
+	String AreaID;// 区域id号
 
 	public String getTextContent() {
 		return TextContent;
@@ -26,28 +23,28 @@ public class AreaPublishContent extends BmobObject {
 	public void setTextContent(String text) {
 		this.TextContent = text;
 	}
-	
-	public BmobFile getFirstImage(){
+
+	public BmobFile getFirstImage() {
 		return FirstImage;
 	}
-	
-	public void setFirstImage(BmobFile file){
+
+	public void setFirstImage(BmobFile file) {
 		FirstImage = file;
 	}
-	
-	public BmobFile getSecondImage(){
+
+	public BmobFile getSecondImage() {
 		return SecondImage;
 	}
-	
-	public void setSecondImage(BmobFile file){
+
+	public void setSecondImage(BmobFile file) {
 		SecondImage = file;
 	}
-	
-	public BmobFile getThirdImage(){
+
+	public BmobFile getThirdImage() {
 		return ThirdImage;
 	}
-	
-	public void setThirdImage(BmobFile file){
+
+	public void setThirdImage(BmobFile file) {
 		ThirdImage = file;
 	}
 
@@ -89,5 +86,13 @@ public class AreaPublishContent extends BmobObject {
 
 	public void setCreditValue(Integer times) {
 		CreditValue = times;
+	}
+
+	public String getAreaID() {
+		return AreaID;
+	}
+
+	public void setAreaID(String address) {
+		this.AreaID = address;
 	}
 }

@@ -2,9 +2,10 @@ package com.mike.virtuallocallife;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
@@ -52,6 +53,12 @@ public class PublishActivity extends Activity {
 	String strFirstImagePath = "";
 	String strSecondImagePath = "";
 	String strThirdImagePath = "";
+	// 一次性上传图片的个数
+	public static final int MAXUPLOADIMAGEFILE = 3;
+	// 当上传的图片个数
+	int currentimagefileSize = 0;
+	// 存储要上传图片的BmobFile对象
+	Map<Integer, BmobFile> ImageMaps = new HashMap<Integer, BmobFile>();
 	/********************* 控件变量 ***********************/
 	// 用户当前位置控件
 	EditText addressedittext;
@@ -147,175 +154,91 @@ public class PublishActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				m_ProgressDialog = ProgressDialog.show(PublishActivity.this,
-						"提示", "发布中,请等待...", true);
+						"", "发布中,请等待...", true);
 				m_ProgressDialog.setCancelable(true);
 
-				final List<BmobFile> ImageFiles = new ArrayList<BmobFile>();
-				// 判断第一个控件是否选择了图片
-				if (!strFirstImagePath.equals("")) {
-					final BmobFile bmobFile1 = new BmobFile(new File(
-							strFirstImagePath));
-					// 上传第一张图片
-					bmobFile1.uploadblock(PublishActivity.this,
-							new UploadFileListener() {
-
-								@Override
-								public void onFailure(int arg0, String arg1) {
-									// 取消等待框
-									if (m_ProgressDialog != null) {
-										m_ProgressDialog.dismiss();
-										m_ProgressDialog = null;
-									}
-									CommonUtils.ShowToastCenter(
-											PublishActivity.this, "发布失败,code:"
-													+ arg0 + "error:" + arg1,
-											Toast.LENGTH_LONG);
-									return;
-								}
-
-								@Override
-								public void onProgress(Integer arg0) {
-								}
-
-								@Override
-								public void onSuccess() {
-									ImageFiles.add(bmobFile1);
-									// 判断第二个控件是否选择了图片
-									if (!strSecondImagePath.equals("")) {
-										final BmobFile bmobFile2 = new BmobFile(
-												new File(strSecondImagePath));
-										// 上传第二张图片
-										bmobFile2.uploadblock(
-												PublishActivity.this,
-												new UploadFileListener() {
-
-													@Override
-													public void onFailure(
-															int arg0,
-															String arg1) {
-														// 取消等待框
-														if (m_ProgressDialog != null) {
-															m_ProgressDialog
-																	.dismiss();
-															m_ProgressDialog = null;
-														}
-														CommonUtils
-																.ShowToastCenter(
-																		PublishActivity.this,
-																		"发布失败,code:"
-																				+ arg0
-																				+ "error:"
-																				+ arg1,
-																		Toast.LENGTH_LONG);
-														return;
-													}
-
-													@Override
-													public void onProgress(
-															Integer arg0) {
-
-													}
-
-													@Override
-													public void onSuccess() {
-														ImageFiles.add(bmobFile2);
-														// 判断第三个控件是否选择了图片
-														if (!strThirdImagePath
-																.equals("")) {
-															final BmobFile bmobFile3 = new BmobFile(
-																	new File(
-																			strThirdImagePath));
-															// 上传第三张图片
-															bmobFile3
-																	.uploadblock(
-																			PublishActivity.this,
-																			new UploadFileListener() {
-
-																				@Override
-																				public void onFailure(
-																						int arg0,
-																						String arg1) {
-																					// 取消等待框
-																					if (m_ProgressDialog != null) {
-																						m_ProgressDialog
-																								.dismiss();
-																						m_ProgressDialog = null;
-																					}
-																					CommonUtils
-																							.ShowToastCenter(
-																									PublishActivity.this,
-																									"发布失败,code:"
-																											+ arg0
-																											+ "error:"
-																											+ arg1,
-																									Toast.LENGTH_LONG);
-																					return;
-																				}
-
-																				@Override
-																				public void onProgress(
-																						Integer arg0) {
-
-																				}
-
-																				@Override
-																				public void onSuccess() {
-																					ImageFiles
-																							.add(bmobFile3);
-																					PublishContent(ImageFiles);
-																				}
-
-																			});
-														} else {// 如果没有选择第三张图片
-															PublishContent(ImageFiles);
-														}
-													}
-
-												});
-									} else {// 如果没有选择第二张图片
-										PublishContent(ImageFiles);
-									}
-								}
-
-							});
-				} else {// 如果没有选择图片
-					PublishContent(ImageFiles);
-				}
-
+				insertBatchDatasWithMany();
 			}
 
 		});
 	}
 
-	// 发布内容
-	private void PublishContent(List<BmobFile> ImageFiles) {
-		// 开始上传其他内容
-		AreaPublishContent areapublish = new AreaPublishContent();
-		areapublish.setTextContent(contentedittext.getText().toString());
-		CommonUtils util = new CommonUtils(PublishActivity.this);
-		String strMac = util.strGetPhoneMac();
-		areapublish.setPublishPersonName(strMac);
-		areapublish.setPublishAddress(AreaInfoActivity.strUserCurPosition);
-		areapublish.setScanTimes(0);
-		areapublish.setCommentTimes(0);
-		areapublish.setCreditValue(0);
-		//将图片插入
-		if (ImageFiles != null) {
-			int nSize = ImageFiles.size();
-			for (int i = 0; i < nSize; i++) {
-				if (0 == i) {
-					areapublish.setFirstImage(ImageFiles.get(0));
-				} else if (1 == i) {
-					areapublish.setSecondImage(ImageFiles.get(1));
-				} else if (2 == i) {
-					areapublish.setThirdImage(ImageFiles.get(2));
+	/**
+	 * 此方法用来发布内容
+	 * 
+	 * @Title: insertBatchDatasWithOne
+	 * @throws
+	 */
+	private void insertBatchDatasWithMany() {
+		File[] fs = {null,null,null};//new File[MAXUPLOADIMAGEFILE];
+		currentimagefileSize = 0;
+		ImageMaps.clear();
+		int nCount = 0;
+		String strName;
+		//计算发送图片的个数
+		if (!strFirstImagePath.equals("")) {
+			fs[0] = new File(strFirstImagePath);
+			strName = strFirstImagePath;
+			nCount++;
+			if (!strSecondImagePath.equals("")) {
+				fs[1] = new File(strSecondImagePath);
+				strName = strSecondImagePath;
+				nCount++;
+				if (!strThirdImagePath.equals("")) {
+					fs[2] = new File(strThirdImagePath);
+					strName = strThirdImagePath;
+					nCount++;
 				}
 			}
 		}
 
-		areapublish.save(PublishActivity.this, new SaveListener() {
+		for (int i = 0; i < nCount; i++) {
+			uploadSongFile(i, nCount, fs[i]);
+		}
+	}
+
+	private void uploadSongFile(final int i, final int nCount, File file) {
+		final BmobFile bmobFile = new BmobFile(file);
+		bmobFile.uploadblock(this, new UploadFileListener() {
 			@Override
-			public void onFailure(int arg0, String arg1) {
+			public void onSuccess() {
+				currentimagefileSize++;
+				ImageMaps.put(i, bmobFile);
+				if (currentimagefileSize == nCount) {
+					AreaPublishContent areapublish = new AreaPublishContent();
+					areapublish.setTextContent(contentedittext.getText()
+							.toString());
+					CommonUtils util = new CommonUtils(PublishActivity.this);
+					String strMac = util.strGetPhoneMac();
+					areapublish.setAreaID(AreaInfoActivity.strCurSelectAreaId);
+					areapublish.setPublishPersonName(strMac);
+					areapublish
+							.setPublishAddress(AreaInfoActivity.strUserCurPosition);
+					areapublish.setScanTimes(0);
+					areapublish.setCommentTimes(0);
+					areapublish.setCreditValue(0);
+					// 将图片插入
+					int nSize = ImageMaps.size();
+					for (int j = 0; j < nSize; j++) {
+						if (0 == j) {
+							areapublish.setFirstImage(ImageMaps.get(0));
+						} else if (1 == j) {
+							areapublish.setSecondImage(ImageMaps.get(1));
+						} else if (2 == j) {
+							areapublish.setThirdImage(ImageMaps.get(2));
+						}
+					}
+					// 插入操作
+					insertObject(areapublish);
+				}
+			}
+
+			@Override
+			public void onProgress(Integer arg0) {
+			}
+
+			@Override
+			public void onFailure(int code, String arg0) {
 				// 取消等待框
 				if (m_ProgressDialog != null) {
 					m_ProgressDialog.dismiss();
@@ -324,7 +247,18 @@ public class PublishActivity extends Activity {
 				CommonUtils.ShowToastCenter(PublishActivity.this, "发布失败",
 						Toast.LENGTH_LONG);
 			}
+		});
 
+	}
+
+	/** 创建操作
+	  * insertObject
+	  * @return void
+	  * @throws
+	  */
+	private void insertObject(final BmobObject obj){
+		obj.save(PublishActivity.this, new SaveListener() {
+			
 			@Override
 			public void onSuccess() {
 				// 取消等待框
@@ -332,9 +266,20 @@ public class PublishActivity extends Activity {
 					m_ProgressDialog.dismiss();
 					m_ProgressDialog = null;
 				}
-				CommonUtils.ShowToastCenter(PublishActivity.this, "发布成功",
-						Toast.LENGTH_LONG);
+				CommonUtils.ShowToastCenter(PublishActivity.this,
+						"发布成功", Toast.LENGTH_LONG);
 				PublishActivity.this.finish();
+			}
+			
+			@Override
+			public void onFailure(int code, String arg0) {
+				// 取消等待框
+				if (m_ProgressDialog != null) {
+					m_ProgressDialog.dismiss();
+					m_ProgressDialog = null;
+				}
+				CommonUtils.ShowToastCenter(PublishActivity.this,
+						"发布失败", Toast.LENGTH_LONG);
 			}
 		});
 	}

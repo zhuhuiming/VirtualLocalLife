@@ -92,7 +92,7 @@ public class AreaInfoActivity extends Activity implements
 	int nClickPosxIndex = -1;
 	int nClickPosyIndex = -1;
 	// 当前选择区域的id号
-	String strCurSelectAreaId = "";
+	public static String strCurSelectAreaId = "";
 
 	/***********************控件变量**************************/
 	// 占地盘控件
