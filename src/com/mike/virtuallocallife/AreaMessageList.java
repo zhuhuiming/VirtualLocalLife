@@ -3,13 +3,17 @@ package com.mike.virtuallocallife;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobQuery.CachePolicy;
+import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 import com.mike.Utils.CommonUtils;
 import com.mike.bombobject.AreaPublishContent;
@@ -21,6 +25,9 @@ import com.mike.pulltorefresh.PullToRefreshView.OnHeaderRefreshListener;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,6 +38,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -48,9 +56,9 @@ public class AreaMessageList extends Activity implements
 	// 一次性加载数据的条数
 	private static final int MAXLOADDATANUM = 10;
 	// 发布图片的宽
-	//private static final int publishimagewidth = 300;
+	// private static final int publishimagewidth = 300;
 	// 发布图片的高
-	//private static final int publishimageheight = 300;
+	// private static final int publishimageheight = 300;
 	// 存储发布信息
 	public static List<AreaPublishContent> publishcontent = null;
 	// 发布信息的最大条数
@@ -80,6 +88,41 @@ public class AreaMessageList extends Activity implements
 		LoadData();
 	}
 
+	private void UpdateInfo(String strobjectid, int nzanvalue,
+			int ncommentvalue, int nscanvalue) {
+		if (publishcontent != null) {
+			int nSize = publishcontent.size();
+			for (int i = 0; i < nSize; i++) {
+				if (publishcontent.get(i).getObjectId().equals(strobjectid)) {
+					publishcontent.get(i).setCreditValue(nzanvalue);
+					publishcontent.get(i).setCommentTimes(ncommentvalue);
+					publishcontent.get(i).setScanTimes(nscanvalue);
+					// 重新获取数据
+					mListData1 = getListData(publishcontent);
+					SetShareAdapter(false);
+					break;
+				}
+			}
+		}
+	}
+
+	// 启动子项finish后调用的函数
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (1 == requestCode) {
+			if (data.getExtras() != null) {
+				// 获取objectid
+				String strobjectid = data.getExtras().getString("objectid");
+				// 获取传过来的赞值,评论数,浏览次数
+				int nZanValue = data.getExtras().getInt("nZanValue");
+				int nCommentValue = data.getExtras().getInt("nCommentValue");
+				int nScanValue = data.getExtras().getInt("nScanValue");
+				// 将这些值更新到相应的变量中
+				UpdateInfo(strobjectid, nZanValue, nCommentValue, nScanValue);
+			}
+		}
+	}
+
 	public void InitActivity() {
 		publishimageview = (ImageView) findViewById(R.id.messagelist_publishimageview);
 		listview = (ListView) findViewById(R.id.messagelist_listview);
@@ -95,17 +138,23 @@ public class AreaMessageList extends Activity implements
 			}
 
 		});
-		
-		//listview的点击事件
+
+		// listview的点击事件
 		listview.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Intent it = new Intent(AreaMessageList.this,AreaShareMessageActivity.class);
-				startActivity(it);
+
+				AreaPublishContent content = publishcontent.get(position);
+				Intent it = new Intent(AreaMessageList.this,
+						AreaShareMessageActivity.class);
+				Bundle mBundle = new Bundle();
+				mBundle.putSerializable("content", content);
+				it.putExtras(mBundle);
+				startActivityForResult(it, 1);
 			}
-			
+
 		});
 	}
 
@@ -113,7 +162,7 @@ public class AreaMessageList extends Activity implements
 		BmobQuery<AreaPublishContent> query = new BmobQuery<AreaPublishContent>();
 		// 一次性查询的数据条数
 		query.setLimit(MAXLOADDATANUM);
-		query.order("-createdAt");
+		query.order("-updatedAt");
 		// query.setCachePolicy(CachePolicy.CACHE_ELSE_NETWORK);
 		query.addWhereEqualTo("AreaID", AreaInfoActivity.strCurSelectAreaId);
 		query.findObjects(AreaMessageList.this,
@@ -147,13 +196,13 @@ public class AreaMessageList extends Activity implements
 
 	// 根据mac获取用户名称和头像同时显示
 	private void ShowPersonInfoByMac(final ImageView personimageview,
-			final TextView usernametextview, String strMac) {
+			String strMac) {
 		// 根据mac地址获取用户信息
 		BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
-		query.addQueryKeys("UserIcon,username");
+		query.addQueryKeys("UserIcon");
 		query.addWhereEqualTo("password", strMac);
 		// 先从缓存获取数据，如果没有，再从网络获取
-		// query.setCachePolicy(CachePolicy.CACHE_ELSE_NETWORK);
+		query.setCachePolicy(CachePolicy.CACHE_ELSE_NETWORK);
 		query.findObjects(AreaMessageList.this, new FindListener<UserInfo>() {
 
 			@Override
@@ -165,7 +214,6 @@ public class AreaMessageList extends Activity implements
 			@Override
 			public void onSuccess(List<UserInfo> arg0) {
 				if (arg0.size() > 0) {
-					usernametextview.setText(arg0.get(0).getUsername());
 					BmobFile file = arg0.get(0).getUserIcon();
 					new DownloadImageTask().execute(file.getFileUrl(),
 							file.getFilename(), personimageview);
@@ -187,11 +235,13 @@ public class AreaMessageList extends Activity implements
 		BmobFile SecondImage;// 第二张图片
 		BmobFile ThirdImage;// 第三张图片
 		String PublishPersonName;// 发布人名(MAC)
+		String PublishPersonNickName;// 发布人的昵称
 		String PublishAddress;// 发布地点
 		Integer ScanTimes;// 浏览次数
 		Integer CommentTimes;// 评论次数
 		Integer CreditValue;// 赞值
 		String PublishTime;// 发布时间
+		String ObjectId;// 消息id
 
 		if (areainfo != null) {
 			int nCount = areainfo.size();
@@ -208,17 +258,22 @@ public class AreaMessageList extends Activity implements
 				CommentTimes = areainfo.get(i).getCommentTimes();
 				CreditValue = areainfo.get(i).getCreditValue();
 				PublishTime = areainfo.get(i).getCreatedAt();
+				ObjectId = areainfo.get(i).getObjectId();
+				PublishPersonNickName = areainfo.get(i)
+						.getPublishPersonNickName();
 
 				map.put("TextContent", TextContent);
 				map.put("FirstImage", FirstImage);
 				map.put("SecondImage", SecondImage);
 				map.put("ThirdImage", ThirdImage);
 				map.put("PublishPersonName", PublishPersonName);
+				map.put("PublishPersonNickName", PublishPersonNickName);
 				map.put("PublishAddress", PublishAddress);
 				map.put("ScanTimes", ScanTimes);
 				map.put("CommentTimes", CommentTimes);
 				map.put("CreditValue", CreditValue);
 				map.put("PublishTime", PublishTime);
+				map.put("ObjectId", ObjectId);
 				list.add(map);
 			}
 		}
@@ -262,7 +317,7 @@ public class AreaMessageList extends Activity implements
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			@SuppressWarnings("unchecked")
-			Map<String, Object> map = (Map<String, Object>) getItem(position);
+			final Map<String, Object> map = (Map<String, Object>) getItem(position);
 
 			if (null == convertView) {
 				convertView = mInflater.inflate(R.layout.messageitem, null);
@@ -289,7 +344,7 @@ public class AreaMessageList extends Activity implements
 			ImageView thirdimageview = (ImageView) convertView
 					.findViewById(R.id.messageitem_icon3);
 			// 赞值个数
-			TextView zantextview = (TextView) convertView
+			final TextView zantextview = (TextView) convertView
 					.findViewById(R.id.messageitem_zantextview);
 			// 评论个数
 			TextView commenttextview = (TextView) convertView
@@ -297,6 +352,66 @@ public class AreaMessageList extends Activity implements
 			// 浏览次数
 			TextView scantextview = (TextView) convertView
 					.findViewById(R.id.messageitem_looktextview);
+			// 赞imageview控件
+			final ImageView zanimageview = (ImageView) convertView
+					.findViewById(R.id.messageitem_zanimageview);
+
+			final Resources res = getResources();
+			Bitmap curzanbmp = BitmapFactory.decodeResource(res,
+					R.drawable.zan0);
+			zanimageview.setImageBitmap(curzanbmp);
+
+			zantextview.setText(map.get("CreditValue").toString());
+
+			// 用来响应点赞操作的linearlayout控件
+			LinearLayout zanlinearlayout = (LinearLayout) convertView
+					.findViewById(R.id.messageitem_zanlayout);
+			zanlinearlayout.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					CommonUtils util = new CommonUtils(AreaMessageList.this);
+					// 获取mac地址
+					String strMac = util.strGetPhoneMac();
+					// 如果该信息的发布者是本人
+					if (strMac.equals(map.get("PublishPersonName").toString())) {
+						CommonUtils.ShowToastCenter(AreaMessageList.this,
+								"不能给自己赞哦", Toast.LENGTH_LONG);
+					} else {
+						// 赞值加一
+						AreaPublishContent content = new AreaPublishContent();
+						content.increment("CreditValue"); // 赞值递增1
+						content.update(AreaMessageList.this, map
+								.get("ObjectId").toString(),
+								new UpdateListener() {
+
+									@Override
+									public void onFailure(int arg0, String arg1) {
+										CommonUtils.ShowToastCenter(
+												AreaMessageList.this,
+												"操作失败,Code:" + arg0 + "error:"
+														+ arg1,
+												Toast.LENGTH_LONG);
+									}
+
+									@Override
+									public void onSuccess() {
+										// 将赞图标设为红色
+										Bitmap zanbmp = BitmapFactory
+												.decodeResource(res,
+														R.drawable.zan1);
+										zanimageview.setImageBitmap(zanbmp);
+										int nzanvalue = Integer.parseInt(map
+												.get("CreditValue").toString());
+										nzanvalue += 1;
+										zantextview.setText(nzanvalue + "");
+									}
+
+								});
+					}
+				}
+
+			});
 
 			publishtime.setText(map.get("PublishTime").toString());
 			publishtitle.setText(map.get("TextContent").toString());
@@ -304,8 +419,6 @@ public class AreaMessageList extends Activity implements
 			BmobFile file2 = (BmobFile) map.get("SecondImage");
 			BmobFile file3 = (BmobFile) map.get("ThirdImage");
 			if (file1 != null) {
-				// file1.loadImage(AreaMessageList.this, firstimageview,
-				// publishimagewidth, publishimageheight);
 				new DownloadImageTask().execute(file1.getFileUrl(),
 						file1.getFilename(), firstimageview);
 			} else {
@@ -313,8 +426,6 @@ public class AreaMessageList extends Activity implements
 			}
 			file2 = (BmobFile) map.get("SecondImage");
 			if (file2 != null) {
-				//file2.loadImage(AreaMessageList.this, secondimageview,
-				//		publishimagewidth, publishimageheight);
 				new DownloadImageTask().execute(file2.getFileUrl(),
 						file2.getFilename(), secondimageview);
 			} else {
@@ -322,20 +433,17 @@ public class AreaMessageList extends Activity implements
 			}
 			file3 = (BmobFile) map.get("ThirdImage");
 			if (file3 != null) {
-				//file3.loadImage(AreaMessageList.this, thirdimageview,
-				//		publishimagewidth, publishimageheight);
 				new DownloadImageTask().execute(file3.getFileUrl(),
 						file3.getFilename(), thirdimageview);
 			} else {
 				thirdimageview.setImageBitmap(null);
 			}
-			zantextview.setText(map.get("CreditValue").toString());
 			commenttextview.setText(map.get("CommentTimes").toString());
 			scantextview.setText(map.get("ScanTimes").toString());
-
+			personname.setText(map.get("PublishPersonNickName").toString());
 			// 开始加载头像和用户名称
-			ShowPersonInfoByMac(personimageview, personname,
-					map.get("PublishPersonName").toString());
+			ShowPersonInfoByMac(personimageview, map.get("PublishPersonName")
+					.toString());
 			return convertView;
 		}
 
@@ -360,10 +468,11 @@ public class AreaMessageList extends Activity implements
 
 	private class DownloadImageTask extends AsyncTask<Object, Void, Drawable> {
 		private ImageView imageView = null;
+
 		protected Drawable doInBackground(Object... urls) {
-			String strUrl = (String)urls[0];
-			String strName = (String)urls[1];
-			imageView = (ImageView)urls[2];
+			String strUrl = (String) urls[0];
+			String strName = (String) urls[1];
+			imageView = (ImageView) urls[2];
 			return loadImageFromNetwork(strUrl, strName);
 		}
 
@@ -384,10 +493,10 @@ public class AreaMessageList extends Activity implements
 			madapter1.mItemList = mListData1;
 			madapter1.notifyDataSetChanged();
 		}
-		//如果列表中没有数据,那么就隐藏listview
-		if(mListData1.size() <= 0){
+		// 如果列表中没有数据,那么就隐藏listview
+		if (mListData1.size() <= 0) {
 			listview.setVisibility(View.GONE);
-		}else{
+		} else {
 			listview.setVisibility(View.VISIBLE);
 		}
 	}
@@ -440,12 +549,15 @@ public class AreaMessageList extends Activity implements
 
 	@Override
 	public void onFooterRefresh(PullToRefreshView view) {
+		// 将日期字符串转换成Date
+		Date date = CommonUtils.ChangeTimeToDate(strOldestTime,
+				"yyyy-MM-dd HH:mm:ss");
 		BmobQuery<AreaPublishContent> query = new BmobQuery<AreaPublishContent>();
 		// 一次性查询的数据条数
 		query.setLimit(MAXLOADDATANUM);
-		query.order("-createdAt");
+		query.order("-updatedAt");
 		// 查询时间小于等于上一次查询的最旧时间
-		query.addWhereLessThanOrEqualTo("createdAt", strOldestTime);
+		query.addWhereLessThanOrEqualTo("updatedAt", new BmobDate(date));
 		// query.setCachePolicy(CachePolicy.CACHE_ELSE_NETWORK);
 		query.addWhereEqualTo("AreaID", AreaInfoActivity.strCurSelectAreaId);
 		query.findObjects(AreaMessageList.this,
@@ -490,7 +602,7 @@ public class AreaMessageList extends Activity implements
 		BmobQuery<AreaPublishContent> query = new BmobQuery<AreaPublishContent>();
 		// 一次性查询的数据条数
 		query.setLimit(MAXLOADDATANUM);
-		query.order("-createdAt");
+		query.order("-updatedAt");
 		// query.setCachePolicy(CachePolicy.CACHE_ELSE_NETWORK);
 		query.addWhereEqualTo("AreaID", AreaInfoActivity.strCurSelectAreaId);
 		query.findObjects(AreaMessageList.this,

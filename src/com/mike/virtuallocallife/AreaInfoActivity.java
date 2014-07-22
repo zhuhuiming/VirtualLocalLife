@@ -668,7 +668,7 @@ public class AreaInfoActivity extends Activity implements
 				} else {
 					// 此时说明这个区域还没有人命名,用户可以对这个区域进行命名
 					linearlayout1.setVisibility(View.VISIBLE);
-					relativelayout.setVisibility(View.GONE);
+					//relativelayout.setVisibility(View.GONE);
 					prompttextview.setVisibility(View.VISIBLE);
 					linearlayout2.setVisibility(View.GONE);
 				}
@@ -723,7 +723,7 @@ public class AreaInfoActivity extends Activity implements
 					} else {
 						// 此时说明这个区域还没有人命名,用户可以对这个区域进行命名
 						linearlayout1.setVisibility(View.VISIBLE);
-						relativelayout.setVisibility(View.GONE);
+						//relativelayout.setVisibility(View.GONE);
 						prompttextview.setVisibility(View.VISIBLE);
 						linearlayout2.setVisibility(View.GONE);
 						curuseraddresstextview.setVisibility(View.VISIBLE);

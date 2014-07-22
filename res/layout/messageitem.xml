@@ -90,7 +90,7 @@
 
                 <ImageView
                     android:id="@+id/messageitem_icon1"
-                    android:layout_width="match_parent"
+                    android:layout_width="100dp"
                     android:layout_height="90dp"
                     android:scaleType="centerCrop" />
             </LinearLayout>
@@ -133,7 +133,7 @@
         android:paddingTop="15dp" >
 
         <LinearLayout
-            android:id="@+id/help_eachother_zanlayout"
+            android:id="@+id/messageitem_zanlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -142,6 +142,7 @@
             android:orientation="horizontal" >
 
             <ImageView
+                android:id="@+id/messageitem_zanimageview"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"

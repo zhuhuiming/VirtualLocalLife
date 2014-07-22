@@ -9,6 +9,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 
 import android.annotation.SuppressLint;
@@ -856,5 +859,19 @@ public class CommonUtils extends ContextWrapper {
 			e.printStackTrace();
 		}
 		return bitmap;
+	}
+	
+	//将String格式的日期转换成Date格式
+	@SuppressLint("SimpleDateFormat")
+	public static Date ChangeTimeToDate(String strTime,String strFormat){
+		Date date = null;
+		SimpleDateFormat simple1 = new SimpleDateFormat(strFormat);
+		try {
+			date = simple1.parse(strTime);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return date;
 	}
 }

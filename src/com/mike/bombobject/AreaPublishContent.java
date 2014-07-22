@@ -1,20 +1,24 @@
 package com.mike.bombobject;
 
+import java.io.Serializable;
+
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 
 //存储区域发布内容表
-public class AreaPublishContent extends BmobObject {
+public class AreaPublishContent extends BmobObject implements Serializable{
 	String TextContent;// 文字内容
 	BmobFile FirstImage;// 第一张图片
 	BmobFile SecondImage;// 第二张图片
 	BmobFile ThirdImage;// 第三张图片
 	String PublishPersonName;// 发布人名(MAC)
+	String PublishPersonNickName;//发布人昵称
 	String PublishAddress;// 发布地点
 	Integer ScanTimes;// 浏览次数
 	Integer CommentTimes;// 评论次数
 	Integer CreditValue;// 赞值
 	String AreaID;// 区域id号
+	String InstallationId;//设备id号
 
 	public String getTextContent() {
 		return TextContent;
@@ -55,6 +59,14 @@ public class AreaPublishContent extends BmobObject {
 	public void setPublishPersonName(String name) {
 		this.PublishPersonName = name;
 	}
+	
+	public String getPublishPersonNickName() {
+		return PublishPersonNickName;
+	}
+
+	public void setPublishPersonNickName(String name) {
+		this.PublishPersonNickName = name;
+	}
 
 	public String getPublishAddress() {
 		return PublishAddress;
@@ -94,5 +106,13 @@ public class AreaPublishContent extends BmobObject {
 
 	public void setAreaID(String address) {
 		this.AreaID = address;
+	}
+	
+	public String getInstallationId() {
+		return InstallationId;
+	}
+
+	public void setInstallationId(String id) {
+		this.InstallationId = id;
 	}
 }

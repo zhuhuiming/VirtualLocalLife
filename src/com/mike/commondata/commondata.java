@@ -1,5 +1,7 @@
 package com.mike.commondata;
 
+import cn.bmob.push.BmobPush;
+
 public class commondata {
 
 	// 保存在本地的Preferences名称
@@ -12,16 +14,6 @@ public class commondata {
 	public static final String XIndex = "xindex";
 	// 用户当前所在位置Y索引
 	public static final String YIndex = "yindex";
-	// 存放所选用户头像图片文件名称
-	public static final String strUserImageName = "Image.jpg";
-	// 存储头像图片文件上一级文件名称
-	public static final String strParentFileName = "VirtualLocalLifePhoto";
-	// 发布图片内容时第一张图片的名称
-	public static final String strPublishFirstImageName = "PublishImage1.jpg";
-	// 发布图片内容时第一张图片的名称
-	public static final String strPublishSecondImageName = "PublishImage2.jpg";
-	// 发布图片内容时第一张图片的名称
-	public static final String strPublishThirdImageName = "PublishImage3.jpg";
 
 	// 中国地图左上角经纬度
 	public static final double lefttopposx = 73.55;
@@ -54,6 +46,30 @@ public class commondata {
 	public final static double PI = 3.1415926;
 	// 用来生成区域id数据位数
 	public final static int DIGITNUM = 6;
+	//bmob中的appid
+	public final static String strBmobKey = "0556064ba5deea19b15e6c2075d45286";
+	//用于表情符号
+	public final static String zhengze = "f0[0-9]{2}|f10[0-7]";
+
+	/*************************** 与本地数据有关的常量 ***************************/
+	// 存储存储评论数据的表
+	public static final String TABLE_NAME = "mycommentinfo";
+	// 存放所选用户头像图片文件名称
+	public static final String strUserImageName = "Image.jpg";
+	// 存储app所有文件的根目录文件名称
+	public static final String strRootFileName = "VirtualLocalLife";
+	// 存储头像图片文件上一级文件名称
+	public static final String strPhotoParentFileName = "VirtualLocalLifePhoto";
+	// 发布图片内容时第一张图片的名称(通过拍照方式发布的图片)
+	public static final String strPublishFirstImageName = "PublishImage1.jpg";
+	// 发布图片内容时第一张图片的名称(通过拍照方式发布的图片)
+	public static final String strPublishSecondImageName = "PublishImage2.jpg";
+	// 发布图片内容时第一张图片的名称(通过拍照方式发布的图片)
+	public static final String strPublishThirdImageName = "PublishImage3.jpg";
+	/**
+	 * 数据库名称(用来存储评论内容)
+	 **/
+	public static String DATABASE_NAME = "virtuallocal.db";
 
 	public static double getDistance(double lng1, double lat1, double lng2,
 			double lat2) {

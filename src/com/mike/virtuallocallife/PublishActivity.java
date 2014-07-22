@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
@@ -151,25 +152,25 @@ public class PublishActivity extends Activity {
 				m_ProgressDialog.setCancelable(true);
 
 				final List<BmobFile> ImageFiles = new ArrayList<BmobFile>();
-				
+
 				if (!strFirstImagePath.equals("")) {
 					final BmobFile bmobFile1 = new BmobFile(new File(
 							strFirstImagePath));
-					//上传第一张图片
+					// 上传第一张图片
 					bmobFile1.uploadblock(PublishActivity.this,
 							new UploadFileListener() {
 
 								@Override
 								public void onFailure(int arg0, String arg1) {
-									
+
 									if (m_ProgressDialog != null) {
 										m_ProgressDialog.dismiss();
 										m_ProgressDialog = null;
 									}
 									CommonUtils.ShowToastCenter(
-											PublishActivity.this,
-											"发布失败,code:" + arg0 + "error:"
-													+ arg1, Toast.LENGTH_LONG);
+											PublishActivity.this, "发布失败,code:"
+													+ arg0 + "error:" + arg1,
+											Toast.LENGTH_LONG);
 									return;
 								}
 
@@ -180,11 +181,11 @@ public class PublishActivity extends Activity {
 								@Override
 								public void onSuccess() {
 									ImageFiles.add(bmobFile1);
-									
+
 									if (!strSecondImagePath.equals("")) {
 										final BmobFile bmobFile2 = new BmobFile(
 												new File(strSecondImagePath));
-										//上传第二张图片
+										// 上传第二张图片
 										bmobFile2.uploadblock(
 												PublishActivity.this,
 												new UploadFileListener() {
@@ -193,16 +194,20 @@ public class PublishActivity extends Activity {
 													public void onFailure(
 															int arg0,
 															String arg1) {
-														
+
 														if (m_ProgressDialog != null) {
 															m_ProgressDialog
 																	.dismiss();
 															m_ProgressDialog = null;
 														}
-														CommonUtils.ShowToastCenter(
-																PublishActivity.this,
-																"发布失败,code:" + arg0 + "error:"
-																		+ arg1, Toast.LENGTH_LONG);
+														CommonUtils
+																.ShowToastCenter(
+																		PublishActivity.this,
+																		"发布失败,code:"
+																				+ arg0
+																				+ "error:"
+																				+ arg1,
+																		Toast.LENGTH_LONG);
 														return;
 													}
 
@@ -216,7 +221,7 @@ public class PublishActivity extends Activity {
 													public void onSuccess() {
 														ImageFiles
 																.add(bmobFile2);
-														
+
 														if (!strThirdImagePath
 																.equals("")) {
 															final BmobFile bmobFile3 = new BmobFile(
@@ -232,16 +237,20 @@ public class PublishActivity extends Activity {
 																				public void onFailure(
 																						int arg0,
 																						String arg1) {
-																					
+
 																					if (m_ProgressDialog != null) {
 																						m_ProgressDialog
 																								.dismiss();
 																						m_ProgressDialog = null;
 																					}
-																					CommonUtils.ShowToastCenter(
-																							PublishActivity.this,
-																							"发布失败,code:" + arg0 + "error:"
-																									+ arg1, Toast.LENGTH_LONG);
+																					CommonUtils
+																							.ShowToastCenter(
+																									PublishActivity.this,
+																									"发布失败,code:"
+																											+ arg0
+																											+ "error:"
+																											+ arg1,
+																									Toast.LENGTH_LONG);
 																					return;
 																				}
 
@@ -281,18 +290,23 @@ public class PublishActivity extends Activity {
 	}
 
 	private void PublishContent(List<BmobFile> ImageFiles) {
-		
-		AreaPublishContent areapublish = new AreaPublishContent();
-		areapublish.setTextContent(contentedittext.getText().toString());
+		// 用户昵称
+		String strUserName = msettings.getString(commondata.UserNickName, "");
 		CommonUtils util = new CommonUtils(PublishActivity.this);
 		String strMac = util.strGetPhoneMac();
+		// 获取installationid
+		String strid = BmobInstallation.getInstallationId(PublishActivity.this);
+		AreaPublishContent areapublish = new AreaPublishContent();
+		areapublish.setTextContent(contentedittext.getText().toString());
 		areapublish.setPublishPersonName(strMac);
+		areapublish.setPublishPersonNickName(strUserName);
 		areapublish.setPublishAddress(AreaInfoActivity.strUserCurPosition);
 		areapublish.setScanTimes(0);
 		areapublish.setCommentTimes(0);
 		areapublish.setCreditValue(0);
 		areapublish.setAreaID(AreaInfoActivity.strCurSelectAreaId);
-	
+		areapublish.setInstallationId(strid);
+
 		if (ImageFiles != null) {
 			int nSize = ImageFiles.size();
 			for (int i = 0; i < nSize; i++) {
@@ -309,7 +323,7 @@ public class PublishActivity extends Activity {
 		areapublish.save(PublishActivity.this, new SaveListener() {
 			@Override
 			public void onFailure(int arg0, String arg1) {
-				
+
 				if (m_ProgressDialog != null) {
 					m_ProgressDialog.dismiss();
 					m_ProgressDialog = null;
@@ -320,7 +334,7 @@ public class PublishActivity extends Activity {
 
 			@Override
 			public void onSuccess() {
-				
+
 				if (m_ProgressDialog != null) {
 					m_ProgressDialog.dismiss();
 					m_ProgressDialog = null;
@@ -359,11 +373,11 @@ public class PublishActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		Bitmap bitmap = null;
-		
+
 		ImageView imageview = null;
-		
+
 		imageview = GetImageViewByIndex();
-		
+
 		if (null == imageview) {
 			return;
 		}
@@ -372,15 +386,15 @@ public class PublishActivity extends Activity {
 		{
 			if (requestCode == 0) {
 
-				
 				String strImageName = GetImagePath();
 				String strImagePath = Environment.getExternalStorageDirectory()
-						+ "/" + commondata.strParentFileName + "/"
+						+ "/" + commondata.strRootFileName + "/"
+						+ commondata.strPhotoParentFileName + "/"
 						+ strImageName;
-				
+
 				File pImageFile = new File(strImagePath);
 				if (pImageFile.exists()) {
-					
+
 					mUtils.rotatePhoto(strImagePath);
 
 					File imgFile = new File(strImagePath);
@@ -400,7 +414,6 @@ public class PublishActivity extends Activity {
 						String path = cursor.getString(column_index);
 						// mImgPaths = path;
 
-						
 						CreateImagePathByCamera(path);
 
 						ContentResolver cr = this.getContentResolver();
@@ -411,8 +424,6 @@ public class PublishActivity extends Activity {
 						e.printStackTrace();
 					}
 				} else {
-					//CommonUtils.ShowToastCenter(PublishActivity.this,
-					//		"ͼƬ������,�����»�ȡ", Toast.LENGTH_LONG);
 				}
 
 			} else if (requestCode == 1) {
@@ -430,7 +441,7 @@ public class PublishActivity extends Activity {
 				String path = cursor.getString(column_index);
 				// mImgPaths = path;
 				CreateImagePathByCamera(path);
-				
+
 				bitmap = mUtils.PhotoRotation(uri);
 				imageview.setImageBitmap(bitmap);
 			}
@@ -468,28 +479,30 @@ public class PublishActivity extends Activity {
 						PublishActivity.this.startActivityForResult(intent, 1);
 					} else if (which == 1) {
 
-						
 						String strImageName = GetImagePath();
 
-						
 						String strPhotoPath = "";
 						String haveSD = Environment.getExternalStorageState();
 						if (!haveSD.equals(Environment.MEDIA_MOUNTED)) {
 							CommonUtils.ShowToastCenter(PublishActivity.this,
-									"�洢��������", Toast.LENGTH_LONG);
+									"没有找到sd卡", Toast.LENGTH_LONG);
 							return;
 						}
 						File dir = new File(Environment
 								.getExternalStorageDirectory()
 								+ "/"
-								+ commondata.strParentFileName);
+								+ commondata.strRootFileName
+								+ "/"
+								+ commondata.strPhotoParentFileName);
 						if (!dir.exists()) {
 							dir.mkdirs();
 						} else {
 							strPhotoPath = Environment
 									.getExternalStorageDirectory()
 									+ "/"
-									+ commondata.strParentFileName
+									+ commondata.strRootFileName
+									+ "/"
+									+ commondata.strPhotoParentFileName
 									+ "/"
 									+ strImageName;
 							File pPhotoFile = new File(strPhotoPath);
@@ -519,7 +532,7 @@ public class PublishActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		
+
 		if (m_ProgressDialog != null) {
 			m_ProgressDialog.dismiss();
 			m_ProgressDialog = null;

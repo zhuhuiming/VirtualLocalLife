@@ -100,7 +100,7 @@ public class FinishRegeditActivity extends Activity {
 												.getString(
 														commondata.UserNickName,
 														"");
-										//获取mac地址
+										// 获取mac地址
 										String strMac = mUtils.strGetPhoneMac();
 										String strGender = msettings.getString(
 												commondata.UserGender, "");
@@ -160,7 +160,7 @@ public class FinishRegeditActivity extends Activity {
 						// 如果没有图片,那么就上传其他数据
 						String strUserName = msettings.getString(
 								commondata.UserGender, "");
-						//获取mac地址
+						// 获取mac地址
 						String strMac = mUtils.strGetPhoneMac();
 						String strGender = msettings.getString(
 								commondata.UserNickName, "");
@@ -205,7 +205,9 @@ public class FinishRegeditActivity extends Activity {
 		{
 			if (requestCode == 0) {
 				String strImagePath = Environment.getExternalStorageDirectory()
-						+ "/" + commondata.strParentFileName + "/" + commondata.strUserImageName;
+						+ "/" + commondata.strRootFileName + "/"
+						+ commondata.strPhotoParentFileName + "/"
+						+ commondata.strUserImageName;
 				// 先判断该文件是否存在
 				File pImageFile = new File(strImagePath);
 				if (pImageFile.exists()) {
@@ -248,7 +250,7 @@ public class FinishRegeditActivity extends Activity {
 					return;
 				}
 				Uri uri = data.getData();
-				//ContentResolver cr = this.getContentResolver();
+				// ContentResolver cr = this.getContentResolver();
 				String[] proj = { MediaStore.Images.Media.DATA };
 				@SuppressWarnings("deprecation")
 				Cursor cursor = managedQuery(uri, proj, null, null, null);
@@ -285,7 +287,9 @@ public class FinishRegeditActivity extends Activity {
 					File dir = new File(Environment
 							.getExternalStorageDirectory()
 							+ "/"
-							+ commondata.strParentFileName);
+							+ commondata.strRootFileName
+							+ "/"
+							+ commondata.strPhotoParentFileName);
 					if (!dir.exists()) {
 						dir.mkdirs();
 					} else {// 如果已经存在了该文件夹
@@ -293,7 +297,11 @@ public class FinishRegeditActivity extends Activity {
 						strPhotoPath = Environment
 								.getExternalStorageDirectory()
 								+ "/"
-								+ commondata.strParentFileName + "/" + commondata.strUserImageName;
+								+ commondata.strRootFileName
+								+ "/"
+								+ commondata.strPhotoParentFileName
+								+ "/"
+								+ commondata.strUserImageName;
 						File pPhotoFile = new File(strPhotoPath);
 						if (pPhotoFile.exists()) {
 							pPhotoFile.delete();
@@ -333,7 +341,8 @@ public class FinishRegeditActivity extends Activity {
 					} else if (which == 2) {
 						Intent intent = new Intent(
 								android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-						File imgFile = new File(dir, commondata.strUserImageName);
+						File imgFile = new File(dir,
+								commondata.strUserImageName);
 						Uri u = Uri.fromFile(imgFile);
 						intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
 						intent.putExtra(MediaStore.EXTRA_OUTPUT, u);

@@ -27,7 +27,6 @@ public class ClearEditText extends EditText implements TextWatcher,
 	 */
 	private int xUp = 0;
 	InputMethodManager imm = null;
-	int mnType = 1;//1表示求助,2表示分享
 
 	public ClearEditText(Context context) {
 		this(context, null);
@@ -41,10 +40,6 @@ public class ClearEditText extends EditText implements TextWatcher,
 		super(context, attrs, defStyle);
 		imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		initWedgits(attrs);
-	}
-	
-	public void SetType(int nType){
-		mnType = nType;
 	}
 
 	/**
@@ -97,16 +92,7 @@ public class ClearEditText extends EditText implements TextWatcher,
 	public void onTextChanged(CharSequence s, int start, int before, int after) {
 		if (hasFocus) {
 			if (TextUtils.isEmpty(s)) {
-				// 如果为空，则不显示删除图标
-				// setCompoundDrawablesWithIntrinsicBounds(left, null, null,
-				// null);
 			} else {
-				// 如果非空，则要显示删除图标
-				// if (null == right) {
-				// right = getCompoundDrawables()[2];
-				// }
-				// setCompoundDrawablesWithIntrinsicBounds(left, null, right,
-				// null);
 			}
 		}
 	}
@@ -125,10 +111,8 @@ public class ClearEditText extends EditText implements TextWatcher,
 					// 程序启动的时候避免光标处在editview中而弹出输入法窗口
 					//if (!TextUtils.isEmpty(getText().toString())) {
 						//createExpressionDialog();
-					if(1 == mnType){
-						//DynamicDetailActivity.gridviewlinearlayout.setVisibility(View.VISIBLE);	
-					}else{
-						//ShareDynamicDetailActivity.gridviewlinearlayout.setVisibility(View.VISIBLE);
+					if(AreaShareMessageActivity.gridviewlinearlayout != null){
+						AreaShareMessageActivity.gridviewlinearlayout.setVisibility(View.VISIBLE);	
 					}
 					imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
@@ -139,10 +123,8 @@ public class ClearEditText extends EditText implements TextWatcher,
 					this.setFocusableInTouchMode(true);					
 					imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.showSoftInput(this,InputMethodManager.SHOW_FORCED);
-					if(1 == mnType){
-						//DynamicDetailActivity.gridviewlinearlayout.setVisibility(View.GONE);	
-					}else{
-						//ShareDynamicDetailActivity.gridviewlinearlayout.setVisibility(View.GONE);
+					if(AreaShareMessageActivity.gridviewlinearlayout != null){
+						AreaShareMessageActivity.gridviewlinearlayout.setVisibility(View.GONE);	
 					}
 				}
 				break;
